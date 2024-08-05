@@ -33,6 +33,7 @@ import SwiftUI
         }
     }
     
+    // Populate player's hitting/pitching/fieldingStats
     private func updatePlayersWithStats() {
         players = players.map { player in
             var updatedPlayer = player
