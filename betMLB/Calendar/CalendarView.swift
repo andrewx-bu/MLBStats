@@ -26,10 +26,10 @@ struct CalendarView: View {
         .scrollTargetBehavior(CustomScrollBehavior(maxHeight: maxHeight))
     }
     
-    // Card View
+    // ScheduleView
     @ViewBuilder func CardView() -> some View {
         RoundedRectangle(cornerRadius: 15)
-            .fill(.blue.gradient)
+            .fill(.indigo.gradient)
             .frame(height: 70)
             .overlay(alignment: .leading) {
                 HStack(spacing: 12) {
@@ -132,7 +132,7 @@ struct CalendarView: View {
             .padding(.bottom, bottomPadding)
             .frame(maxHeight: .infinity)
             .frame(height: size.height - (maxHeight * progress), alignment: .top)
-            .background(.red.gradient)
+            .background(.indigo.gradient)
             // sticking it to top
             .clipped()
             .contentShape(.rect)
@@ -224,7 +224,6 @@ struct CustomScrollBehavior: ScrollTargetBehavior {
 #Preview {
     GeometryReader {
         let safeArea = $0.safeAreaInsets
-        
         CalendarView(safeArea: safeArea)
             .ignoresSafeArea(.container, edges: .top)
     }
