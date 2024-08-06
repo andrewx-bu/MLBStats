@@ -64,7 +64,7 @@ struct PitchingStats: Identifiable, Decodable {
     
     // Advanced Stats
     let BABIP: Double           // Batting AVG on Balls in Play
-    let KperBB: Double          // Strikeouts/Walks
+    let KperBB: Double?         // Strikeouts/Walks
     let kPCT: Double            // Strikeout PCT
     let bbPCT: Double           // Walk PCT
     let lobPCT: Double          // Left on Base PCT
@@ -77,25 +77,25 @@ struct PitchingStats: Identifiable, Decodable {
     let WAR: Double             // Wins Above Replacement
     
     // Minus Stats
-    let ERAminus: Double        // Earned Runs AVG -                            - FanGraphs
-    let FIPminus: Double        // Field Independent Pitching -                 - Fangraphs
-    let xFIPminus: Double       // Expected Field Independent Pitching -        - Fangraphs
+    let ERAminus: Double?       // Earned Runs AVG -                            - FanGraphs
+    let FIPminus: Double?       // Field Independent Pitching -                 - Fangraphs
+    let xFIPminus: Double?      // Expected Field Independent Pitching -        - Fangraphs
     // Plus Stats
-    let Kper9plus: Double       // Strikeout/9 Innings +
-    let BBper9plus: Double      // Walks/9 Innings +
-    let KperBBplus: Double      // Strikeouts/Walks +
-    let Hper9plus: Double       // Hits/9 Innings +
-    let HRper9plus: Double      // HR/9 Innings +
-    let AVGplus: Double         // Batting AVG +
-    let WHIPplus: Double        // Walks and Hits per Inning Pitched +
-    let BABIPplus: Double       // Batting AVG on Balls in Play +
-    let lobPCTplus: Double      // Left on Base PCT +
-    let kPCTplus: Double        // Strikeout PCT +
-    let bbPCTplus: Double       // Walk PCT +
-    let ldPCTplus: Double       // Line Drive PCT +
-    let gbPCTplus: Double       // Ground Ball PCT +
-    let fbPCTplus: Double       // Fly Ball PCT +
-    let HRperFBpctPLUS: Double  // Home Runs/Fly Balls PCT +
+    let Kper9plus: Double?      // Strikeout/9 Innings +
+    let BBper9plus: Double?     // Walks/9 Innings +
+    let KperBBplus: Double?     // Strikeouts/Walks +
+    let Hper9plus: Double?      // Hits/9 Innings +
+    let HRper9plus: Double?     // HR/9 Innings +
+    let AVGplus: Double?        // Batting AVG +
+    let WHIPplus: Double?       // Walks and Hits per Inning Pitched +
+    let BABIPplus: Double?      // Batting AVG on Balls in Play +
+    let lobPCTplus: Double?     // Left on Base PCT +
+    let kPCTplus: Double?       // Strikeout PCT +
+    let bbPCTplus: Double?      // Walk PCT +
+    let ldPCTplus: Double?      // Line Drive PCT +
+    let gbPCTplus: Double?      // Ground Ball PCT +
+    let fbPCTplus: Double?      // Fly Ball PCT +
+    let HRperFBpctPLUS: Double? // Home Runs/Fly Balls PCT +
     
     enum CodingKeys: String, CodingKey {
         case id = "xMLBAMID"
@@ -195,7 +195,7 @@ struct PitchingStats: Identifiable, Decodable {
         self.HRper9 = try container.decode(Double.self, forKey: .HRper9)
         self.RSper9 = try container.decode(Double.self, forKey: .RSper9)
         self.BABIP = try container.decode(Double.self, forKey: .BABIP)
-        self.KperBB = try container.decode(Double.self, forKey: .KperBB)
+        self.KperBB = try container.decodeIfPresent(Double.self, forKey: .KperBB)
         self.kPCT = try container.decode(Double.self, forKey: .kPCT)
         self.bbPCT = try container.decode(Double.self, forKey: .bbPCT)
         self.lobPCT = try container.decode(Double.self, forKey: .lobPCT)
@@ -206,24 +206,24 @@ struct PitchingStats: Identifiable, Decodable {
         self.kwERA = try container.decode(Double.self, forKey: .kwERA)
         self.tERA = try container.decode(Double.self, forKey: .tERA)
         self.WAR = try container.decode(Double.self, forKey: .WAR)
-        self.ERAminus = try container.decode(Double.self, forKey: .ERAminus)
-        self.FIPminus = try container.decode(Double.self, forKey: .FIPminus)
-        self.xFIPminus = try container.decode(Double.self, forKey: .xFIPminus)
-        self.Kper9plus = try container.decode(Double.self, forKey: .Kper9plus)
-        self.BBper9plus = try container.decode(Double.self, forKey: .BBper9plus)
-        self.KperBBplus = try container.decode(Double.self, forKey: .KperBBplus)
-        self.Hper9plus = try container.decode(Double.self, forKey: .Hper9plus)
-        self.HRper9plus = try container.decode(Double.self, forKey: .HRper9plus)
-        self.AVGplus = try container.decode(Double.self, forKey: .AVGplus)
-        self.WHIPplus = try container.decode(Double.self, forKey: .WHIPplus)
-        self.BABIPplus = try container.decode(Double.self, forKey: .BABIPplus)
-        self.lobPCTplus = try container.decode(Double.self, forKey: .lobPCTplus)
-        self.kPCTplus = try container.decode(Double.self, forKey: .kPCTplus)
-        self.bbPCTplus = try container.decode(Double.self, forKey: .bbPCTplus)
-        self.ldPCTplus = try container.decode(Double.self, forKey: .ldPCTplus)
-        self.gbPCTplus = try container.decode(Double.self, forKey: .gbPCTplus)
-        self.fbPCTplus = try container.decode(Double.self, forKey: .fbPCTplus)
-        self.HRperFBpctPLUS = try container.decode(Double.self, forKey: .HRperFBpctPLUS)
+        self.ERAminus = try container.decodeIfPresent(Double.self, forKey: .ERAminus)
+        self.FIPminus = try container.decodeIfPresent(Double.self, forKey: .FIPminus)
+        self.xFIPminus = try container.decodeIfPresent(Double.self, forKey: .xFIPminus)
+        self.Kper9plus = try container.decodeIfPresent(Double.self, forKey: .Kper9plus)
+        self.BBper9plus = try container.decodeIfPresent(Double.self, forKey: .BBper9plus)
+        self.KperBBplus = try container.decodeIfPresent(Double.self, forKey: .KperBBplus)
+        self.Hper9plus = try container.decodeIfPresent(Double.self, forKey: .Hper9plus)
+        self.HRper9plus = try container.decodeIfPresent(Double.self, forKey: .HRper9plus)
+        self.AVGplus = try container.decodeIfPresent(Double.self, forKey: .AVGplus)
+        self.WHIPplus = try container.decodeIfPresent(Double.self, forKey: .WHIPplus)
+        self.BABIPplus = try container.decodeIfPresent(Double.self, forKey: .BABIPplus)
+        self.lobPCTplus = try container.decodeIfPresent(Double.self, forKey: .lobPCTplus)
+        self.kPCTplus = try container.decodeIfPresent(Double.self, forKey: .kPCTplus)
+        self.bbPCTplus = try container.decodeIfPresent(Double.self, forKey: .bbPCTplus)
+        self.ldPCTplus = try container.decodeIfPresent(Double.self, forKey: .ldPCTplus)
+        self.gbPCTplus = try container.decodeIfPresent(Double.self, forKey: .gbPCTplus)
+        self.fbPCTplus = try container.decodeIfPresent(Double.self, forKey: .fbPCTplus)
+        self.HRperFBpctPLUS = try container.decodeIfPresent(Double.self, forKey: .HRperFBpctPLUS)
     }
 }
 

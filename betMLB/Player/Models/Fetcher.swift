@@ -6,23 +6,30 @@ import Foundation
 import SwiftUI
 
 class Fetcher {
-    enum FetcherError: LocalizedError {
-        case invalidURL
-        case requestFailed
-        case decodingError
-        case unknownError
+    enum FetcherError: Error {
+        case invalidURL(String)
+        case requestFailed(String)
+        case decodingError(String)
+        case missingData(String)
+        case unknownError(String)
         
         var errorDescription: String? {
             switch self {
-            case .invalidURL:
-                return "Invalid URL"
-            case .requestFailed:
-                return "The request to fetch data failed."
-            case .decodingError:
-                return "Failed to decode the response data."
-            case .unknownError:
-                return "An unknown error occurred."
+            case .invalidURL(let urlString):
+                return "Invalid URL: \(urlString)"
+            case .requestFailed(let message):
+                return "Request failed: \(message)"
+            case .decodingError(let message):
+                return "Decoding error: \(message)"
+            case .missingData(let message):
+                return "Missing data: \(message)"
+            case .unknownError(let message):
+                return "Unknown error: \(message)"
             }
+        }
+        
+        var localizedDescription: String {
+            return errorDescription ?? "An error occurred."
         }
     }
     
@@ -30,14 +37,18 @@ class Fetcher {
     func fetchPlayers() async throws -> [Player] {
         let urlString = "https://statsapi.mlb.com/api/v1/sports/1/players/?season=2025"
         guard let url = URL(string: urlString) else {
-            throw handleError(.invalidURL, context: "players list URL")
+            let error = FetcherError.invalidURL(urlString)
+            print("Error: \(error.localizedDescription)")
+            throw error
         }
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(PlayerResponse.self, from: data)
             return response.people
         } catch {
-            throw handleError(.decodingError, context: "players list")
+            let fetcherError = FetcherError.decodingError("Failed to decode player data: \(error.localizedDescription)")
+            print("Error: \(fetcherError.localizedDescription)")
+            throw fetcherError
         }
     }
     
@@ -53,42 +64,53 @@ class Fetcher {
     
     // Returns array of specified stats
     func fetchStats<T: Decodable>(statType: StatType) async throws -> [T] {
-        let urlString = "https://www.fangraphs.com/api/leaders/major-league/data?pos=all&stats=\(statType.rawValue)&lg=all&qual=0&pageitems=99&rost=1&season=2024&month=11"
-        print (urlString)
+        let urlString = "https://www.fangraphs.com/api/leaders/major-league/data?pos=all&stats=\(statType.rawValue)&lg=all&qual=0&pageitems=9999&rost=1&season=2024"
         guard let url = URL(string: urlString) else {
-            throw handleError(.invalidURL, context: "(\(statType.rawValue))")
+            let error = FetcherError.invalidURL(urlString)
+            print("Error: \(error.localizedDescription)")
+            throw error
         }
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(StatsResponse<T>.self, from: data)
             return response.data
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
         } catch {
-            throw handleError(.decodingError, context: "\(statType.rawValue)")
+            print("error: ", error)
         }
+        return []
     }
     
     func fetchHeadshotURL(for player: Player) async throws -> URL? {
         guard let id = player.headshotId else {
-            throw FetcherError.requestFailed
-            // throw handleError(.requestFailed, context: "(no headshot)")
+            let error = FetcherError.missingData("Player headshot ID is missing.")
+            // print("Error: \(error.localizedDescription)")
+            throw error
         }
         let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(id)&position="
         guard let url = URL(string: playerInfoString) else {
-            throw handleError(.invalidURL, context: "player info URL")
+            let error = FetcherError.invalidURL(playerInfoString)
+            print("Error: \(error.localizedDescription)")
+            throw error
         }
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let headshotResponse = try JSONDecoder().decode(PlayerInfo.self, from: data)
             return URL(string: headshotResponse.playerInfo.urlHeadshot)
         } catch {
-            throw handleError(.requestFailed, context: "fetch headshot URL")
+            let fetcherError = FetcherError.decodingError("Failed to decode headshot data: \(error.localizedDescription)")
+            print("Error: \(fetcherError.localizedDescription)")
+            throw fetcherError
         }
-    }
-}
-
-extension Fetcher {
-    private func handleError(_ error: FetcherError, context: String) -> FetcherError {
-        print("Error (\(context)): \(error.localizedDescription)")
-        return error
     }
 }

@@ -21,7 +21,7 @@ struct FieldingStats: Identifiable, Decodable {
     let DRS: Int?           // Defensive Runs Saved
     let UZR: Double?        // Ultimate Zone Rating
     let UZRper150: Double?  // UZR per 150 Games                - FanGraphs
-    let DEF: Double         // Defensive Runs Above AVG         - FanGraphs
+    let DEF: Double?        // Defensive Runs Above AVG         - FanGraphs
     let OAA: Int?           // Outs Above AVG                   - Statcast
     let FRV: Int?           // Fielding Run Value               - Statcast
     
@@ -61,7 +61,7 @@ struct FieldingStats: Identifiable, Decodable {
         self.DRS = try container.decodeIfPresent(Int.self, forKey: .DRS)
         self.UZR = try container.decodeIfPresent(Double.self, forKey: .UZR)
         self.UZRper150 = try container.decodeIfPresent(Double.self, forKey: .UZRper150)
-        self.DEF = try container.decode(Double.self, forKey: .DEF)
+        self.DEF = try container.decodeIfPresent(Double.self, forKey: .DEF)
         self.OAA = try container.decodeIfPresent(Int.self, forKey: .OAA)
         self.FRV = try container.decodeIfPresent(Int.self, forKey: .FRV)
         self.SB = try container.decodeIfPresent(Int.self, forKey: .SB)
