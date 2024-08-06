@@ -14,6 +14,8 @@ import SwiftUI
     var pitchingStatsDictionary: PitchingStatsDictionary = [:]
     var fieldingStatsDictionary: FieldingStatsDictionary = [:]
     
+    var playerImages: [Int: Image] = [:]
+    
     func loadData() async {
         do {
             players = try await fetcher.fetchPlayers()
@@ -28,13 +30,15 @@ import SwiftUI
             let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fetchedFieldingStats)
             
             updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
+            
+            await fetchPlayerImages()
         } catch {
             print("Error fetching data: \(error.localizedDescription)")
         }
     }
     
     // Populate player's hitting/pitching/fieldingStats
-    private func updatePlayersWithStats( hittingStatsDictionary: HittingStatsDictionary, pitchingStatsDictionary: PitchingStatsDictionary, fieldingStatsDictionary: FieldingStatsDictionary
+    private func updatePlayersWithStats(hittingStatsDictionary: HittingStatsDictionary, pitchingStatsDictionary: PitchingStatsDictionary, fieldingStatsDictionary: FieldingStatsDictionary
     ) {
         players = players.map { player in
             var updatedPlayer = player
@@ -52,6 +56,23 @@ import SwiftUI
             }
             
             return updatedPlayer
+        }
+    }
+    
+    // Fetch All Player Images
+    private func fetchPlayerImages() async {
+        for player in players {
+            do {
+                if let headshotURL = try await fetcher.fetchHeadshotURL(for: player) {
+                    let (data, _) = try await URLSession.shared.data(from: headshotURL)
+                    if let uiImage = UIImage(data: data) {
+                        let image = Image(uiImage: uiImage)
+                        playerImages[player.id] = image
+                    }
+                }
+            } catch {
+                print("Error fetching headshot image for player \(player.id): \(error.localizedDescription)")
+            }
         }
     }
 }

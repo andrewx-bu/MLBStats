@@ -15,7 +15,7 @@ struct Player: Identifiable, Decodable {
         let id: Int                             // 113
         let link: String                        // /api/v1/teams/113
     }
-
+    
     let primaryPosition: Position
     struct Position: Decodable {
         let name: String                        // Pitcher
@@ -34,7 +34,7 @@ struct Player: Identifiable, Decodable {
         let code: String                        // L
         let description: String                 // Left
     }
-
+    
     let boxscoreName: String                    // Abbott, A
     let initLastName: String                    // A Abbott
     
@@ -45,4 +45,25 @@ struct Player: Identifiable, Decodable {
 
 struct PlayerResponse: Decodable {
     let people: [Player]
+}
+
+// Fetching headshot from fangraphs
+struct PlayerInfo: Decodable {
+    let playerInfo: PlayerDetails
+    
+    struct PlayerDetails: Identifiable, Decodable {
+        let id: Int
+        let urlHeadshot: String
+        
+        enum CodingKeys: String, CodingKey {
+            case id = "MLBAMId"
+            case urlHeadshot
+        }
+        
+        init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.id = try container.decode(Int.self, forKey: .id)
+            self.urlHeadshot = try container.decode(String.self, forKey: .urlHeadshot)
+        }
+    }
 }
