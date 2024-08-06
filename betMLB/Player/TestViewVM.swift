@@ -6,47 +6,48 @@ import Foundation
 import SwiftUI
 
 @Observable class TestViewVM {
-    var players: [Player] = []
-    var hittingStats: HittingStatsDictionary = [:]
-    var pitchingStats: PitchingStatsDictionary = [:]
-    var fieldingStats: FieldingStatsDictionary = [:]
-    
     private let fetcher = Fetcher()
     private let dictionaryMaker = DictionaryMaker()
+    
+    var players: [Player] = []
+    var hittingStatsDictionary: HittingStatsDictionary = [:]
+    var pitchingStatsDictionary: PitchingStatsDictionary = [:]
+    var fieldingStatsDictionary: FieldingStatsDictionary = [:]
     
     func loadData() async {
         do {
             players = try await fetcher.fetchPlayers()
             
             let fetchedHittingStats: [HittingStats] = try await fetcher.fetchStats(statType: .hitting)
-            hittingStats = dictionaryMaker.makeHittingDictionary(hittingStats: fetchedHittingStats)
+            let hittingStatsDictionary = dictionaryMaker.makeHittingDictionary(hittingStats: fetchedHittingStats)
             
             let fetchedPitchingStats: [PitchingStats] = try await fetcher.fetchStats(statType: .pitching)
-            pitchingStats = dictionaryMaker.makePitchingDictionary(pitchingStats: fetchedPitchingStats)
+            let pitchingStatsDictionary = dictionaryMaker.makePitchingDictionary(pitchingStats: fetchedPitchingStats)
             
             let fetchedFieldingStats: [FieldingStats] = try await fetcher.fetchStats(statType: .fielding)
-            fieldingStats = dictionaryMaker.makeFieldingDictionary(fieldingStats: fetchedFieldingStats)
+            let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fetchedFieldingStats)
             
-            updatePlayersWithStats()
+            updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
         } catch {
             print("Error fetching data: \(error.localizedDescription)")
         }
     }
     
     // Populate player's hitting/pitching/fieldingStats
-    private func updatePlayersWithStats() {
+    private func updatePlayersWithStats( hittingStatsDictionary: HittingStatsDictionary, pitchingStatsDictionary: PitchingStatsDictionary, fieldingStatsDictionary: FieldingStatsDictionary
+    ) {
         players = players.map { player in
             var updatedPlayer = player
             
-            if let hitting = hittingStats[player.id] {
+            if let hitting = hittingStatsDictionary[player.id] {
                 updatedPlayer.hittingStats = hitting
             }
             
-            if let pitching = pitchingStats[player.id] {
+            if let pitching = pitchingStatsDictionary[player.id] {
                 updatedPlayer.pitchingStats = pitching
             }
             
-            if let fielding = fieldingStats[player.id] {
+            if let fielding = fieldingStatsDictionary[player.id] {
                 updatedPlayer.fieldingStats = fielding
             }
             

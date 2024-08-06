@@ -5,8 +5,38 @@
 import Foundation
 
 struct Player: Identifiable, Decodable {
-    let id: Int
-    let fullName: String
+    let id: Int                                 // 671096
+    let fullName: String                        // Andrew Abbott
+    let primaryNumber: String                   // "41"
+    let currentAge: Int                         // 25
+    let currentTeam: Team
+    
+    struct Team: Identifiable, Decodable {
+        let id: Int                             // 113
+        let link: String                        // /api/v1/teams/113
+    }
+
+    let primaryPosition: Position
+    struct Position: Decodable {
+        let name: String                        // Pitcher
+        let abbreviation: String                // P
+    }
+    
+    let boxscoreName: String                    // Abbott, A
+    
+    let batSide: BatSide
+    struct BatSide: Decodable {
+        let code: String                        // L
+        let description: String                 // Left
+    }
+    
+    let pitchHand: PitchHand
+    struct PitchHand: Decodable {
+        let code: String                        // L
+        let description: String                 // Left
+    }
+
+    let initLastName: String                    // A Abbott
     
     var hittingStats: HittingStats?
     var pitchingStats: PitchingStats?
@@ -15,45 +45,4 @@ struct Player: Identifiable, Decodable {
 
 struct PlayerResponse: Decodable {
     let people: [Player]
-}
-
-// Stats
-struct HittingStats: Decodable {
-    let xMLBAMID: Int
-    let Bats: String
-    let AVG: Double
-}
-
-struct HittingRespone: Decodable {
-    let data: [HittingStats]
-}
-
-struct PitchingStats: Decodable {
-    let xMLBAMID: Int
-    let Throws: String
-    let ERA: Double
-}
-
-struct PitchingResponse: Decodable {
-    let data: [PitchingStats]
-}
-
-struct FieldingStats: Decodable {
-    let xMLBAMID: Int
-    let FP: Double
-    let WP: Int?
-    
-    enum CodingKeys: CodingKey {
-        case xMLBAMID, FP, WP
-    }
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.xMLBAMID = try container.decode(Int.self, forKey: .xMLBAMID)
-        self.FP = try container.decode(Double.self, forKey: .FP)
-        self.WP = try container.decodeIfPresent(Int.self, forKey: .WP)
-    }
-}
-
-struct FieldingResponse: Decodable {
-    let data: [FieldingStats]
 }

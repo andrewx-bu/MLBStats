@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		496D83AD2C60C13A00712C52 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83AC2C60C13A00712C52 /* Fetcher.swift */; };
+		496D83B02C61ABEC00712C52 /* HittingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83AF2C61ABEC00712C52 /* HittingStats.swift */; };
+		496D83B22C61AC0B00712C52 /* PitchingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83B12C61AC0B00712C52 /* PitchingStats.swift */; };
+		496D83B42C61AC1200712C52 /* FieldingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83B32C61AC1200712C52 /* FieldingStats.swift */; };
 		49F3B9A92C5DC7CD004FAF69 /* betMLBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F3B9A82C5DC7CD004FAF69 /* betMLBApp.swift */; };
 		49F3B9AB2C5DC7CD004FAF69 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F3B9AA2C5DC7CD004FAF69 /* ContentView.swift */; };
 		49F3B9AD2C5DC7CF004FAF69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49F3B9AC2C5DC7CF004FAF69 /* Assets.xcassets */; };
@@ -25,6 +28,9 @@
 
 /* Begin PBXFileReference section */
 		496D83AC2C60C13A00712C52 /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
+		496D83AF2C61ABEC00712C52 /* HittingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HittingStats.swift; sourceTree = "<group>"; };
+		496D83B12C61AC0B00712C52 /* PitchingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchingStats.swift; sourceTree = "<group>"; };
+		496D83B32C61AC1200712C52 /* FieldingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldingStats.swift; sourceTree = "<group>"; };
 		49F3B9A52C5DC7CD004FAF69 /* betMLB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = betMLB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F3B9A82C5DC7CD004FAF69 /* betMLBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = betMLBApp.swift; sourceTree = "<group>"; };
 		49F3B9AA2C5DC7CD004FAF69 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,6 +64,9 @@
 				49F3B9FA2C60634D004FAF69 /* DictionaryMaker.swift */,
 				496D83AC2C60C13A00712C52 /* Fetcher.swift */,
 				49F3B9F82C605D17004FAF69 /* Player.swift */,
+				496D83AF2C61ABEC00712C52 /* HittingStats.swift */,
+				496D83B12C61AC0B00712C52 /* PitchingStats.swift */,
+				496D83B32C61AC1200712C52 /* FieldingStats.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -208,9 +217,12 @@
 				49F3B9D22C5F2BB5004FAF69 /* Day.swift in Sources */,
 				49F3B9FD2C6069FE004FAF69 /* TestView.swift in Sources */,
 				49F3B9F92C605D17004FAF69 /* Player.swift in Sources */,
+				496D83B22C61AC0B00712C52 /* PitchingStats.swift in Sources */,
 				49F3B9FB2C60634D004FAF69 /* DictionaryMaker.swift in Sources */,
 				49F3B9EF2C5F8783004FAF69 /* TeamIDMapping.swift in Sources */,
+				496D83B42C61AC1200712C52 /* FieldingStats.swift in Sources */,
 				49F3B9FF2C606B83004FAF69 /* TestViewVM.swift in Sources */,
+				496D83B02C61ABEC00712C52 /* HittingStats.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
