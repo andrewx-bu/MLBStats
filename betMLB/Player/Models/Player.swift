@@ -6,6 +6,7 @@ import Foundation
 
 struct Player: Identifiable, Decodable {
     let id: Int                                 // 671096
+    var headshotId: Int?                        // 25764 (Fangraphs)
     let fullName: String                        // Andrew Abbott
     let primaryNumber: String                   // "41"
     let currentAge: Int                         // 25

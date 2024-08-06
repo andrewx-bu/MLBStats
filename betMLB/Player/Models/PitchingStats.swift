@@ -9,7 +9,7 @@ import Foundation
 
 struct PitchingStats: Identifiable, Decodable {
     let id: Int                 // 554430
-    let name: String            // "<a href="statss.aspx?playerid=25764&position=SS">Bobby Witt Jr.</a>"
+    let playerid: Int           // 25764 (Fangraphs)
     
     // General Stats
     let W: Int                  // Wins
@@ -99,7 +99,7 @@ struct PitchingStats: Identifiable, Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id = "xMLBAMID"
-        case name = "Name"
+        case playerid
         case W, L, ERA, WHIP, G, GS, SV, HLD, BS, IP, TBF, H, R, ER, HR, BB, IBB, HBP, WP, SO, AVG
         case pitches = "Pitches"
         case balls = "Balls"
@@ -148,7 +148,7 @@ struct PitchingStats: Identifiable, Decodable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
-        self.name = try container.decode(String.self, forKey: .name)
+        self.playerid = try container.decode(Int.self, forKey: .playerid)
         self.W = try container.decode(Int.self, forKey: .W)
         self.L = try container.decode(Int.self, forKey: .L)
         self.ERA = try container.decode(Double.self, forKey: .ERA)

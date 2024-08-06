@@ -43,16 +43,21 @@ import SwiftUI
         players = players.map { player in
             var updatedPlayer = player
             
+            // Match player with his stats
             if let hitting = hittingStatsDictionary[player.id] {
                 updatedPlayer.hittingStats = hitting
+                // Extract fangraphs id for getting headshot later
+                updatedPlayer.headshotId = hitting.playerid
             }
             
             if let pitching = pitchingStatsDictionary[player.id] {
                 updatedPlayer.pitchingStats = pitching
+                updatedPlayer.headshotId = pitching.playerid
             }
             
             if let fielding = fieldingStatsDictionary[player.id] {
                 updatedPlayer.fieldingStats = fielding
+                updatedPlayer.headshotId = fielding.playerid
             }
             
             return updatedPlayer

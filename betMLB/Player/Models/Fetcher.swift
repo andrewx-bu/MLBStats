@@ -67,22 +67,18 @@ class Fetcher {
     }
     
     func fetchHeadshotURL(for player: Player) async throws -> URL? {
-        var name = ""
-        if let str = player.hittingStats?.name {
-            name = str
+        var playerId = 0
+        if let id = player.hittingStats?.playerid {
+            playerId = id
         }
-        if let str = player.pitchingStats?.name {
-            name = str
+        if let id = player.pitchingStats?.playerid {
+            playerId = id
         }
-        if let str = player.fieldingStats?.name {
-            name = str
-        }
-        
-        guard let query = name.extractQuery() else {
-            throw handleError(.invalidURL, context: "extractQuery")
+        if let id = player.fieldingStats?.playerid {
+            playerId = id
         }
         
-        let playerInfoString = "https://www.fangraphs.com/api/players/stats\(query)"
+        let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(playerId)&position="
         guard let url = URL(string: playerInfoString) else {
             throw handleError(.invalidURL, context: "player info URL")
         }
