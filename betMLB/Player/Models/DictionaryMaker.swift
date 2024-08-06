@@ -20,7 +20,7 @@ class DictionaryMaker {
     func makePitchingDictionary(pitchingStats: [PitchingStats]) -> PitchingStatsDictionary {
         var dictionary = PitchingStatsDictionary()
         for stats in pitchingStats {
-            dictionary[stats.xMLBAMID] = stats
+            dictionary[stats.id] = stats
         }
         return dictionary
     }

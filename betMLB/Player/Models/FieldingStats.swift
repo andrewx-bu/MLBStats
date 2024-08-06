@@ -5,10 +5,7 @@
 import Foundation
 
 struct FieldingStats: Identifiable, Decodable {
-    // Identification Purposes
     let id: Int             // 677951
-    let teamId: Int         // 7
-    let teamName: String    // KCR
     
     // General Stats
     let G: Int              // Games Played
@@ -36,8 +33,6 @@ struct FieldingStats: Identifiable, Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id = "xMLBAMID"
-        case teamId = "teamid"
-        case teamName = "TeamName"
         case G
         case inn = "Inn"
         case PO, A, E, DP, FP, DRS, UZR
@@ -52,8 +47,6 @@ struct FieldingStats: Identifiable, Decodable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
-        self.teamId = try container.decode(Int.self, forKey: .teamId)
-        self.teamName = try container.decode(String.self, forKey: .teamName)
         self.G = try container.decode(Int.self, forKey: .G)
         self.inn = try container.decode(Double.self, forKey: .inn)
         self.PO = try container.decode(Int.self, forKey: .PO)

@@ -9,8 +9,8 @@ struct Player: Identifiable, Decodable {
     let fullName: String                        // Andrew Abbott
     let primaryNumber: String                   // "41"
     let currentAge: Int                         // 25
-    let currentTeam: Team
     
+    let currentTeam: Team
     struct Team: Identifiable, Decodable {
         let id: Int                             // 113
         let link: String                        // /api/v1/teams/113
@@ -22,8 +22,6 @@ struct Player: Identifiable, Decodable {
         let type: String                        // Pitcher
         let abbreviation: String                // P
     }
-    
-    let boxscoreName: String                    // Abbott, A
     
     let batSide: BatSide
     struct BatSide: Decodable {
@@ -37,6 +35,7 @@ struct Player: Identifiable, Decodable {
         let description: String                 // Left
     }
 
+    let boxscoreName: String                    // Abbott, A
     let initLastName: String                    // A Abbott
     
     var hittingStats: HittingStats?

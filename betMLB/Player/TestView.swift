@@ -23,8 +23,8 @@ struct TestView: View {
                             .font(.caption)
                     }
                     Text("AVG: \(player.hittingStats?.AVG)")
-                    Text("ERA: \(player.pitchingStats?.ERA)")
-                    Text("FP: \(player.fieldingStats?.FP)")
+                    Text("BABIP+: \(player.pitchingStats?.BABIPplus)")
+                    Text("DEF: \(player.fieldingStats?.DEF)")
                 }
             }
         }
