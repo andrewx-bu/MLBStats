@@ -22,11 +22,6 @@ struct PitchingStats: Identifiable, Decodable {
     let BS: Int                 // Blown Saves
     let IP: Double              // Innings Pitched
     let TBF: Int                // Total Batters Faced
-    let balls: Int              // 2940
-    let strikes: Int            // 5739
-    let pitches: Int            // 8679
-    
-    // VS. Batter Stats
     let H: Int                  // Hits
     let R: Int                  // Runs
     let ER: Int                 // Earned Runs
@@ -39,6 +34,9 @@ struct PitchingStats: Identifiable, Decodable {
     let AVG: Double             // Batting AVG
     
     // Ball Data
+    let pitches: Int            // 8679
+    let balls: Int              // 2940
+    let strikes: Int            // 5739
     let GB: Int                 // Ground Balls
     let FB: Int                 // Fly Balls
     let LD: Int                 // Line Drives
@@ -64,7 +62,7 @@ struct PitchingStats: Identifiable, Decodable {
     let RSper9: Double          // Run Support/9 Innings
     
     // Advanced Stats
-    let BABIP: Double           // *Batting AVG on Balls in Play*
+    let BABIP: Double           // Batting AVG on Balls in Play
     let KperBB: Double          // Strikeouts/Walks
     let kPCT: Double            // Strikeout PCT
     let bbPCT: Double           // Walk PCT
@@ -100,12 +98,11 @@ struct PitchingStats: Identifiable, Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id = "xMLBAMID"
-        case W, L, ERA, WHIP, G, GS, SV, HLD, BS, IP, TBF
+        case W, L, ERA, WHIP, G, GS, SV, HLD, BS, IP, TBF, H, R, ER, HR, BB, IBB, HBP, WP, SO, AVG
+        case pitches = "Pitches"
         case balls = "Balls"
         case strikes = "Strikes"
-        case pitches = "Pitches"
-        case H, R, ER, HR, BB, IBB, HBP, WP, SO
-        case AVG, GB, FB, LD, IFFB, IFH, BU, BUH
+        case GB, FB, LD, IFFB, IFH, BU, BUH
         case GBperFB = "GB/FB"
         case ldPCT = "LD%"
         case gbPCT = "GB%"
@@ -160,9 +157,6 @@ struct PitchingStats: Identifiable, Decodable {
         self.BS = try container.decode(Int.self, forKey: .BS)
         self.IP = try container.decode(Double.self, forKey: .IP)
         self.TBF = try container.decode(Int.self, forKey: .TBF)
-        self.balls = try container.decode(Int.self, forKey: .balls)
-        self.strikes = try container.decode(Int.self, forKey: .strikes)
-        self.pitches = try container.decode(Int.self, forKey: .pitches)
         self.H = try container.decode(Int.self, forKey: .H)
         self.R = try container.decode(Int.self, forKey: .R)
         self.ER = try container.decode(Int.self, forKey: .ER)
@@ -173,6 +167,9 @@ struct PitchingStats: Identifiable, Decodable {
         self.WP = try container.decode(Int.self, forKey: .WP)
         self.SO = try container.decode(Int.self, forKey: .SO)
         self.AVG = try container.decode(Double.self, forKey: .AVG)
+        self.pitches = try container.decode(Int.self, forKey: .pitches)
+        self.balls = try container.decode(Int.self, forKey: .balls)
+        self.strikes = try container.decode(Int.self, forKey: .strikes)
         self.GB = try container.decode(Int.self, forKey: .GB)
         self.FB = try container.decode(Int.self, forKey: .FB)
         self.LD = try container.decode(Int.self, forKey: .LD)

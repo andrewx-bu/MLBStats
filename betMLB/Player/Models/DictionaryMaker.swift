@@ -12,7 +12,7 @@ class DictionaryMaker {
     func makeHittingDictionary(hittingStats: [HittingStats]) -> HittingStatsDictionary {
         var dictionary = HittingStatsDictionary()
         for stats in hittingStats {
-            dictionary[stats.xMLBAMID] = stats
+            dictionary[stats.id] = stats
         }
         return dictionary
     }
