@@ -28,7 +28,7 @@ class DictionaryMaker {
     func makeFieldingDictionary(fieldingStats: [FieldingStats]) -> FieldingStatsDictionary {
         var dictionary = FieldingStatsDictionary()
         for stats in fieldingStats {
-            dictionary[stats.xMLBAMID] = stats
+            dictionary[stats.id] = stats
         }
         return dictionary
     }

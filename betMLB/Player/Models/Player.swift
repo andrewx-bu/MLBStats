@@ -19,6 +19,7 @@ struct Player: Identifiable, Decodable {
     let primaryPosition: Position
     struct Position: Decodable {
         let name: String                        // Pitcher
+        let type: String                        // Pitcher
         let abbreviation: String                // P
     }
     

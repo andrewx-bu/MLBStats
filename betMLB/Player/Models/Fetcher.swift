@@ -30,7 +30,7 @@ class Fetcher {
         let urlString = "https://statsapi.mlb.com/api/v1/sports/1/players/?season=2025"
         guard let url = URL(string: urlString) else {
             let error = FetcherError.invalidURL
-            print("Error: \(error.localizedDescription)")
+            print("Invalid players list URL: \(error.localizedDescription)")
             throw error
         }
         do {
@@ -39,7 +39,7 @@ class Fetcher {
             return response.people
         } catch {
             let error = FetcherError.decodingError
-            print("Error: \(error.localizedDescription)")
+            print("Error decoding players list: \(error.localizedDescription)")
             throw error
         }
     }
@@ -59,7 +59,7 @@ class Fetcher {
         let urlString = "https://www.fangraphs.com/api/leaders/major-league/data?pos=all&stats=\(statType.rawValue)&lg=all&qual=y&pageitems=25&rost=1&season=2024"
         guard let url = URL(string: urlString) else {
             let error = FetcherError.invalidURL
-            print("Error: \(error.localizedDescription)")
+            print("Error (\(statType.rawValue)): \(error.localizedDescription)")
             throw error
         }
         do {
@@ -68,7 +68,7 @@ class Fetcher {
             return response.data
         } catch {
             let error = FetcherError.decodingError
-            print("Error: \(error.localizedDescription)")
+            print("Error (\(statType.rawValue)): \(error.localizedDescription)")
             throw error
         }
     }
