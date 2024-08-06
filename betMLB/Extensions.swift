@@ -73,26 +73,3 @@ extension Date {
         return currentMonth
     }
 }
-
-extension String {
-    // For getting headshot images from strings like <a href=\"statss.aspx?playerid=15640&position=OF\">Aaron Judge</a>
-    func extractQuery() -> String? {
-        // Define a regex pattern to match the query part and ensure it ends at the position value
-        let pattern = "\\?playerid=[^&]+&position=[^\">]+"
-        
-        // Create a regular expression with the pattern
-        guard let regex = try? NSRegularExpression(pattern: pattern) else {
-            return nil
-        }
-        
-        // Find matches in the string
-        let matches = regex.matches(in: self, range: NSRange(self.startIndex..., in: self))
-        
-        // Return the first match if available
-        if let match = matches.first {
-            return (self as NSString).substring(with: match.range)
-        }
-        
-        return nil
-    }
-}

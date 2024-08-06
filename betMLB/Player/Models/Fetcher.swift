@@ -53,7 +53,8 @@ class Fetcher {
     
     // Returns array of specified stats
     func fetchStats<T: Decodable>(statType: StatType) async throws -> [T] {
-        let urlString = "https://www.fangraphs.com/api/leaders/major-league/data?pos=all&stats=\(statType.rawValue)&lg=all&qual=y&pageitems=999&rost=1&season=2024"
+        let urlString = "https://www.fangraphs.com/api/leaders/major-league/data?pos=all&stats=\(statType.rawValue)&lg=all&qual=0&pageitems=99&rost=1&season=2024&month=11"
+        print (urlString)
         guard let url = URL(string: urlString) else {
             throw handleError(.invalidURL, context: "(\(statType.rawValue))")
         }
@@ -67,22 +68,14 @@ class Fetcher {
     }
     
     func fetchHeadshotURL(for player: Player) async throws -> URL? {
-        var playerId = 0
-        if let id = player.hittingStats?.playerid {
-            playerId = id
+        guard let id = player.headshotId else {
+            throw FetcherError.requestFailed
+            // throw handleError(.requestFailed, context: "(no headshot)")
         }
-        if let id = player.pitchingStats?.playerid {
-            playerId = id
-        }
-        if let id = player.fieldingStats?.playerid {
-            playerId = id
-        }
-        
-        let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(playerId)&position="
+        let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(id)&position="
         guard let url = URL(string: playerInfoString) else {
             throw handleError(.invalidURL, context: "player info URL")
         }
-        
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let headshotResponse = try JSONDecoder().decode(PlayerInfo.self, from: data)

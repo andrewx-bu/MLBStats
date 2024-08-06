@@ -76,7 +76,7 @@ import SwiftUI
                     }
                 }
             } catch {
-                print("Error fetching headshot image for player \(player.id): \(error.localizedDescription)")
+                // print("Error fetching headshot image for player \(player.id): \(error.localizedDescription)")
             }
         }
     }
