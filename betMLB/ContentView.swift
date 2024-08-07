@@ -18,7 +18,7 @@ struct ContentView: View {
                 // HomeView
                 NavigationStack {
                     VStack {
-                        TestView()
+                        PlayerListView()
                     }
                     .navigationTitle(Tab.home.title)
                 }

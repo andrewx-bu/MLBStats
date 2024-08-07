@@ -1,11 +1,11 @@
-//  TestViewVM.swift
+//  PlayerListViewVM.swift
 //  betMLB
 //  Created by Andrew Xin on 8/4/24.
 
 import Foundation
 import SwiftUI
 
-@Observable class TestViewVM {
+@Observable class PlayerListViewVM {
     private let fetcher = Fetcher()
     private let dictionaryMaker = DictionaryMaker()
     

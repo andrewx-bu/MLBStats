@@ -9,7 +9,14 @@ struct Player: Identifiable, Decodable {
     var headshotId: Int?                        // 25764 (Fangraphs)
     let fullName: String                        // Andrew Abbott
     let primaryNumber: String                   // "41"
+    let birthDate: String                       // 1999-06-01
+    let birthDateFormatted: String?             // 6/1/1999
     let currentAge: Int                         // 25
+    let birthCity: String?                      // Lynchburg
+    let birthStateProvince: String?             // VA
+    let birthCountry: String                    // USA
+    let height: String                          // 6' 0\"
+    let weight: Int                             // 192
     
     let currentTeam: Team
     struct Team: Identifiable, Decodable {
@@ -42,6 +49,58 @@ struct Player: Identifiable, Decodable {
     var hittingStats: HittingStats?
     var pitchingStats: PitchingStats?
     var fieldingStats: FieldingStats?
+    
+    enum CodingKeys: CodingKey {
+        case id
+        case headshotId
+        case fullName
+        case primaryNumber
+        case birthDate
+        case currentAge
+        case birthCity
+        case birthStateProvince
+        case birthCountry
+        case height
+        case weight
+        case currentTeam
+        case primaryPosition
+        case batSide
+        case pitchHand
+        case boxscoreName
+        case initLastName
+        case hittingStats
+        case pitchingStats
+        case fieldingStats
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.headshotId = try container.decodeIfPresent(Int.self, forKey: .headshotId)
+        self.fullName = try container.decode(String.self, forKey: .fullName)
+        self.primaryNumber = try container.decode(String.self, forKey: .primaryNumber)
+        self.birthDate = try container.decode(String.self, forKey: .birthDate)
+        if let date = birthDate.toDate(withFormat: "yyyy-MM-dd") {
+            self.birthDateFormatted = date.formatToMDY()
+        } else {
+            self.birthDateFormatted = nil
+        }
+        self.currentAge = try container.decode(Int.self, forKey: .currentAge)
+        self.birthCity = try container.decodeIfPresent(String.self, forKey: .birthCity)
+        self.birthStateProvince = try container.decodeIfPresent(String.self, forKey: .birthStateProvince)
+        self.birthCountry = try container.decode(String.self, forKey: .birthCountry)
+        self.height = try container.decode(String.self, forKey: .height)
+        self.weight = try container.decode(Int.self, forKey: .weight)
+        self.currentTeam = try container.decode(Player.Team.self, forKey: .currentTeam)
+        self.primaryPosition = try container.decode(Player.Position.self, forKey: .primaryPosition)
+        self.batSide = try container.decode(Player.BatSide.self, forKey: .batSide)
+        self.pitchHand = try container.decode(Player.PitchHand.self, forKey: .pitchHand)
+        self.boxscoreName = try container.decode(String.self, forKey: .boxscoreName)
+        self.initLastName = try container.decode(String.self, forKey: .initLastName)
+        self.hittingStats = try container.decodeIfPresent(HittingStats.self, forKey: .hittingStats)
+        self.pitchingStats = try container.decodeIfPresent(PitchingStats.self, forKey: .pitchingStats)
+        self.fieldingStats = try container.decodeIfPresent(FieldingStats.self, forKey: .fieldingStats)
+    }
 }
 
 struct PlayerResponse: Decodable {

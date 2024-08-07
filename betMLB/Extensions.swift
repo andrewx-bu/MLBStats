@@ -72,4 +72,20 @@ extension Date {
         }
         return currentMonth
     }
+    
+    // Changes a date to this format: 6/1/1999
+    func formatToMDY() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M/d/yyyy" // Desired format
+        return dateFormatter.string(from: self)
+    }
+}
+
+extension String {
+    // Changes a string to a date
+    func toDate(withFormat format: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.date(from: self)
+    }
 }
