@@ -13,8 +13,55 @@ import SwiftUI
     var hittingStatsDictionary: HittingStatsDictionary = [:]
     var pitchingStatsDictionary: PitchingStatsDictionary = [:]
     var fieldingStatsDictionary: FieldingStatsDictionary = [:]
-    
     var playerImages: [Int: Image] = [:]
+    
+    var searchText: String = ""
+    var filteredPlayers: [Player] {
+        let filteredByTab: [Player]
+        if searchText.isEmpty {
+            filteredByTab = players.filter { player in
+                switch activeTab {
+                case .all:
+                    return true
+                case .hitter:
+                    return player.primaryPosition.abbreviation == "DH" || player.primaryPosition.abbreviation == "TWP"
+                case .pitcher:
+                    return player.primaryPosition.abbreviation == "P" || player.primaryPosition.abbreviation == "TWP"
+                case .fielder:
+                    return player.primaryPosition.abbreviation != "P" && player.primaryPosition.abbreviation != "C" && player.primaryPosition.abbreviation != "DH" && player.primaryPosition.abbreviation != "TWP"
+                case .catcher:
+                    return player.primaryPosition.abbreviation == "C"
+                }
+            }
+        } else {
+            // Filter by both search text and tab
+            let normalizedSearchText = searchText.removingDiacritics().lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            filteredByTab = players.filter { player in
+                let normalizedPlayerName = player.fullName.removingDiacritics().lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                let matchesSearchText = normalizedPlayerName.contains(normalizedSearchText)
+                let matchesTab: Bool
+                
+                switch activeTab {
+                case .all:
+                    matchesTab = true
+                case .hitter:
+                    matchesTab = player.primaryPosition.abbreviation == "DH" || player.primaryPosition.abbreviation == "TWP"
+                case .pitcher:
+                    matchesTab = player.primaryPosition.abbreviation == "P" || player.primaryPosition.abbreviation == "TWP"
+                case .fielder:
+                    matchesTab = player.primaryPosition.abbreviation != "P" && player.primaryPosition.abbreviation != "C" && player.primaryPosition.abbreviation != "DH" && player.primaryPosition.abbreviation != "TWP"
+                case .catcher:
+                    matchesTab = player.primaryPosition.abbreviation == "C"
+                }
+                
+                return matchesSearchText && matchesTab
+            }
+        }
+        
+        return filteredByTab
+    }
+    var activeTab: SearchTab = .all
     
     private var loadDataTask: Task<Void, Never>?
     

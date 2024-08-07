@@ -88,4 +88,9 @@ extension String {
         dateFormatter.dateFormat = format
         return dateFormatter.date(from: self)
     }
+    
+    // Cleaning up search text by removing accents from characters
+    func removingDiacritics() -> String {
+        return self.folding(options: .diacriticInsensitive, locale: .current)
+    }
 }

@@ -20,7 +20,6 @@ struct ContentView: View {
                     VStack {
                         PlayerListView()
                     }
-                    .navigationTitle(Tab.home.title)
                 }
                 .setUpTab(.home)
                 // CalendarView
