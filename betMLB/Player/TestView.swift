@@ -25,7 +25,7 @@ struct TestView: View {
                             Text("No Image")
                                 .frame(width: 50, height: 50)
                         }
-                        Text(player.fullName)
+                        Text("\(player.fullName) (\(player.primaryPosition.abbreviation))")
                             .font(.headline)
                         Spacer()
                         Text("\(player.id)")
@@ -34,6 +34,7 @@ struct TestView: View {
                     if let AVG = player.hittingStats?.AVG {
                         Text("AVG: \(AVG)")
                     }
+                    
                     if let BABIP = player.pitchingStats?.BABIP {
                         Text("BABIP: \(BABIP)")
                     }

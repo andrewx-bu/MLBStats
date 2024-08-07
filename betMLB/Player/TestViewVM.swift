@@ -18,16 +18,21 @@ import SwiftUI
     
     func loadData() async {
         do {
-            players = try await fetcher.fetchPlayers()
+            async let fetchedPlayers = fetcher.fetchPlayers()
+            async let fetchedHittingStats: [HittingStats] = fetcher.fetchStats(statType: .hitting)
+            async let fetchedPitchingStats: [PitchingStats] = fetcher.fetchStats(statType: .pitching)
+            async let fetchedFieldingStats: [FieldingStats] = fetcher.fetchStats(statType: .fielding)
             
-            let fetchedHittingStats: [HittingStats] = try await fetcher.fetchStats(statType: .hitting)
-            let hittingStatsDictionary = dictionaryMaker.makeHittingDictionary(hittingStats: fetchedHittingStats)
+            // Await the results of all async lets
+            let players = try await fetchedPlayers
+            let hittingStats = try await fetchedHittingStats
+            let pitchingStats = try await fetchedPitchingStats
+            let fieldingStats = try await fetchedFieldingStats
             
-            let fetchedPitchingStats: [PitchingStats] = try await fetcher.fetchStats(statType: .pitching)
-            let pitchingStatsDictionary = dictionaryMaker.makePitchingDictionary(pitchingStats: fetchedPitchingStats)
-            
-            let fetchedFieldingStats: [FieldingStats] = try await fetcher.fetchStats(statType: .fielding)
-            let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fetchedFieldingStats)
+            self.players = players
+            let hittingStatsDictionary = dictionaryMaker.makeHittingDictionary(hittingStats: hittingStats)
+            let pitchingStatsDictionary = dictionaryMaker.makePitchingDictionary(pitchingStats: pitchingStats)
+            let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fieldingStats)
             
             updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
             
@@ -66,17 +71,28 @@ import SwiftUI
     
     // Fetch All Player Images
     private func fetchPlayerImages() async {
-        for player in players {
-            do {
-                if let headshotURL = try await fetcher.fetchHeadshotURL(for: player) {
-                    let (data, _) = try await URLSession.shared.data(from: headshotURL)
-                    if let uiImage = UIImage(data: data) {
-                        let image = Image(uiImage: uiImage)
-                        playerImages[player.id] = image
+        await withTaskGroup(of: (Int, Image?).self) { group in
+            for player in players {
+                group.addTask {
+                    do {
+                        if let headshotURL = try await self.fetcher.fetchHeadshotURL(for: player) {
+                            let (data, _) = try await URLSession.shared.data(from: headshotURL)
+                            if let uiImage = UIImage(data: data) {
+                                let image = Image(uiImage: uiImage)
+                                return (player.id, image)
+                            }
+                        }
+                    } catch {
+                        print("Error fetching headshot image for player \(player.id): \(error.localizedDescription)")
                     }
+                    return (player.id, nil)
                 }
-            } catch {
-                // print("Error fetching headshot image for player \(player.id): \(error.localizedDescription)")
+            }
+            
+            for await (playerId, image) in group {
+                if let image = image {
+                    playerImages[playerId] = image
+                }
             }
         }
     }
