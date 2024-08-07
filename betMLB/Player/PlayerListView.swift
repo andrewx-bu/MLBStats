@@ -80,6 +80,7 @@ struct PlayerListView: View {
                     .scaledToFit()
                     .padding(8)
                 Spacer()
+                // Team Logo
                 Text(player.primaryPosition.abbreviation)
                     .font(.subheadline)
                     .fontWeight(.bold)
@@ -98,19 +99,6 @@ struct PlayerListView: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
     }
-    /*
-     if let pitchingStats = player.pitchingStats {
-     Text("Games: \(pitchingStats.G)")
-     .font(.subheadline)
-     .foregroundColor(.primary)
-     Text("Games Started: \(pitchingStats.GS)")
-     .font(.subheadline)
-     .foregroundColor(.primary)
-     Text("Innings Pitched: \(String(format: "%.2f", pitchingStats.IP))")
-     .font(.subheadline)
-     .foregroundColor(.primary)
-     }
-     */
 }
 
 #Preview {

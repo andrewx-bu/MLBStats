@@ -23,6 +23,24 @@ class Fetcher {
         }
     }
     
+    // Returns list of all teams
+    func fetchTeams() async throws -> [Team] {
+        let urlString = "https://statsapi.mlb.com/api/v1/teams?sportId=1"
+        guard let url = URL(string: urlString) else {
+            print("fetchTeams: Invalid URL string: \(urlString)")
+            throw URLError(.badURL)
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let response = try JSONDecoder().decode(TeamResponse.self, from: data)
+            return response.teams
+        } catch {
+            print("fetchTeams: Decoding error")
+            throw error
+        }
+    }
+    
+    // Headshots for players
     func fetchHeadshotURL(for player: Player) async throws -> URL? {
         guard let id = player.headshotId else {
             print("fetchHeadshotURL: Player has no headshot ID")
@@ -88,5 +106,21 @@ class Fetcher {
          print("error: ", error)
          }
          */
+    }
+    
+    func fetchTeamStats<T: Decodable>(statType: StatType) async throws -> [T] {
+        let urlString = "https://www.fangraphs.com/api/leaders/major-league/data?pos=all&stats=\(statType.rawValue)&lg=all&qual=y&season=2024&team=0%2Cts"
+        guard let url = URL(string: urlString) else {
+            print("fetchTeamStats (\(statType.rawValue)): Invalid URL string: \(urlString)")
+            throw URLError(.badURL)
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let response = try JSONDecoder().decode(StatsResponse<T>.self, from: data)
+            return response.data
+        } catch {
+            print("fetchTeamStats (\(statType.rawValue)): Decoding Error")
+            throw error
+        }
     }
 }

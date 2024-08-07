@@ -32,4 +32,28 @@ class DictionaryMaker {
         }
         return dictionary
     }
+    
+    func makeTeamHittingDictionary(hittingStats: [HittingStats]) -> HittingStatsDictionary {
+        var dictionary = HittingStatsDictionary()
+        for stats in hittingStats {
+            dictionary[stats.teamid] = stats
+        }
+        return dictionary
+    }
+    
+    func makeTeamPitchingDictionary(pitchingStats: [PitchingStats]) -> PitchingStatsDictionary {
+        var dictionary = PitchingStatsDictionary()
+        for stats in pitchingStats {
+            dictionary[stats.teamid] = stats
+        }
+        return dictionary
+    }
+    
+    func makeTeamFieldingDictionary(fieldingStats: [FieldingStats]) -> FieldingStatsDictionary {
+        var dictionary = FieldingStatsDictionary()
+        for stats in fieldingStats {
+            dictionary[stats.teamid] = stats
+        }
+        return dictionary
+    }
 }

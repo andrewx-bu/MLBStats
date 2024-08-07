@@ -26,6 +26,10 @@
 		49F3B9EF2C5F8783004FAF69 /* TeamIDMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F3B9EE2C5F8783004FAF69 /* TeamIDMapping.swift */; };
 		49F3B9F92C605D17004FAF69 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F3B9F82C605D17004FAF69 /* Player.swift */; };
 		49F3B9FB2C60634D004FAF69 /* DictionaryMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F3B9FA2C60634D004FAF69 /* DictionaryMaker.swift */; };
+		49FDEF1E2C63B75300D9D154 /* DetailPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF1D2C63B75300D9D154 /* DetailPlayerView.swift */; };
+		49FDEF272C63B9B200D9D154 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF262C63B9B200D9D154 /* Team.swift */; };
+		49FDEF292C63BBDC00D9D154 /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF282C63BBDC00D9D154 /* TeamListView.swift */; };
+		49FDEF2B2C63BBE600D9D154 /* TeamListViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,10 @@
 		49F3B9EE2C5F8783004FAF69 /* TeamIDMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamIDMapping.swift; sourceTree = "<group>"; };
 		49F3B9F82C605D17004FAF69 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		49F3B9FA2C60634D004FAF69 /* DictionaryMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryMaker.swift; sourceTree = "<group>"; };
+		49FDEF1D2C63B75300D9D154 /* DetailPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPlayerView.swift; sourceTree = "<group>"; };
+		49FDEF262C63B9B200D9D154 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
+		49FDEF282C63BBDC00D9D154 /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
+		49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListViewVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,19 +70,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		496D83AE2C60C15E00712C52 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				49F3B9FA2C60634D004FAF69 /* DictionaryMaker.swift */,
-				496D83AC2C60C13A00712C52 /* Fetcher.swift */,
-				49F3B9F82C605D17004FAF69 /* Player.swift */,
-				496D83AF2C61ABEC00712C52 /* HittingStats.swift */,
-				496D83B12C61AC0B00712C52 /* PitchingStats.swift */,
-				496D83B32C61AC1200712C52 /* FieldingStats.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		49F3B99C2C5DC7CD004FAF69 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +94,8 @@
 				49F3B9C52C5F079D004FAF69 /* TabBar */,
 				49F3B9CC2C5F144A004FAF69 /* Calendar */,
 				49F3B9BC2C5DD1E8004FAF69 /* Player */,
+				49FDEF222C63B92100D9D154 /* Team */,
+				49FDEF232C63B94300D9D154 /* Stats */,
 				49F3B9CF2C5F18A4004FAF69 /* Extensions.swift */,
 				49F3B9EE2C5F8783004FAF69 /* TeamIDMapping.swift */,
 				49F3B9AC2C5DC7CF004FAF69 /* Assets.xcassets */,
@@ -118,9 +115,10 @@
 		49F3B9BC2C5DD1E8004FAF69 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				49F3B9F82C605D17004FAF69 /* Player.swift */,
 				496BCF4B2C639728003777F4 /* PlayerListView.swift */,
 				496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */,
-				496D83AE2C60C15E00712C52 /* Models */,
+				49FDEF1D2C63B75300D9D154 /* DetailPlayerView.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -140,6 +138,28 @@
 				49F3B9CA2C5F1438004FAF69 /* CalendarView.swift */,
 			);
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		49FDEF222C63B92100D9D154 /* Team */ = {
+			isa = PBXGroup;
+			children = (
+				49FDEF262C63B9B200D9D154 /* Team.swift */,
+				49FDEF282C63BBDC00D9D154 /* TeamListView.swift */,
+				49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */,
+			);
+			path = Team;
+			sourceTree = "<group>";
+		};
+		49FDEF232C63B94300D9D154 /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				496D83AC2C60C13A00712C52 /* Fetcher.swift */,
+				49F3B9FA2C60634D004FAF69 /* DictionaryMaker.swift */,
+				496D83AF2C61ABEC00712C52 /* HittingStats.swift */,
+				496D83B12C61AC0B00712C52 /* PitchingStats.swift */,
+				496D83B32C61AC1200712C52 /* FieldingStats.swift */,
+			);
+			path = Stats;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,17 +242,21 @@
 			files = (
 				49F3B9AB2C5DC7CD004FAF69 /* ContentView.swift in Sources */,
 				49F3B9A92C5DC7CD004FAF69 /* betMLBApp.swift in Sources */,
+				49FDEF272C63B9B200D9D154 /* Team.swift in Sources */,
 				49F3B9CB2C5F1438004FAF69 /* CalendarView.swift in Sources */,
 				496BCF4C2C639728003777F4 /* PlayerListView.swift in Sources */,
 				49F3B9D02C5F18A4004FAF69 /* Extensions.swift in Sources */,
+				49FDEF1E2C63B75300D9D154 /* DetailPlayerView.swift in Sources */,
 				49F3B9C42C5F066D004FAF69 /* Tab.swift in Sources */,
 				496BCF4E2C639733003777F4 /* PlayerListViewVM.swift in Sources */,
 				496D83AD2C60C13A00712C52 /* Fetcher.swift in Sources */,
 				49F3B9D22C5F2BB5004FAF69 /* Day.swift in Sources */,
+				49FDEF2B2C63BBE600D9D154 /* TeamListViewVM.swift in Sources */,
 				49F3B9F92C605D17004FAF69 /* Player.swift in Sources */,
 				496D83B22C61AC0B00712C52 /* PitchingStats.swift in Sources */,
 				49F3B9FB2C60634D004FAF69 /* DictionaryMaker.swift in Sources */,
 				49F3B9EF2C5F8783004FAF69 /* TeamIDMapping.swift in Sources */,
+				49FDEF292C63BBDC00D9D154 /* TeamListView.swift in Sources */,
 				496D83B42C61AC1200712C52 /* FieldingStats.swift in Sources */,
 				496D83B02C61ABEC00712C52 /* HittingStats.swift in Sources */,
 			);

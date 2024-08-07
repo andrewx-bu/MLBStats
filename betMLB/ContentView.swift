@@ -33,7 +33,7 @@ struct ContentView: View {
                 // BookmarkView
                 NavigationStack {
                     VStack {
-                        
+                        TeamListView()
                     }
                     .navigationTitle(Tab.bookmarks.title)
                 }

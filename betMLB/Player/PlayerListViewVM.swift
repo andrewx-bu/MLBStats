@@ -19,10 +19,8 @@ import SwiftUI
     private var loadDataTask: Task<Void, Never>?
     
     func loadData() async {
-        print("Starting loadData")
-        loadDataTask = Task { // Start a new task
+        loadDataTask = Task {
             do {
-                print("Task started")
                 async let fetchedPlayers = fetcher.fetchPlayers()
                 async let fetchedHittingStats: [HittingStats] = fetcher.fetchStats(statType: .hitting)
                 async let fetchedPitchingStats: [PitchingStats] = fetcher.fetchStats(statType: .pitching)

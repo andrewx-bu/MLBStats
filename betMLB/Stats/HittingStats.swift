@@ -7,6 +7,7 @@ import Foundation
 struct HittingStats: Identifiable, Decodable {
     let id: Int                 // 592450
     let playerid: Int           // 25764 (Fangraphs)
+    let teamid: Int             // 9
     
     // General Stats
     let G: Int                  // Games Played
@@ -81,7 +82,7 @@ struct HittingStats: Identifiable, Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id = "xMLBAMID"
-        case playerid
+        case playerid, teamid
         case G, AB, PA, H
         case singles = "1B"
         case doubles = "2B"
@@ -122,6 +123,7 @@ struct HittingStats: Identifiable, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.playerid = try container.decode(Int.self, forKey: .playerid)
+        self.teamid = try container.decode(Int.self, forKey: .teamid)
         self.G = try container.decode(Int.self, forKey: .G)
         self.AB = try container.decode(Int.self, forKey: .AB)
         self.PA = try container.decode(Int.self, forKey: .PA)
