@@ -8,13 +8,13 @@ struct TeamListView: View {
     @State private var viewModel = TeamListViewVM()
     
     var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading) {
-                ForEach(viewModel.teams, id: \.id) { team in
-                    Text("team: \(team.name)")
-                    if let hittingStats = team.hittingStats {
-                        Text("H")
-                    }
+        List{
+            ForEach(viewModel.teams, id: \.id) { team in
+                Text("team: \(team.name)")
+                if let hitting = team.hittingStats, let pitching = team.pitchingStats, let fielding = team.fieldingStats {
+                    Text("AVG: \(hitting.AVG)")
+                    Text("ERA: \(pitching.ERA)")
+                    Text("FP: \(fielding.FP)")
                 }
             }
         }

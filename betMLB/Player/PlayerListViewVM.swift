@@ -32,9 +32,9 @@ import SwiftUI
                 let fieldingStats = try await fetchedFieldingStats
                 
                 self.players = players
-                let hittingStatsDictionary = dictionaryMaker.makeHittingDictionary(hittingStats: hittingStats)
-                let pitchingStatsDictionary = dictionaryMaker.makePitchingDictionary(pitchingStats: pitchingStats)
-                let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fieldingStats)
+                let hittingStatsDictionary = dictionaryMaker.makePlayerHittingDictionary(hittingStats: hittingStats)
+                let pitchingStatsDictionary = dictionaryMaker.makePlayerPitchingDictionary(pitchingStats: pitchingStats)
+                let fieldingStatsDictionary = dictionaryMaker.makePlayerFieldingDictionary(fieldingStats: fieldingStats)
                 
                 updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
                 

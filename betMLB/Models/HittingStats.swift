@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct HittingStats: Identifiable, Decodable {
+struct HittingStats: IdentifiableStat, Decodable {
     let id: Int                 // 592450
     let playerid: Int           // 25764 (Fangraphs)
     let teamid: Int             // 9

@@ -30,6 +30,9 @@
 		49FDEF272C63B9B200D9D154 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF262C63B9B200D9D154 /* Team.swift */; };
 		49FDEF292C63BBDC00D9D154 /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF282C63BBDC00D9D154 /* TeamListView.swift */; };
 		49FDEF2B2C63BBE600D9D154 /* TeamListViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */; };
+		49FDEF2F2C63C31300D9D154 /* DetailTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF2E2C63C31300D9D154 /* DetailTeamView.swift */; };
+		49FDEF342C63C70100D9D154 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF332C63C70100D9D154 /* TestView.swift */; };
+		49FDEF3A2C63C97200D9D154 /* SearchTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF392C63C97200D9D154 /* SearchTab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +58,9 @@
 		49FDEF262C63B9B200D9D154 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		49FDEF282C63BBDC00D9D154 /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
 		49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListViewVM.swift; sourceTree = "<group>"; };
+		49FDEF2E2C63C31300D9D154 /* DetailTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTeamView.swift; sourceTree = "<group>"; };
+		49FDEF332C63C70100D9D154 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		49FDEF392C63C97200D9D154 /* SearchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +101,7 @@
 				49F3B9CC2C5F144A004FAF69 /* Calendar */,
 				49F3B9BC2C5DD1E8004FAF69 /* Player */,
 				49FDEF222C63B92100D9D154 /* Team */,
-				49FDEF232C63B94300D9D154 /* Stats */,
+				49FDEF302C63C33100D9D154 /* Models */,
 				49F3B9CF2C5F18A4004FAF69 /* Extensions.swift */,
 				49F3B9EE2C5F8783004FAF69 /* TeamIDMapping.swift */,
 				49F3B9AC2C5DC7CF004FAF69 /* Assets.xcassets */,
@@ -118,6 +124,8 @@
 				49F3B9F82C605D17004FAF69 /* Player.swift */,
 				496BCF4B2C639728003777F4 /* PlayerListView.swift */,
 				496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */,
+				49FDEF332C63C70100D9D154 /* TestView.swift */,
+				49FDEF392C63C97200D9D154 /* SearchTab.swift */,
 				49FDEF1D2C63B75300D9D154 /* DetailPlayerView.swift */,
 			);
 			path = Player;
@@ -146,11 +154,12 @@
 				49FDEF262C63B9B200D9D154 /* Team.swift */,
 				49FDEF282C63BBDC00D9D154 /* TeamListView.swift */,
 				49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */,
+				49FDEF2E2C63C31300D9D154 /* DetailTeamView.swift */,
 			);
 			path = Team;
 			sourceTree = "<group>";
 		};
-		49FDEF232C63B94300D9D154 /* Stats */ = {
+		49FDEF302C63C33100D9D154 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				496D83AC2C60C13A00712C52 /* Fetcher.swift */,
@@ -159,7 +168,7 @@
 				496D83B12C61AC0B00712C52 /* PitchingStats.swift */,
 				496D83B32C61AC1200712C52 /* FieldingStats.swift */,
 			);
-			path = Stats;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,9 +249,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49FDEF342C63C70100D9D154 /* TestView.swift in Sources */,
+				49FDEF2F2C63C31300D9D154 /* DetailTeamView.swift in Sources */,
 				49F3B9AB2C5DC7CD004FAF69 /* ContentView.swift in Sources */,
 				49F3B9A92C5DC7CD004FAF69 /* betMLBApp.swift in Sources */,
 				49FDEF272C63B9B200D9D154 /* Team.swift in Sources */,
+				49FDEF3A2C63C97200D9D154 /* SearchTab.swift in Sources */,
 				49F3B9CB2C5F1438004FAF69 /* CalendarView.swift in Sources */,
 				496BCF4C2C639728003777F4 /* PlayerListView.swift in Sources */,
 				49F3B9D02C5F18A4004FAF69 /* Extensions.swift in Sources */,
