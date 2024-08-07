@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		496BCF4C2C639728003777F4 /* PlayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BCF4B2C639728003777F4 /* PlayerListView.swift */; };
 		496BCF4E2C639733003777F4 /* PlayerListViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */; };
+		496BCF512C639887003777F4 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 496BCF502C639887003777F4 /* SDWebImageSwiftUI */; };
+		496BCF542C6398DA003777F4 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 496BCF532C6398DA003777F4 /* SDWebImageSVGCoder */; };
 		496D83AD2C60C13A00712C52 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83AC2C60C13A00712C52 /* Fetcher.swift */; };
 		496D83B02C61ABEC00712C52 /* HittingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83AF2C61ABEC00712C52 /* HittingStats.swift */; };
 		496D83B22C61AC0B00712C52 /* PitchingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83B12C61AC0B00712C52 /* PitchingStats.swift */; };
@@ -52,6 +54,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				496BCF512C639887003777F4 /* SDWebImageSwiftUI in Frameworks */,
+				496BCF542C6398DA003777F4 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +158,10 @@
 			dependencies = (
 			);
 			name = betMLB;
+			packageProductDependencies = (
+				496BCF502C639887003777F4 /* SDWebImageSwiftUI */,
+				496BCF532C6398DA003777F4 /* SDWebImageSVGCoder */,
+			);
 			productName = betMLB;
 			productReference = 49F3B9A52C5DC7CD004FAF69 /* betMLB.app */;
 			productType = "com.apple.product-type.application";
@@ -182,6 +190,10 @@
 				Base,
 			);
 			mainGroup = 49F3B99C2C5DC7CD004FAF69;
+			packageReferences = (
+				496BCF4F2C639887003777F4 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				496BCF522C6398DA003777F4 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */,
+			);
 			productRefGroup = 49F3B9A62C5DC7CD004FAF69 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -426,6 +438,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		496BCF4F2C639887003777F4 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+		496BCF522C6398DA003777F4 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSVGCoder";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		496BCF502C639887003777F4 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 496BCF4F2C639887003777F4 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		496BCF532C6398DA003777F4 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 496BCF522C6398DA003777F4 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 49F3B99D2C5DC7CD004FAF69 /* Project object */;
 }

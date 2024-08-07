@@ -3,6 +3,7 @@
 //  Created by Andrew Xin on 8/4/24.
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct PlayerListView: View {
     @State private var viewModel = PlayerListViewVM()
@@ -41,30 +42,15 @@ struct PlayerListView: View {
                     .frame(width: 90, height: 90)
                     .padding(3)
                     .offset(x: 4.5)
-
             }
             Divider()
                 .frame(width: 1, height: 85)
                 .background(.black)
             VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text(player.fullName)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .offset(y: 3.5)
-                    Spacer()
-                    // Position Bubble
-                    Text(player.primaryPosition.abbreviation)
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .frame(width: 20, height: 20)
-                        .padding(8)
-                        .background(Color.indigo)
-                        .foregroundColor(.white)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.red, lineWidth: 2))
-                        .offset(x: -7, y: 5)
-                }
+                Text(player.fullName)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .offset(y: 3.5)
                 // General Stats
                 HStack {
                     Text("\(mapTeamIdToAbbreviation(fromId: player.currentTeam.id))")
@@ -84,6 +70,26 @@ struct PlayerListView: View {
                     .font(.subheadline)
                 Text("Bats/Throws: \(player.batSide.code) / \(player.pitchHand.code)")
                     .font(.subheadline)
+            }
+            Spacer()
+            VStack(alignment: .trailing) {
+                // Position Bubble
+                WebImage(url: URL(string: "https://www.mlbstatic.com/team-logos/\(player.currentTeam.id).svg"))
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .scaledToFit()
+                    .padding(8)
+                Spacer()
+                Text(player.primaryPosition.abbreviation)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .frame(width: 20, height: 15)
+                    .padding(8)
+                    .background(Color.indigo)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.red, lineWidth: 2))
+                    .offset(x: -7, y: -7)
             }
         }
         .background(Color.white)
