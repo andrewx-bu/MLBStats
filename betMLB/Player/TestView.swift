@@ -47,6 +47,9 @@ struct TestView: View {
         .task {
             await viewModel.loadData()
         }
+        .onDisappear {
+            viewModel.cancelLoadingTasks()
+        }
     }
 }
 

@@ -54,7 +54,7 @@ struct PlayerInfo: Decodable {
     
     struct PlayerDetails: Identifiable, Decodable {
         let id: Int
-        let urlHeadshot: String
+        let urlHeadshot: String?
         
         enum CodingKeys: String, CodingKey {
             case id = "MLBAMId"
@@ -64,7 +64,7 @@ struct PlayerInfo: Decodable {
         init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.id = try container.decode(Int.self, forKey: .id)
-            self.urlHeadshot = try container.decode(String.self, forKey: .urlHeadshot)
+            self.urlHeadshot = try container.decodeIfPresent(String.self, forKey: .urlHeadshot)
         }
     }
 }

@@ -16,30 +16,40 @@ import SwiftUI
     
     var playerImages: [Int: Image] = [:]
     
+    private var loadDataTask: Task<Void, Never>?
+    
     func loadData() async {
-        do {
-            async let fetchedPlayers = fetcher.fetchPlayers()
-            async let fetchedHittingStats: [HittingStats] = fetcher.fetchStats(statType: .hitting)
-            async let fetchedPitchingStats: [PitchingStats] = fetcher.fetchStats(statType: .pitching)
-            async let fetchedFieldingStats: [FieldingStats] = fetcher.fetchStats(statType: .fielding)
-            
-            // Await the results of all async lets
-            let players = try await fetchedPlayers
-            let hittingStats = try await fetchedHittingStats
-            let pitchingStats = try await fetchedPitchingStats
-            let fieldingStats = try await fetchedFieldingStats
-            
-            self.players = players
-            let hittingStatsDictionary = dictionaryMaker.makeHittingDictionary(hittingStats: hittingStats)
-            let pitchingStatsDictionary = dictionaryMaker.makePitchingDictionary(pitchingStats: pitchingStats)
-            let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fieldingStats)
-            
-            updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
-            
-            await fetchPlayerImages()
-        } catch {
-            print("Error fetching data: \(error.localizedDescription)")
+        print("Starting loadData")
+        loadDataTask = Task { // Start a new task
+            do {
+                print("Task started")
+                async let fetchedPlayers = fetcher.fetchPlayers()
+                async let fetchedHittingStats: [HittingStats] = fetcher.fetchStats(statType: .hitting)
+                async let fetchedPitchingStats: [PitchingStats] = fetcher.fetchStats(statType: .pitching)
+                async let fetchedFieldingStats: [FieldingStats] = fetcher.fetchStats(statType: .fielding)
+                
+                let players = try await fetchedPlayers
+                let hittingStats = try await fetchedHittingStats
+                let pitchingStats = try await fetchedPitchingStats
+                let fieldingStats = try await fetchedFieldingStats
+                
+                self.players = players
+                let hittingStatsDictionary = dictionaryMaker.makeHittingDictionary(hittingStats: hittingStats)
+                let pitchingStatsDictionary = dictionaryMaker.makePitchingDictionary(pitchingStats: pitchingStats)
+                let fieldingStatsDictionary = dictionaryMaker.makeFieldingDictionary(fieldingStats: fieldingStats)
+                
+                updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
+                
+                await fetchPlayerImages()
+            } catch {
+                print("loadData: Error fetching data")
+            }
         }
+    }
+    
+    func cancelLoadingTasks() {
+        print("Cancelling loadData task")
+        loadDataTask?.cancel()
     }
     
     // Populate player's hitting/pitching/fieldingStats
@@ -83,7 +93,7 @@ import SwiftUI
                             }
                         }
                     } catch {
-                        print("Error fetching headshot image for player \(player.id): \(error.localizedDescription)")
+                        print("fetchPlayerImages: Error fetching headshot image for player \(player.id)")
                     }
                     return (player.id, nil)
                 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		496BCF4A2C635D21003777F4 /* PlayerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BCF492C635D21003777F4 /* PlayerCardView.swift */; };
 		496D83AD2C60C13A00712C52 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83AC2C60C13A00712C52 /* Fetcher.swift */; };
 		496D83B02C61ABEC00712C52 /* HittingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83AF2C61ABEC00712C52 /* HittingStats.swift */; };
 		496D83B22C61AC0B00712C52 /* PitchingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D83B12C61AC0B00712C52 /* PitchingStats.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		496BCF492C635D21003777F4 /* PlayerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCardView.swift; sourceTree = "<group>"; };
 		496D83AC2C60C13A00712C52 /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
 		496D83AF2C61ABEC00712C52 /* HittingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HittingStats.swift; sourceTree = "<group>"; };
 		496D83B12C61AC0B00712C52 /* PitchingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchingStats.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			children = (
 				49F3B9FC2C6069FE004FAF69 /* TestView.swift */,
 				49F3B9FE2C606B83004FAF69 /* TestViewVM.swift */,
+				496BCF492C635D21003777F4 /* PlayerCardView.swift */,
 				496D83AE2C60C15E00712C52 /* Models */,
 			);
 			path = Player;
@@ -209,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49F3B9AB2C5DC7CD004FAF69 /* ContentView.swift in Sources */,
+				496BCF4A2C635D21003777F4 /* PlayerCardView.swift in Sources */,
 				49F3B9A92C5DC7CD004FAF69 /* betMLBApp.swift in Sources */,
 				49F3B9CB2C5F1438004FAF69 /* CalendarView.swift in Sources */,
 				49F3B9D02C5F18A4004FAF69 /* Extensions.swift in Sources */,

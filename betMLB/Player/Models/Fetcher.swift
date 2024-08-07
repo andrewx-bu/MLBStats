@@ -18,7 +18,31 @@ class Fetcher {
             let response = try JSONDecoder().decode(PlayerResponse.self, from: data)
             return response.people
         } catch {
-            print("fetchPlayers: Decoding error: \(error.localizedDescription)")
+            print("fetchPlayers: Decoding error")
+            throw error
+        }
+    }
+    
+    func fetchHeadshotURL(for player: Player) async throws -> URL? {
+        guard let id = player.headshotId else {
+            print("fetchHeadshotURL: Player has no headshot ID")
+            return nil
+        }
+        let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(id)&position="
+        guard let url = URL(string: playerInfoString) else {
+            print("fetchHeadshotURL: Invalid URL string: \(playerInfoString)")
+            throw URLError(.badURL)
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let headshotResponse = try JSONDecoder().decode(PlayerInfo.self, from: data)
+            guard let png = headshotResponse.playerInfo.urlHeadshot else {
+                // print("fetchHeadshotURL: Player has no headshot URL")
+                return nil
+            }
+            return URL(string: png)
+        } catch {
+            // print("fetchHeadshotURL: Decoding Error")
             throw error
         }
     }
@@ -45,7 +69,7 @@ class Fetcher {
             let response = try JSONDecoder().decode(StatsResponse<T>.self, from: data)
             return response.data
         } catch {
-            print("fetchStats (\(statType.rawValue)): Decoding Error: \(error.localizedDescription)")
+            print("fetchStats (\(statType.rawValue)): Decoding Error")
             throw error
         }
         /*
@@ -64,25 +88,5 @@ class Fetcher {
          print("error: ", error)
          }
          */
-    }
-    
-    func fetchHeadshotURL(for player: Player) async throws -> URL? {
-        guard let id = player.headshotId else {
-            print("fetchHeadshotURL: Player has no headshot ID")
-            return nil
-        }
-        let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(id)&position="
-        guard let url = URL(string: playerInfoString) else {
-            print("fetchHeadshotURL: Invalid URL string: \(playerInfoString)")
-            throw URLError(.badURL)
-        }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let headshotResponse = try JSONDecoder().decode(PlayerInfo.self, from: data)
-            return URL(string: headshotResponse.playerInfo.urlHeadshot)
-        } catch {
-            print("fetchHeadshotURL: Decoding Error: \(error.localizedDescription)")
-            throw error
-        }
     }
 }
