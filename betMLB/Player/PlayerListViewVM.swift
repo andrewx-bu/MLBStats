@@ -61,7 +61,7 @@ import SwiftUI
         
         return filteredByTab
     }
-    var activeTab: SearchTab = .all
+    var activeTab: PlayerTab = .all
     
     private var loadDataTask: Task<Void, Never>?
     

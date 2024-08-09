@@ -70,7 +70,7 @@ struct PitchingStats: IdentifiableStat, Decodable {
     let bbPCT: Double           // Walk PCT
     let lobPCT: Double          // Left on Base PCT
     let RS: Int                 // Run Support
-    let SIERA: Double           // Skill Interactive ERA
+    let SIERA: Double?          // Skill Interactive ERA
     let FIP: Double             // Fielding Independent Pitching
     let xFIP: Double            // Expected Fielding Independent Pitching
     let kwERA: Double           // Earned Run AVG on Strikeouts and Walks       - FanGraphs
@@ -202,7 +202,7 @@ struct PitchingStats: IdentifiableStat, Decodable {
         self.bbPCT = try container.decode(Double.self, forKey: .bbPCT)
         self.lobPCT = try container.decode(Double.self, forKey: .lobPCT)
         self.RS = try container.decode(Int.self, forKey: .RS)
-        self.SIERA = try container.decode(Double.self, forKey: .SIERA)
+        self.SIERA = try container.decodeIfPresent(Double.self, forKey: .SIERA)
         self.FIP = try container.decode(Double.self, forKey: .FIP)
         self.xFIP = try container.decode(Double.self, forKey: .xFIP)
         self.kwERA = try container.decode(Double.self, forKey: .kwERA)

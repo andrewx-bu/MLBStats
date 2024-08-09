@@ -15,6 +15,8 @@ import SwiftUI
     var fieldingStatsDictionary: FieldingStatsDictionary = [:]
     
     private var loadDataTask: Task<Void, Never>?
+    var searchText: String = ""
+    var activeTab: TeamTab = .all
     
     func loadData() async {
         loadDataTask = Task {
