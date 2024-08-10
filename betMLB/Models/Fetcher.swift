@@ -122,7 +122,7 @@ class Fetcher {
             print("Type '\(type)' mismatch:", context.debugDescription)
             print("codingPath:", context.codingPath)
         } catch {
-            print("fetchStats (\(statType.rawValue)): Decoding Error")
+            print("fetchStats (\(statType.rawValue)): \(error)")
             throw error
         }
         return []
@@ -138,9 +138,21 @@ class Fetcher {
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(StatsResponse<T>.self, from: data)
             return response.data
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
         } catch {
-            print("fetchTeamStats (\(statType.rawValue)): Decoding Error")
+            print("fetchTeamStats (\(statType.rawValue)): \(error)")
             throw error
         }
+        return []
     }
 }

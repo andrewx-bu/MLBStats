@@ -11,15 +11,18 @@ struct PlayerListView: View {
     @Environment(\.colorScheme) private var scheme
     @Namespace private var animation
     
+    @State private var selectedPlayer: Player? = nil
+    @State private var showDetailView: Bool = false
+    
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 2) {
                     ForEach(viewModel.filteredPlayers, id: \.id) { player in
-                        NavigationLink(destination: DetailPlayerView(player: player, image: viewModel.playerImages[player.id] ?? nil)) {
-                            PlayerCardView(player: player)
-                        }
-                        .buttonStyle(.plain)
+                        PlayerCardView(player: player)
+                            .onTapGesture {
+                                segue(player: player)
+                            }
                     }
                 }
                 .safeAreaInset(edge: .top, spacing: 0) {
@@ -36,14 +39,24 @@ struct PlayerListView: View {
             .onDisappear {
                 viewModel.cancelLoadingTasks()
             }
+            .background(NavigationLink(
+                destination: DetailPlayerView(player: $selectedPlayer),
+                isActive: $showDetailView,
+                label: { EmptyView() })
+            )
         }
+    }
+    
+    func segue(player: Player) {
+        selectedPlayer = player
+        showDetailView.toggle()
     }
     
     // Player Card View
     @ViewBuilder func PlayerCardView(player: Player) -> some View {
         HStack {
             // Player's Headshot
-            if let image = viewModel.playerImages[player.id] {
+            /* if let image = viewModel.playerImages[player.id] {
                 image
                     .resizable()
                     .clipShape(Circle())
@@ -51,14 +64,14 @@ struct PlayerListView: View {
                     .frame(width: 90, height: 90)
                     .padding(3)
                     .offset(x: 4.5)
-            } else {
+            } else { */
                 Circle()
                     .fill(Color.gray.opacity(0.3))
                     .overlay(Text("No Image").foregroundColor(.gray))
                     .frame(width: 90, height: 90)
                     .padding(3)
                     .offset(x: 4.5)
-            }
+          //  }
             Divider()
                 .frame(width: 1, height: 85)
                 .background(.black)
