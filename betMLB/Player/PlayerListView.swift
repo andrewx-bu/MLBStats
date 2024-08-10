@@ -79,8 +79,13 @@ struct PlayerListView: View {
                     Divider()
                         .frame(width: 5, height: 5)
                         .background(.gray)
-                    Text("#\(player.primaryNumber)")
-                        .font(.subheadline)
+                    if let num = player.primaryNumber {
+                        Text("#\(num)")
+                            .font(.subheadline)
+                    } else {
+                        Text("N/A")
+                            .font(.subheadline)
+                    }
                 }
                 Text("DOB: \(player.birthDateFormatted ?? player.birthDate) (\(player.currentAge))")
                     .font(.subheadline)

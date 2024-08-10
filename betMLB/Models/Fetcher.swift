@@ -17,10 +17,22 @@ class Fetcher {
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(PlayerResponse.self, from: data)
             return response.people
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
         } catch {
-            print("fetchPlayers: Decoding error")
+            print("fetchPlayers: \(error)")
             throw error
         }
+        return []
     }
     
     // Returns list of all teams
@@ -34,10 +46,22 @@ class Fetcher {
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(TeamResponse.self, from: data)
             return response.teams
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
         } catch {
-            print("fetchTeams: Decoding error")
+            print("fetchTeams: \(error)")
             throw error
         }
+        return []
     }
     
     // Headshots for players
@@ -86,7 +110,7 @@ class Fetcher {
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(StatsResponse<T>.self, from: data)
             return response.data
-        }    catch DecodingError.dataCorrupted(let context) {
+        } catch DecodingError.dataCorrupted(let context) {
             print(context)
         } catch DecodingError.keyNotFound(let key, let context) {
             print("Key '\(key)' not found:", context.debugDescription)

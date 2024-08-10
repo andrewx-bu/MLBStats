@@ -10,7 +10,7 @@ struct Player: Identifiable, Decodable {
     let fullName: String                        // Andrew Abbott
     let firstName: String
     let lastName: String
-    let primaryNumber: String                   // "41"
+    let primaryNumber: String?                  // "41"
     let birthDate: String                       // 1999-06-01
     let birthDateFormatted: String?             // 6/1/1999
     let currentAge: Int                         // 25
@@ -98,7 +98,7 @@ struct Player: Identifiable, Decodable {
         self.fullName = try container.decode(String.self, forKey: .fullName)
         self.firstName = try container.decode(String.self, forKey: .firstName)
         self.lastName = try container.decode(String.self, forKey: .lastName)
-        self.primaryNumber = try container.decode(String.self, forKey: .primaryNumber)
+        self.primaryNumber = try container.decodeIfPresent(String.self, forKey: .primaryNumber)
         self.birthDate = try container.decode(String.self, forKey: .birthDate)
         if let date = birthDate.toDate(withFormat: "yyyy-MM-dd") {
             self.birthDateFormatted = date.formatToMDY()
