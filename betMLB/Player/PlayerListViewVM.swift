@@ -151,4 +151,16 @@ import SwiftUI
             }
         }
     }
+    
+    private func fetchPlayerImage(for player: Player, from url: URL) async -> Image? {
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            if let uiImage = UIImage(data: data) {
+                return Image(uiImage: uiImage)
+            }
+        } catch {
+            print("fetchPlayerImage: Error fetching headshot image for player \(player.id) from \(url): \(error)")
+        }
+        return nil
+    }
 }

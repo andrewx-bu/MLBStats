@@ -11,18 +11,15 @@ struct PlayerListView: View {
     @Environment(\.colorScheme) private var scheme
     @Namespace private var animation
     
-    @State private var selectedPlayer: Player? = nil
-    @State private var showDetailView: Bool = false
-    
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 2) {
                     ForEach(viewModel.filteredPlayers, id: \.id) { player in
-                        PlayerCardView(player: player)
-                            .onTapGesture {
-                                segue(player: player)
-                            }
+                        NavigationLink(destination: NavigationLazyView(DetailPlayerView(players: player))) {
+                            PlayerCardView(player: player)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .safeAreaInset(edge: .top, spacing: 0) {
@@ -39,17 +36,7 @@ struct PlayerListView: View {
             .onDisappear {
                 viewModel.cancelLoadingTasks()
             }
-            .background(NavigationLink(
-                destination: DetailPlayerView(player: $selectedPlayer),
-                isActive: $showDetailView,
-                label: { EmptyView() })
-            )
         }
-    }
-    
-    func segue(player: Player) {
-        selectedPlayer = player
-        showDetailView.toggle()
     }
     
     // Player Card View
