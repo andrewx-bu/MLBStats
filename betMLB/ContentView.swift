@@ -5,23 +5,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var activeTab: Tab = .home
+    @State private var activeTab: Tab = .calendar
     // All Tabs
     @State private var allTabs: [AnimatedTab] = Tab.allCases.compactMap { tab ->
         AnimatedTab? in
         return .init(tab: tab)
     }
     
+    init() {
+        // Something is wrong with the transparency of the tab bar so its just black for now
+        UITabBar.appearance().backgroundColor = UIColor.black
+        UITabBar.appearance().barTintColor = UIColor.black
+        UITabBar.appearance().unselectedItemTintColor = UIColor.white
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $activeTab) {
-                // HomeView
-                NavigationStack {
-                    VStack {
-                        PlayerListView()
-                    }
-                }
-                .setUpTab(.home)
                 // CalendarView
                 GeometryReader {
                     let safeArea = $0.safeAreaInsets
@@ -29,25 +29,24 @@ struct ContentView: View {
                         .ignoresSafeArea(.container, edges: .top)
                 }
                 .setUpTab(.calendar)
+                // PlayerView
+                PlayerListView()
+                    .setUpTab(.players)
+                // TeamView
+                TeamListView()
+                    .setUpTab(.teams)
                 // BookmarkView
-                NavigationStack {
-                    VStack {
-                        TeamListView()
-                    }
-                    .navigationTitle(Tab.bookmarks.title)
-                }
-                .setUpTab(.bookmarks)
-                // ProfileView
                 NavigationStack {
                     VStack {
                         
                     }
-                    .navigationTitle(Tab.profile.title)
+                    .navigationTitle(Tab.bookmarks.title)
                 }
-                .setUpTab(.profile)
+                .setUpTab(.bookmarks)
             }
             CustomTabBar()
         }
+        .preferredColorScheme(.dark)
     }
     
     // Tab Bar

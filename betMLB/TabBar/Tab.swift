@@ -5,21 +5,21 @@
 import Foundation
 
 enum Tab: String, CaseIterable {
-    case home = "house.circle.fill"
     case calendar = "calendar.circle.fill"
+    case players = "person.circle.fill"
+    case teams = "person.2.circle.fill"
     case bookmarks = "bookmark.circle.fill"
-    case profile = "person.crop.circle.fill"
     
     var title: String {
         switch self {
-        case .home:
-            return "Home"
         case .calendar:
             return "Calendar"
+        case .players:
+            return "Players"
+        case .teams:
+            return "Teams"
         case .bookmarks:
             return "Bookmarks"
-        case .profile:
-            return "Profile"
         }
     }
 }
