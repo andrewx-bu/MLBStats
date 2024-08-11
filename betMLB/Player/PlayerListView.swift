@@ -49,7 +49,7 @@ struct PlayerListView: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                .opacity(0.75)
+                .opacity(0.6)
             } else {
                 Color.white // Fallback color
             }
