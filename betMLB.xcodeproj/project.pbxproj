@@ -32,7 +32,6 @@
 		49FDEF2F2C63C31300D9D154 /* DetailTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF2E2C63C31300D9D154 /* DetailTeamView.swift */; };
 		49FDEF3A2C63C97200D9D154 /* SearchTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF392C63C97200D9D154 /* SearchTab.swift */; };
 		49FDEF3C2C64320E00D9D154 /* PlayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF3B2C64320D00D9D154 /* PlayerListView.swift */; };
-		49FDEF402C64F77C00D9D154 /* TestPlayerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDEF3F2C64F77C00D9D154 /* TestPlayerDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,7 +59,6 @@
 		49FDEF2E2C63C31300D9D154 /* DetailTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTeamView.swift; sourceTree = "<group>"; };
 		49FDEF392C63C97200D9D154 /* SearchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTab.swift; sourceTree = "<group>"; };
 		49FDEF3B2C64320D00D9D154 /* PlayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerListView.swift; sourceTree = "<group>"; };
-		49FDEF3F2C64F77C00D9D154 /* TestPlayerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayerDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,10 +121,9 @@
 			children = (
 				49FDEF392C63C97200D9D154 /* SearchTab.swift */,
 				49F3B9F82C605D17004FAF69 /* Player.swift */,
+				496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */,
 				49FDEF3B2C64320D00D9D154 /* PlayerListView.swift */,
 				49FDEF1D2C63B75300D9D154 /* DetailPlayerView.swift */,
-				496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */,
-				49FDEF3F2C64F77C00D9D154 /* TestPlayerDetailView.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -152,8 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				49FDEF262C63B9B200D9D154 /* Team.swift */,
-				49FDEF282C63BBDC00D9D154 /* TeamListView.swift */,
 				49FDEF2A2C63BBE600D9D154 /* TeamListViewVM.swift */,
+				49FDEF282C63BBDC00D9D154 /* TeamListView.swift */,
 				49FDEF2E2C63C31300D9D154 /* DetailTeamView.swift */,
 			);
 			path = Team;
@@ -249,7 +246,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49FDEF402C64F77C00D9D154 /* TestPlayerDetailView.swift in Sources */,
 				49FDEF2F2C63C31300D9D154 /* DetailTeamView.swift in Sources */,
 				49F3B9AB2C5DC7CD004FAF69 /* ContentView.swift in Sources */,
 				49F3B9A92C5DC7CD004FAF69 /* betMLBApp.swift in Sources */,

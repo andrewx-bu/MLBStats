@@ -3,6 +3,7 @@
 //  Created by Andrew Xin on 8/4/24.
 
 import Foundation
+import SwiftUI
 
 // Dictionary mapping statsAPI's teamIDs to fangraphAPI's
 let teamIdMapping: [Int: Int] = [
@@ -72,6 +73,39 @@ let teamAbbreviationMapping: [Int: String] = [
     158: "MIL"     // Milwaukee Brewers
 ]
 
+let teamColors: [String: [Color]] = [
+    "ARI": [Color(hex: "#A71930"), Color(hex: "#E3D4AD")], // Arizona Diamondbacks
+    "ATL": [Color(hex: "#CE1141"), Color(hex: "#13274F")], // Atlanta Braves
+    "BAL": [Color(hex: "#DF4601"), Color(hex: "#000000")], // Baltimore Orioles
+    "BOS": [Color(hex: "#BD3039"), Color(hex: "#0C2340")], // Boston Red Sox
+    "CHC": [Color(hex: "#0E3386"), Color(hex: "#CC3433")], // Chicago Cubs
+    "CIN": [Color(hex: "#C6011F"), Color(hex: "#000000")], // Cincinnati Reds
+    "CLE": [Color(hex: "#00385D"), Color(hex: "#E50022")], // Cleveland Guardians
+    "COL": [Color(hex: "#333366"), Color(hex: "#C4CED4")], // Colorado Rockies
+    "CWS": [Color(hex: "#27251F"), Color(hex: "#C4CED4")], // Chicago White Sox
+    "DET": [Color(hex: "#0C2340"), Color(hex: "#FA4616")], // Detroit Tigers
+    "HOU": [Color(hex: "#002D62"), Color(hex: "#EB6E1F")], // Houston Astros
+    "KC": [Color(hex: "#004687"), Color(hex: "#BD9B60")], // Kansas City Royals
+    "LAD": [Color(hex: "#005A9C"), Color(hex: "EF3E42")], // Los Angeles Dodgers
+    "LAA": [Color(hex: "#003263"), Color(hex:"862633")], // Los Angeles Angels
+    "MIA": [Color(hex: "#00A3E0"), Color(hex: "#000000")], // Miami Marlins
+    "MIL": [Color(hex: "#12284B"), Color(hex: "#FFC52F")], // Milwaukee Brewers
+    "MIN": [Color(hex: "#002B5C"), Color(hex: "#D31145")], // Minnesota Twins
+    "NYM": [Color(hex: "#002D72"), Color(hex: "#FF5910")], // New York Mets
+    "NYY": [Color(hex: "#003087"), Color(hex: "#E4002C")], // New York Yankees
+    "OAK": [Color(hex: "#003831"), Color(hex: "#EFB21E")], // Oakland Athletics
+    "PHI": [Color(hex: "#E81828"), Color(hex: "002D72")], // Philadelphia Phillies
+    "PIT": [Color(hex: "#27251F"), Color(hex: "#FDB827")], // Pittsburgh Pirates
+    "SD": [Color(hex: "#2F241D"), Color(hex: "#FFC425")], // San Diego Padres
+    "SEA": [Color(hex: "#0C2C56"), Color(hex: "#005C5C")], // Seattle Mariners
+    "SF": [Color(hex: "#FD5A1E"), Color(hex: "#27251F")], // San Francisco Giants
+    "STL": [Color(hex: "#C41E3A"), Color(hex: "#0C2340")], // St. Louis Cardinals
+    "TB": [Color(hex: "#092C5C"), Color(hex: "#8FBCE6")], // Tampa Bay Rays
+    "TEX": [Color(hex: "#003278"), Color(hex: "#C0111F")], // Texas Rangers
+    "TOR": [Color(hex: "#134A8E"), Color(hex: "#1D2D5C")], // Toronto Blue Jays
+    "WSH": [Color(hex: "#AB0003"), Color(hex: "#14225A")] // Washington Nationals
+]
+
 var reverseTeamIdMapping: [Int: Int] = {
     Dictionary(uniqueKeysWithValues: teamIdMapping.map { ($1, $0) })
 }()
@@ -86,4 +120,8 @@ func mapTeamId(fromFanGraphsAPI id: Int) -> Int? {
 
 func mapTeamIdToAbbreviation(fromId id: Int) -> String {
     return teamAbbreviationMapping[id] ?? "N/A"
+}
+
+func teamColors(forAbbreviation abbreviation: String) -> [Color] {
+    return teamColors[abbreviation] ?? []
 }

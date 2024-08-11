@@ -13,7 +13,6 @@ import SwiftUI
     var hittingStatsDictionary: HittingStatsDictionary = [:]
     var pitchingStatsDictionary: PitchingStatsDictionary = [:]
     var fieldingStatsDictionary: FieldingStatsDictionary = [:]
-    var playerImages: [Int: Image] = [:]
     
     var searchText: String = ""
     var filteredPlayers: [Player] {
@@ -62,7 +61,6 @@ import SwiftUI
         return filteredByTab
     }
     var activeTab: PlayerTab = .all
-    
     private var loadDataTask: Task<Void, Never>?
     
     func loadData() async {
@@ -84,8 +82,6 @@ import SwiftUI
                 let fieldingStatsDictionary = dictionaryMaker.makePlayerFieldingDictionary(fieldingStats: fieldingStats)
                 
                 updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
-                
-                await fetchPlayerImages()
             } catch {
                 print("loadData: Error fetching data")
             }
@@ -122,45 +118,5 @@ import SwiftUI
             
             return updatedPlayer
         }
-    }
-    
-    // Fetch All Player Images
-    private func fetchPlayerImages() async {
-        await withTaskGroup(of: (Int, Image?).self) { group in
-            for player in players {
-                group.addTask {
-                    do {
-                        if let headshotURL = try await self.fetcher.fetchHeadshotURL(for: player) {
-                            let (data, _) = try await URLSession.shared.data(from: headshotURL)
-                            if let uiImage = UIImage(data: data) {
-                                let image = Image(uiImage: uiImage)
-                                return (player.id, image)
-                            }
-                        }
-                    } catch {
-                        print("fetchPlayerImages: Error fetching headshot image for player \(player.id)")
-                    }
-                    return (player.id, nil)
-                }
-            }
-            
-            for await (playerId, image) in group {
-                if let image = image {
-                    playerImages[playerId] = image
-                }
-            }
-        }
-    }
-    
-    private func fetchPlayerImage(for player: Player, from url: URL) async -> Image? {
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            if let uiImage = UIImage(data: data) {
-                return Image(uiImage: uiImage)
-            }
-        } catch {
-            print("fetchPlayerImage: Error fetching headshot image for player \(player.id) from \(url): \(error)")
-        }
-        return nil
     }
 }

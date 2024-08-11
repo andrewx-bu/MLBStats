@@ -34,9 +34,13 @@ struct TeamListView: View {
         }
     }
     
+    // Team Card View
+    @ViewBuilder func TeamCardView(team: Team) -> some View {
+        Text("Team: \(team.name)")
+    }
     
     // Expandable Navigation Bar
-    @ViewBuilder func ExpandableNavigationBar(_ title: String = "Players") -> some View {
+    @ViewBuilder func ExpandableNavigationBar(_ title: String = "Teams") -> some View {
         GeometryReader { proxy in
             let minY = proxy.frame(in: .scrollView(axis: .vertical)).minY
             let scrollviewHeight = proxy.bounds(of: .scrollView(axis: .vertical))?.height ?? 0
@@ -54,7 +58,7 @@ struct TeamListView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "magnifyingglass")
                         .font(.title3)
-                    TextField("Search Players", text: $viewModel.searchText)
+                    TextField("Search Teams", text: $viewModel.searchText)
                         .focused($isSearching)
                     if isSearching {
                         Button(action: {
@@ -119,11 +123,6 @@ struct TeamListView: View {
         .frame(height: 190)
         .padding(.bottom, 10)
         .padding(.bottom, isSearching ? -65 : 0)
-    }
-    
-    // Team Card View
-    @ViewBuilder func TeamCardView(team: Team) -> some View {
-        Text("Team: \(team.name)")
     }
 }
 

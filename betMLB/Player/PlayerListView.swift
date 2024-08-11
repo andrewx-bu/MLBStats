@@ -10,6 +10,7 @@ struct PlayerListView: View {
     @FocusState private var isSearching: Bool
     @Environment(\.colorScheme) private var scheme
     @Namespace private var animation
+    let fetcher = Fetcher()
     
     var body: some View {
         NavigationStack {
@@ -41,77 +42,83 @@ struct PlayerListView: View {
     
     // Player Card View
     @ViewBuilder func PlayerCardView(player: Player) -> some View {
-        HStack {
-            // Player's Headshot
-            /* if let image = viewModel.playerImages[player.id] {
-                image
-                    .resizable()
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                    .frame(width: 90, height: 90)
-                    .padding(3)
-                    .offset(x: 4.5)
-            } else { */
-                Circle()
-                    .fill(Color.gray.opacity(0.3))
-                    .overlay(Text("No Image").foregroundColor(.gray))
-                    .frame(width: 90, height: 90)
-                    .padding(3)
-                    .offset(x: 4.5)
-          //  }
-            Divider()
-                .frame(width: 1, height: 85)
-                .background(.black)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(player.fullName)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .offset(y: 3.5)
-                // General Stats
-                HStack {
-                    Text("\(mapTeamIdToAbbreviation(fromId: player.currentTeam.id))")
-                        .font(.subheadline)
-                    Divider()
-                        .frame(width: 5, height: 5)
-                        .background(.gray)
-                    Text("\(player.primaryPosition.abbreviation)")
-                        .font(.subheadline)
-                    Divider()
-                        .frame(width: 5, height: 5)
-                        .background(.gray)
-                    if let num = player.primaryNumber {
-                        Text("#\(num)")
+        ZStack {
+            if let colors = teamColors[mapTeamIdToAbbreviation(fromId: player.currentTeam.id)] {
+                LinearGradient(
+                    gradient: Gradient(colors: [colors.first!]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .opacity(0.75)
+            } else {
+                Color.white // Fallback color
+            }
+            HStack {
+                VStack(alignment: .trailing) {
+                    // Team Logo
+                    WebImage(url: URL(string: "https://www.mlbstatic.com/team-logos/\(player.currentTeam.id).svg"))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                        .padding(8)
+                    Spacer()
+                    // Position Bubble
+                    if let teamColor = teamColors[mapTeamIdToAbbreviation(fromId: player.currentTeam.id)] {
+                        Text(player.primaryPosition.abbreviation)
                             .font(.subheadline)
+                            .fontWeight(.bold)
+                            .frame(width: 25, height: 15)
+                            .padding(8)
+                            .background(teamColor[1])
+                            .foregroundColor(.white)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(teamColor[0], lineWidth: 2))
+                            .offset(x: -7, y: -7)
                     } else {
-                        Text("N/A")
+                        Text(player.primaryPosition.abbreviation)
                             .font(.subheadline)
+                            .fontWeight(.bold)
+                            .frame(width: 25, height: 15)
+                            .padding(8)
+                            .background(Color.indigo)
+                            .foregroundColor(.white)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.red, lineWidth: 2))
+                            .offset(x: -7, y: -7)
                     }
                 }
-                Text("DOB: \(player.birthDateFormatted ?? player.birthDate) (\(player.currentAge))")
-                    .font(.subheadline)
-                Text("Bats/Throws: \(player.batSide.code) / \(player.pitchHand.code)")
-                    .font(.subheadline)
-            }
-            Spacer()
-            VStack(alignment: .trailing) {
-                // Team Logo
-                WebImage(url: URL(string: "https://www.mlbstatic.com/team-logos/\(player.currentTeam.id).svg"))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .padding(8)
+                .padding(.trailing, 15)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(player.fullName)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .offset(y: 3.5)
+                    // General Stats
+                    HStack {
+                        Text("\(mapTeamIdToAbbreviation(fromId: player.currentTeam.id))")
+                            .font(.subheadline)
+                        Divider()
+                            .frame(width: 5, height: 5)
+                            .background(.gray)
+                        Text("\(player.primaryPosition.abbreviation)")
+                            .font(.subheadline)
+                        Divider()
+                            .frame(width: 5, height: 5)
+                            .background(.gray)
+                        if let num = player.primaryNumber {
+                            Text("#\(num)")
+                                .font(.subheadline)
+                        } else {
+                            Text("N/A")
+                                .font(.subheadline)
+                        }
+                    }
+                    Text("DOB: \(player.birthDateFormatted ?? player.birthDate) (\(player.currentAge))")
+                        .font(.subheadline)
+                    Text("Bats/Throws: \(player.batSide.code) / \(player.pitchHand.code)")
+                        .font(.subheadline)
+                }
                 Spacer()
-                // Position Bubble
-                Text(player.primaryPosition.abbreviation)
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                    .frame(width: 25, height: 15)
-                    .padding(8)
-                    .background(Color.indigo)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.red, lineWidth: 2))
-                    .offset(x: -7, y: -7)
             }
         }
         .background(Color.white)

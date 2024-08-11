@@ -5,19 +5,31 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+struct NavigationLazyView<Content: View>: View {
+    let build: () -> Content
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    var body: Content {
+        build()
+    }
+}
+
 struct DetailPlayerView: View {
     var player: Player
+    let fetcher = Fetcher()
+    @State private var playerImage: Image? = nil
     
     init(players: Player) {
         player = players
-        print("initializing for \(player.fullName)")
+        print("initializing detail view for \(player.fullName)")
     }
     
     let columns = [
-        GridItem(.flexible(maximum: 100)),
-        GridItem(.flexible(maximum: 40)),
-        GridItem(.flexible(maximum: 100)),
-        GridItem(.flexible(maximum: 40)),
+        GridItem(.flexible(maximum: 75)),
+        GridItem(.flexible(maximum: 30)),
+        GridItem(.flexible(maximum: 75)),
+        GridItem(.flexible(maximum: 30)),
     ]
     
     var body: some View {
@@ -47,18 +59,17 @@ struct DetailPlayerView: View {
             ZStack {
                 HStack {
                     Spacer()
-                    /*
-                     if let image = viewModel.image {
-                     image
-                     .resizable()
-                     .scaledToFit()
-                     .frame(width: 250, height: 250)
-                     } else { */
-                    WebImage(url: URL(string: "https://www.pngkey.com/png/full/765-7656718_avatar-blank-person.png"))
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 225, height: 225)
-                    // }
+                    if let image = playerImage {
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 225, height: 225)
+                    } else {
+                        WebImage(url: URL(string: "https://www.pngkey.com/png/full/765-7656718_avatar-blank-person.png"))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 225, height: 225)
+                    }
                 }
                 .border(.green)
                 .padding(.top, -100)
@@ -95,7 +106,10 @@ struct DetailPlayerView: View {
                                         .font(.caption.bold())
                                     Text("R")
                                         .font(.caption.bold())
-                                    Text(String(format: "%.3f", hittingStats.AVG))
+                                    let decimalString = String(format: "%.3f", hittingStats.AVG)
+                                        .split(separator: ".")
+                                        .last ?? ""
+                                    Text(".\(decimalString)")
                                         .font(.caption.bold())
                                     Text("\(hittingStats.HR)")
                                         .font(.caption.bold())
@@ -120,15 +134,15 @@ struct DetailPlayerView: View {
         }
         .border(.blue)
         .padding()
+        .task {
+            await loadPlayerImage()
+        }
+    }
+    
+    private func loadPlayerImage() async {
+        if let image = await fetcher.fetchPlayerImage(for: player) {
+            self.playerImage = image
+        }
     }
 }
 
-struct NavigationLazyView<Content: View>: View {
-    let build: () -> Content
-    init(_ build: @autoclosure @escaping () -> Content) {
-        self.build = build
-    }
-    var body: Content {
-        build()
-    }
-}
