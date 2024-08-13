@@ -17,7 +17,8 @@ struct StatItem: View {
                 .font(.body)
                 .foregroundColor(.secondary)
         }
-        .padding(.horizontal, 25)
+        .padding(.horizontal, 10)
+        .padding(.trailing, 10)
     }
 }
 
@@ -40,7 +41,8 @@ struct PlusStatItem: View {
                     .foregroundColor(.secondary)
             }
         }
-        .padding(.horizontal, 25)
+        .padding(.horizontal, 10)
+        .padding(.trailing, 10)
     }
     
     private func color(for value: Double) -> Color {
@@ -48,14 +50,18 @@ struct PlusStatItem: View {
         let deviation = value - average
         
         switch deviation {
+        case _ where deviation >= 30:
+            return .green // Excellent
         case _ where deviation >= 20:
-            return .blue // Considerably better
+            return .blue // Great
         case _ where deviation >= 10:
-            return .cyan // Better
+            return .cyan // Above Average
+        case _ where deviation <= -30:
+            return .red // Awful
         case _ where deviation <= -20:
-            return .red // Considerably worse
+            return .orange // Poor
         case _ where deviation <= -10:
-            return .yellow // Worse
+            return .yellow // Below Average
         default:
             return .purple // Average
         }
