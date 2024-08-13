@@ -16,7 +16,7 @@ struct PlayerListView: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 2) {
                     ForEach(viewModel.filteredPlayers, id: \.id) { player in
-                        NavigationLink(destination: NavigationLazyView(DetailPlayerView(players: player))) {
+                        NavigationLink(destination: NavigationLazyView(DetailPlayerView(detailPlayer: player))) {
                             PlayerCardView(player: player)
                         }
                         .buttonStyle(.plain)

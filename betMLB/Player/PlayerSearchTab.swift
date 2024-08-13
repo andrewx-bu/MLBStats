@@ -1,6 +1,6 @@
-//  SearchTab.swift
+//  PlayerSearchTab.swift
 //  betMLB
-//  Created by Andrew Xin on 8/7/24.
+//  Created by Andrew Xin on 8/12/24.
 
 import Foundation
 
@@ -10,10 +10,4 @@ enum PlayerTab: String, CaseIterable {
     case pitcher = "Pitcher"
     case fielder = "Fielder"
     case catcher = "Catcher"
-}
-
-enum TeamTab: String, CaseIterable {
-    case all = "All"
-    case americanLeague = "American League"
-    case nationalLeague = "National League"
 }

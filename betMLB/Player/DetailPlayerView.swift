@@ -5,80 +5,13 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct StatItem: View {
-    let title: String
-    let value: String
-    
-    var body: some View {
-        HStack() {
-            Text(title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Text(value)
-                .font(.body)
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-        }
-        .padding(.horizontal, 10)
-        .padding(.trailing, 25)
-    }
-}
-
-struct PlusStatItem: View {
-    let title: String
-    let value: Double?
-    
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Spacer()
-            if let value = value {
-                Text(String(format: "%.2f", value))
-                    .font(.body)
-                    .foregroundColor(color(for: value))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            } else {
-                Text("N/A")
-                    .font(.body)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-        }
-        .padding(.horizontal, 10)
-        .padding(.trailing, 25)
-    }
-    
-    private func color(for value: Double) -> Color {
-        let average = 100.0
-        let deviation = value - average
-        
-        switch deviation {
-        case _ where deviation >= 20:
-            return .blue // Considerably better
-        case _ where deviation >= 10:
-            return .cyan // Better
-        case _ where deviation <= -20:
-            return .red // Considerably worse
-        case _ where deviation <= -10:
-            return .yellow // Worse
-        default:
-            return .purple // Average
-        }
-    }
-}
-
 struct DetailPlayerView: View {
-    var player: Player
-    let fetcher = Fetcher()
+    @State private var player: Player
+    private let fetcher = Fetcher()
     @State private var playerImage: Image? = nil
-    var isHitter: Bool
-    var isPitcher: Bool
-    var isCatcher: Bool
-    var hittingStats: HittingStats?
-    var pitchingStats: PitchingStats?
-    var fieldingStats: FieldingStats?
+    @State private var isHitter: Bool = true
+    @State private var isPitcher: Bool = false
+    @State private var isCatcher: Bool = false
     @State private var hStatsExpanded: Bool = false
     @State private var hBallStatsExpanded: Bool = false
     @State private var hAdvancedStatsExpanded: Bool = false
@@ -92,41 +25,15 @@ struct DetailPlayerView: View {
     @State private var fAdvancedStatsExpanded: Bool = false
     @State private var cStatsExpanded: Bool = false
     
-    let columns = [
-        GridItem(.flexible(maximum: 75)),
-        GridItem(.flexible(maximum: 30)),
-        GridItem(.flexible(maximum: 75)),
-        GridItem(.flexible(maximum: 30)),
-    ]
-    
-    init(players: Player) {
-        player = players
-        if let hStats = players.hittingStats {
-            hittingStats = hStats
-        }
-        if let pStats = players.pitchingStats {
-            pitchingStats = pStats
-        }
-        if let fStats = players.fieldingStats {
-            fieldingStats = fStats
-        }
-        switch player.primaryPosition.abbreviation {
-        case "P":
+    init(detailPlayer: Player) {
+        player = detailPlayer
+        if player.primaryPosition.abbreviation == "P" {
             isHitter = false
             isPitcher = true
-            isCatcher = false
-        case "TWP":
-            isHitter = true
+        } else if player.primaryPosition.abbreviation == "TWP" {
             isPitcher = true
-            isCatcher = false
-        case "C":
-            isHitter = true
-            isPitcher = false
+        } else if player.primaryPosition.abbreviation == "C" {
             isCatcher = true
-        default:
-            isHitter = true
-            isPitcher = false
-            isCatcher = false
         }
         print("initializing detail view for \(player.fullName)")
     }
@@ -159,9 +66,7 @@ struct DetailPlayerView: View {
                             } else {
                                 Text("\(player.primaryPosition.name)")
                             }
-                            WebImage(url: URL(string: "https://www.mlbstatic.com/team-logos/\(player.currentTeam.id).svg"))
-                                .resizable()
-                                .scaledToFit()
+                            Image.teamLogoImage(for: player.currentTeam.id)
                                 .frame(width: 80, height: 80)
                                 .padding(.top, 10)
                         }
@@ -214,7 +119,12 @@ struct DetailPlayerView: View {
                                 Text("2024")
                                     .font(.caption.bold())
                                     .padding(.leading, 10)
-                                LazyVGrid(columns: columns) {
+                                LazyVGrid(columns: [
+                                    GridItem(.flexible(maximum: 75)),
+                                    GridItem(.flexible(maximum: 30)),
+                                    GridItem(.flexible(maximum: 75)),
+                                    GridItem(.flexible(maximum: 30)),
+                                ]) {
                                     if isHitter, let hittingStats = player.hittingStats {
                                         Text("AVG")
                                             .font(.caption.bold())
@@ -271,14 +181,18 @@ struct DetailPlayerView: View {
                 .padding(.top, 100)
                 .padding(.leading, 10)
             }
-            if isHitter, let hittingStats = player.hittingStats {
-          
+            if isHitter, let hStats = player.hittingStats {
+                
             }
-            if isPitcher, let pitchingStats = player.pitchingStats {
-              
+            if isPitcher, let pStats = player.pitchingStats {
+                
             }
-            // Fielding Stats
-            if isCatcher {
+            if let fStats = player.fieldingStats {
+                if isCatcher {
+                    
+                }
+            }
+            Section("Player Bio") {
                 
             }
         }
