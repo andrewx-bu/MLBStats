@@ -44,7 +44,7 @@ import SwiftUI
     }
     
     func cancelLoadingTasks() {
-        print("Cancelling loadData task")
+        print("Cancelling team loadData task")
         loadDataTask?.cancel()
     }
     

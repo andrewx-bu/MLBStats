@@ -10,7 +10,6 @@ struct PlayerListView: View {
     @FocusState private var isSearching: Bool
     @Environment(\.colorScheme) private var scheme
     @Namespace private var animation
-    let fetcher = Fetcher()
     
     var body: some View {
         NavigationStack {
@@ -56,9 +55,7 @@ struct PlayerListView: View {
             HStack {
                 VStack(alignment: .trailing) {
                     // Team Logo
-                    WebImage(url: URL(string: "https://www.mlbstatic.com/team-logos/\(player.currentTeam.id).svg"))
-                        .resizable()
-                        .scaledToFit()
+                    Image.teamLogoImage(for: player.currentTeam.id)
                         .frame(width: 40, height: 40)
                         .padding(8)
                     Spacer()

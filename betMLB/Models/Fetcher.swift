@@ -64,7 +64,7 @@ class Fetcher {
         return []
     }
     
-    // Headshots for players
+    // Headshot for player
     func fetchPlayerImage(for player: Player) async -> Image? {
         guard let id = player.headshotId else {
             print("fetchPlayerImage: Player has no headshot ID")
@@ -165,4 +165,6 @@ class Fetcher {
         }
         return []
     }
+    
+    // func fetchLeagueStats
 }

@@ -89,7 +89,7 @@ import SwiftUI
     }
     
     func cancelLoadingTasks() {
-        print("Cancelling loadData task")
+        print("Cancelling player loadData task")
         loadDataTask?.cancel()
     }
     

@@ -5,16 +5,6 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct NavigationLazyView<Content: View>: View {
-    let build: () -> Content
-    init(_ build: @autoclosure @escaping () -> Content) {
-        self.build = build
-    }
-    var body: Content {
-        build()
-    }
-}
-
 struct StatItem: View {
     let title: String
     let value: String
@@ -282,144 +272,10 @@ struct DetailPlayerView: View {
                 .padding(.leading, 10)
             }
             if isHitter, let hittingStats = player.hittingStats {
-                DisclosureGroup (isExpanded: $hStatsExpanded) {
-                    VStack(alignment: .leading) {
-                        StatItem(title: "Games Played", value: "\(hittingStats.G)")
-                        StatItem(title: "At Bats", value: "\(hittingStats.AB)")
-                        StatItem(title: "Plate Appearances", value: "\(hittingStats.PA)")
-                        StatItem(title: "Hits", value: "\(hittingStats.H)")
-                        StatItem(title: "1B", value: "\(hittingStats.singles)")
-                        StatItem(title: "2B", value: "\(hittingStats.doubles)")
-                        StatItem(title: "3B", value: "\(hittingStats.triples)")
-                        StatItem(title: "Home Runs", value: "\(hittingStats.HR)")
-                        StatItem(title: "Runs", value: "\(hittingStats.R)")
-                        StatItem(title: "RBI", value: "\(hittingStats.RBI)")
-                        StatItem(title: "Walks", value: "\(hittingStats.BB)")
-                        StatItem(title: "Intentional Walks", value: "\(hittingStats.IBB)")
-                        StatItem(title: "Strikeouts", value: "\(hittingStats.SO)")
-                        StatItem(title: "Hit By Pitches", value: "\(hittingStats.HBP)")
-                        StatItem(title: "Sacrifice Flies", value: "\(hittingStats.SF)")
-                        StatItem(title: "Sacrifice Hits", value: "\(hittingStats.SH)")
-                        StatItem(title: "GDP", value: "\(hittingStats.GDP)")
-                        StatItem(title: "Stolen Bases", value: "\(hittingStats.SB)")
-                        StatItem(title: "Caught Stealing", value: "\(hittingStats.CS)")
-                        StatItem(title: "AVG", value: String(format: "%.3f", hittingStats.AVG))
-                        StatItem(title: "OBP", value: String(format: "%.3f", hittingStats.OBP))
-                        StatItem(title: "SLG", value: String(format: "%.3f", hittingStats.SLG))
-                        StatItem(title: "OPS", value: String(format: "%.3f", hittingStats.OPS))
-                    }
-                    .background(Color(UIColor.systemGray6))
-                    .cornerRadius(8)
-                } label: {
-                    HStack {
-                        Text("Hitting Stats")
-                            .font(.headline)
-                        Spacer()
-                        Image(systemName: hStatsExpanded ? "chevron.down" : "chevron.right")
-                            .rotationEffect(.degrees(hStatsExpanded ? 180 : 0))
-                            .animation(.easeInOut, value: hStatsExpanded)
-                            .padding(.trailing, 10)
-                    }
-                    .padding(.leading, 10)
-                    .frame(maxWidth: .infinity)
-                }
-                DisclosureGroup (isExpanded: $hBallStatsExpanded) {
-                    VStack(alignment: .leading) {
-                        StatItem(title: "Pitches", value: "\(hittingStats.pitches)")
-                        StatItem(title: "Balls", value: "\(hittingStats.balls)")
-                        StatItem(title: "Strikes", value: "\(hittingStats.strikes)")
-                        StatItem(title: "Ground Balls", value: "\(hittingStats.GB)")
-                        StatItem(title: "Fly Balls", value: "\(hittingStats.FB)")
-                        StatItem(title: "Line Drives", value: "\(hittingStats.LD)")
-                        StatItem(title: "Infield Fly Balls", value: "\(hittingStats.IFFB)")
-                        StatItem(title: "Infield Hits", value: "\(hittingStats.IFH)")
-                        StatItem(title: "Bunts", value: "\(hittingStats.BU)")
-                        StatItem(title: "Bunt Hits", value: "\(hittingStats.BUH)")
-                        StatItem(title: "GB/FB Ratio", value: String(format: "%.2f", hittingStats.GBperFB))
-                        StatItem(title: "Line Drive %", value: String(format: "%.2f", hittingStats.ldPCT))
-                        StatItem(title: "Ground Ball %", value: String(format: "%.2f", hittingStats.gbPCT))
-                        StatItem(title: "Fly Ball %", value: String(format: "%.2f", hittingStats.fbPCT))
-                        StatItem(title: "Infield Fly Ball %", value: String(format: "%.2f", hittingStats.iffpPCT))
-                        StatItem(title: "Infield Hit %", value: String(format: "%.2f", hittingStats.ifhPCT))
-                        StatItem(title: "Bunt Hit %", value: String(format: "%.2f", hittingStats.buhPCT))
-                        StatItem(title: "TTO %", value: hittingStats.ttoPCT != nil ? String(format: "%.2f", hittingStats.ttoPCT!) : "N/A")
-                        StatItem(title: "HR/FB Ratio", value: String(format: "%.2f", hittingStats.HRperFB))
-                    }
-                    .background(Color(UIColor.systemGray6))
-                    .cornerRadius(8)
-                } label: {
-                    HStack {
-                        Text("Batted Ball Stats")
-                            .font(.headline)
-                        Spacer()
-                        Image(systemName: hBallStatsExpanded ? "chevron.down" : "chevron.right")
-                            .rotationEffect(.degrees(hBallStatsExpanded ? 180 : 0))
-                            .animation(.easeInOut, value: hBallStatsExpanded)
-                            .padding(.trailing, 10)
-                    }
-                    .padding(.leading, 10)
-                    .frame(maxWidth: .infinity)
-                }
-                DisclosureGroup (isExpanded: $hAdvancedStatsExpanded) {
-                    VStack(alignment: .leading) {
-                        StatItem(title: "Walk %", value: String(format: "%.2f", hittingStats.bbPCT))
-                        StatItem(title: "Strikeout %", value: String(format: "%.2f", hittingStats.kPCT))
-                        StatItem(title: "Walks/Strikeouts", value: String(format: "%.2f", hittingStats.BBperK))
-                        StatItem(title: "Isolated Power", value: String(format: "%.3f", hittingStats.ISO))
-                        StatItem(title: "BABIP", value: String(format: "%.3f", hittingStats.BABIP))
-                        StatItem(title: "wOBA", value: String(format: "%.3f", hittingStats.wOBA))
-                        StatItem(title: "wRAA", value: String(format: "%.2f", hittingStats.wRAA))
-                        StatItem(title: "wRC", value: String(format: "%.2f", hittingStats.wRC))
-                        StatItem(title: "WAR", value: String(format: "%.2f", hittingStats.WAR))
-                    }
-                    .background(Color(UIColor.systemGray6))
-                    .cornerRadius(8)
-                } label: {
-                    HStack {
-                        Text("Advanced Hitting Stats")
-                            .font(.headline)
-                        Spacer()
-                        Image(systemName: hAdvancedStatsExpanded ? "chevron.down" : "chevron.right")
-                            .rotationEffect(.degrees(hAdvancedStatsExpanded ? 180 : 0))
-                            .animation(.easeInOut, value: hAdvancedStatsExpanded)
-                            .padding(.trailing, 10)
-                    }
-                    .padding(.leading, 10)
-                    .frame(maxWidth: .infinity)
-                }
-                DisclosureGroup (isExpanded: $hPlusStatsExpanded) {
-                    VStack(alignment: .leading) {
-                        PlusStatItem(title: "wRC+", value: hittingStats.wRCplus ?? 100)
-                        PlusStatItem(title: "AVG+", value: hittingStats.AVGplus ?? 100)
-                        PlusStatItem(title: "bbPCT+", value: hittingStats.bbPCTplus ?? 100)
-                        PlusStatItem(title: "kPCT+", value: hittingStats.kPCTplus ?? 100)
-                        PlusStatItem(title: "OBP+", value: hittingStats.OBPplus ?? 100)
-                        PlusStatItem(title: "SLG+", value: hittingStats.SLGplus ?? 100)
-                        PlusStatItem(title: "ISO+", value: hittingStats.ISOplus ?? 100)
-                        PlusStatItem(title: "BABIP+", value: hittingStats.BABIPplus ?? 100)
-                        PlusStatItem(title: "Line Drive %+", value: hittingStats.ldPCTplus ?? 100)
-                        PlusStatItem(title: "Ground Ball %+", value: hittingStats.gbPCTplus ?? 100)
-                        PlusStatItem(title: "Fly Ball %+", value: hittingStats.fbPCTplus ?? 100)
-                        PlusStatItem(title: "HR/FB %+", value: hittingStats.HRperFBpctPLUS ?? 100)
-                    }
-                    .background(Color(UIColor.systemGray6))
-                    .cornerRadius(8)
-                } label: {
-                    HStack {
-                        Text("Hitting Plus Stats")
-                            .font(.headline)
-                        Spacer()
-                        Image(systemName: hPlusStatsExpanded ? "chevron.down" : "chevron.right")
-                            .rotationEffect(.degrees(hPlusStatsExpanded ? 180 : 0))
-                            .animation(.easeInOut, value: hPlusStatsExpanded)
-                            .padding(.trailing, 10)
-                    }
-                    .padding(.leading, 10)
-                    .frame(maxWidth: .infinity)
-                }
+          
             }
-            if isPitcher {
-                
+            if isPitcher, let pitchingStats = player.pitchingStats {
+              
             }
             // Fielding Stats
             if isCatcher {

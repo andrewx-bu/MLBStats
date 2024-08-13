@@ -4,6 +4,7 @@
 
 import Foundation
 import SwiftUI
+import SDWebImageSwiftUI
 
 extension View {
     // sets up tabs
@@ -108,5 +109,14 @@ extension Color {
         let blue = Double(rgb & 0xFF) / 255.0
         
         self.init(red: red, green: green, blue: blue)
+    }
+}
+
+
+extension Image {
+    static func teamLogoImage(for teamId: Int) -> some View {
+        WebImage(url: URL(string: "https://www.mlbstatic.com/team-logos/\(teamId).svg"))
+            .resizable()
+            .scaledToFit()
     }
 }
