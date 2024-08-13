@@ -5,111 +5,40 @@
 import SwiftUI
 
 struct LegendView: View {
+    private let colors: [Color] = [
+        .green,   // Great
+        .blue,    // Excellent
+        .cyan,    // Above Average
+        .purple,  // Average
+        .yellow,  // Below Average
+        .orange,  // Poor
+        .red      // Awful
+    ]
+    
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.green)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Excellent")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.blue)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Great")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.cyan)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Better")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.purple)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Average")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.yellow)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Worse")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.orange)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Poor")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-                VStack {
-                    Rectangle()
-                        .fill(Color.red)
-                        .frame(width: 15, height: 15)
-                        .overlay(
-                            Rectangle()
-                                .stroke(Color.black.opacity(0.3), lineWidth: 1)
-                        )
-                    Text("Awful")
-                        .font(.caption)
-                        .foregroundColor(.primary)
-                }
-                .frame(minWidth: 45)
-                Spacer()
-            }
+        HStack {
+            Text("Excellent")
+                .font(.caption)
+                .foregroundColor(.primary)
+            
+            LinearGradient(
+                gradient: Gradient(colors: colors),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(height: 15)
+            .overlay(
+                RoundedRectangle(cornerRadius: 2)
+                    .stroke(Color.black.opacity(0.3), lineWidth: 1)
+            )
+            
+            Text("Awful")
+                .font(.caption)
+                .foregroundColor(.primary)
         }
+        .padding(.horizontal)
     }
+    
 }
 
 #Preview {

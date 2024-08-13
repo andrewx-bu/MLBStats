@@ -11,14 +11,13 @@ struct StatItem: View {
     var body: some View {
         HStack() {
             Text(title)
-                .font(.headline)
+                .font(.subheadline)
             Spacer()
             Text(value)
-                .font(.body)
+                .font(.subheadline)
                 .foregroundColor(.secondary)
         }
-        .padding(.horizontal, 10)
-        .padding(.trailing, 10)
+        .padding(.horizontal, 25)
     }
 }
 
@@ -29,20 +28,19 @@ struct PlusStatItem: View {
     var body: some View {
         HStack {
             Text(title)
-                .font(.headline)
+                .font(.subheadline)
             Spacer()
             if let value = value {
                 Text(String(format: "%.2f", value))
-                    .font(.body)
+                    .font(.subheadline)
                     .foregroundColor(color(for: value).opacity(0.85))
             } else {
                 Text("N/A")
-                    .font(.body)
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.trailing, 10)
+        .padding(.horizontal, 25)
     }
     
     private func color(for value: Double) -> Color {
@@ -61,6 +59,51 @@ struct PlusStatItem: View {
         case _ where deviation <= -20:
             return .orange // Poor
         case _ where deviation <= -10:
+            return .yellow // Below Average
+        default:
+            return .purple // Average
+        }
+    }
+}
+
+struct MinusStatItem: View {
+    let title: String
+    let value: Double?
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.subheadline)
+            Spacer()
+            if let value = value {
+                Text(String(format: "%.2f", value))
+                    .font(.body)
+                    .foregroundColor(color(for: value).opacity(0.85))
+            } else {
+                Text("N/A")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.horizontal, 25)
+    }
+    
+    private func color(for value: Double) -> Color {
+        let average = 100.0
+        let deviation = value - average
+        
+        switch deviation {
+        case _ where deviation <= -30:
+            return .green // Excellent
+        case _ where deviation <= -20:
+            return .blue // Great
+        case _ where deviation <= -10:
+            return .cyan // Above Average
+        case _ where deviation >= 30:
+            return .red // Awful
+        case _ where deviation >= 20:
+            return .orange // Poor
+        case _ where deviation >= 10:
             return .yellow // Below Average
         default:
             return .purple // Average
