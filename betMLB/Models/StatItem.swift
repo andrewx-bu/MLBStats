@@ -77,7 +77,7 @@ struct MinusStatItem: View {
             Spacer()
             if let value = value {
                 Text(String(format: "%.2f", value))
-                    .font(.body)
+                    .font(.subheadline)
                     .foregroundColor(color(for: value).opacity(0.85))
             } else {
                 Text("N/A")

@@ -595,12 +595,40 @@ struct DetailPlayerView: View {
             }
             .foregroundStyle(.white, .clear)
             .padding(.leading, 10)
-            .padding(.bottom, 10)
             .background(Color(UIColor.systemGray6))
             .cornerRadius(8)
-            Section("Player Bio") {
-                
+            Divider()
+                .foregroundStyle(Color(UIColor.systemGray6))
+                .frame(height: 3)
+            HStack {
+                VStack (alignment: .leading) {
+                    Text("Player Bio")
+                        .font(.headline)
+                        .padding(.bottom, 5)
+                    Text("Player Height: \(player.height)")
+                        .font(.callout)
+                    Text("Player Weight: \(player.weight)")
+                        .font(.callout)
+                    Text("Born: \(player.birthDateFormatted ?? player.birthDate)")
+                        .font(.callout)
+                    if let birthCity = player.birthCity, let birthStateProvince = player.birthStateProvince {
+                        Text("Birth Place: \(birthCity), \(birthStateProvince)")
+                            .font(.callout)
+                    } else if let birthCity = player.birthCity {
+                        Text("Birth Place: \(birthCity), \(player.birthCountry)")
+                            .font(.callout)
+                    }
+                    Text("Primary Position: \(player.primaryPosition.name)")
+                        .font(.callout)
+                    Text("Bats: \(player.batSide.description)")
+                        .font(.callout)
+                    Text("Throws: \(player.pitchHand.description)")
+                        .font(.callout)
+                }
+                Spacer()
             }
+            .padding(.horizontal, 10)
+            .padding(.bottom, 15)
         }
         .ignoresSafeArea()
         .padding(.bottom, 25)
