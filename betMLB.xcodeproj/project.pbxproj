@@ -13,6 +13,7 @@
 		495121FC2C6AFD0E0064589A /* TeamSearchTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495121FB2C6AFD0E0064589A /* TeamSearchTab.swift */; };
 		496017E72C6B0B3C002C0D8A /* LegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017E62C6B0B3C002C0D8A /* LegendView.swift */; };
 		496017E92C6C537E002C0D8A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017E82C6C537E002C0D8A /* Schedule.swift */; };
+		496017EF2C6C5F75002C0D8A /* CalendarViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017EE2C6C5F74002C0D8A /* CalendarViewVM.swift */; };
 		496BCF4E2C639733003777F4 /* PlayerListViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */; };
 		496BCF512C639887003777F4 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 496BCF502C639887003777F4 /* SDWebImageSwiftUI */; };
 		496BCF542C6398DA003777F4 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 496BCF532C6398DA003777F4 /* SDWebImageSVGCoder */; };
@@ -45,6 +46,7 @@
 		495121FB2C6AFD0E0064589A /* TeamSearchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSearchTab.swift; sourceTree = "<group>"; };
 		496017E62C6B0B3C002C0D8A /* LegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegendView.swift; sourceTree = "<group>"; };
 		496017E82C6C537E002C0D8A /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		496017EE2C6C5F74002C0D8A /* CalendarViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewVM.swift; sourceTree = "<group>"; };
 		496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewVM.swift; sourceTree = "<group>"; };
 		496D83AC2C60C13A00712C52 /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
 		496D83AF2C61ABEC00712C52 /* HittingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HittingStats.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				49F3B9D12C5F2BB5004FAF69 /* Day.swift */,
 				496017E82C6C537E002C0D8A /* Schedule.swift */,
 				49F3B9CA2C5F1438004FAF69 /* CalendarView.swift */,
+				496017EE2C6C5F74002C0D8A /* CalendarViewVM.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				495121F32C6AF7670064589A /* LazyNavigationView.swift in Sources */,
 				496017E92C6C537E002C0D8A /* Schedule.swift in Sources */,
 				496017E72C6B0B3C002C0D8A /* LegendView.swift in Sources */,
+				496017EF2C6C5F75002C0D8A /* CalendarViewVM.swift in Sources */,
 				49F3B9D22C5F2BB5004FAF69 /* Day.swift in Sources */,
 				49FDEF2B2C63BBE600D9D154 /* TeamListViewVM.swift in Sources */,
 				49F3B9F92C605D17004FAF69 /* Player.swift in Sources */,

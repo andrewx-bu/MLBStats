@@ -5,8 +5,7 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @State private var selectedMonth: Date = .currentMonth
-    @State private var selectedDate: Date = .now
+    @State private var viewModel = CalendarViewVM()
     var safeArea: EdgeInsets
     
     var body: some View {
@@ -16,7 +15,7 @@ struct CalendarView: View {
                 CalView()
                 VStack(spacing: 15) {
                     ForEach(1...15, id: \.self) { _ in
-                        CardView()
+                        GameCardView()
                     }
                 }
                 .padding(15)
@@ -27,7 +26,7 @@ struct CalendarView: View {
     }
     
     // ScheduleView
-    @ViewBuilder func CardView() -> some View {
+    @ViewBuilder func GameCardView() -> some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(.indigo.gradient)
             .frame(height: 70)
@@ -109,12 +108,12 @@ struct CalendarView: View {
                                     Circle()
                                         .fill(.white)
                                         .frame(width: 5, height: 5)
-                                        .opacity(Calendar.current.isDate(day.date, inSameDayAs: selectedDate) ? 1 : 0)
+                                        .opacity(Calendar.current.isDate(day.date, inSameDayAs: viewModel.selectedDate) ? 1 : 0)
                                         .offset(y: progress * -2)
                                 }
                                 .contentShape(.rect)
                                 .onTapGesture {
-                                    selectedDate = day.date
+                                    viewModel.selectedDate = day.date
                                 }
                         }
                     }
@@ -146,20 +145,20 @@ struct CalendarView: View {
     func format(_ format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
-        return formatter.string(from: selectedMonth)
+        return formatter.string(from: viewModel.selectedMonth)
     }
     
     // Month Increment/Decrement
     func monthUpdate(_ increment: Bool = true) {
         let calendar = Calendar.current
-        guard let month = calendar.date(byAdding: .month, value: increment ? 1 : -1, to: selectedMonth) else { return }
-        guard let date = calendar.date(byAdding: .month, value: increment ? 1 : -1, to: selectedDate) else { return }
-        selectedMonth = month
-        selectedDate = date
+        guard let month = calendar.date(byAdding: .month, value: increment ? 1 : -1, to: viewModel.selectedMonth) else { return }
+        guard let date = calendar.date(byAdding: .month, value: increment ? 1 : -1, to: viewModel.selectedDate) else { return }
+        viewModel.selectedMonth = month
+        viewModel.selectedDate = date
     }
     
     var selectedMonthDates: [Day] {
-        return extractDates(selectedMonth)
+        return extractDates(viewModel.selectedMonth)
     }
     
     // Current Month String
@@ -174,7 +173,7 @@ struct CalendarView: View {
     
     var monthProgress: CGFloat {
         let calendar = Calendar.current
-        if let index = selectedMonthDates.firstIndex(where: { calendar.isDate($0.date, inSameDayAs: selectedDate )}) {
+        if let index = selectedMonthDates.firstIndex(where: { calendar.isDate($0.date, inSameDayAs: viewModel.selectedDate )}) {
             return CGFloat(index / 7).rounded()
         }
         return 1.0

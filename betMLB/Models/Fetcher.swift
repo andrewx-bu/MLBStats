@@ -99,6 +99,42 @@ class Fetcher {
         return nil
     }
     
+    // Returns games for specified date
+    func fetchSchedule(date: Date? = nil) async throws -> [ScheduleDate] {
+        var urlString = "https://statsapi.mlb.com/api/v1/schedule?sportId=1"
+        if let date = date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            let dateString = dateFormatter.string(from: date)
+            urlString += "&date=\(dateString)"
+        }
+        guard let url = URL(string: urlString) else {
+            print("fetchSchedule: Invalid schedule URL")
+            return []
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let decoder = JSONDecoder()
+            let response = try decoder.decode(ScheduleResponse.self, from: data)
+            return response.dates
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch {
+            print("fetchSchedule: \(error)")
+            throw error
+        }
+        return []
+    }
+    
     enum StatType: String {
         case hitting = "bat"
         case pitching = "pit"
