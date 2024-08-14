@@ -11,10 +11,10 @@ struct StatItem: View {
     var body: some View {
         HStack() {
             Text(title)
-                .font(.subheadline)
+                .font(.footnote)
             Spacer()
             Text(value)
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundColor(.secondary)
         }
         .padding(.horizontal, 25)
@@ -32,11 +32,11 @@ struct PlusStatItem: View {
             Spacer()
             if let value = value {
                 Text(String(format: "%.2f", value))
-                    .font(.subheadline)
+                    .font(.footnote)
                     .foregroundColor(color(for: value).opacity(0.85))
             } else {
                 Text("N/A")
-                    .font(.subheadline)
+                    .font(.footnote)
                     .foregroundColor(.secondary)
             }
         }
@@ -120,5 +120,4 @@ struct MinusStatItem: View {
         PlusStatItem(title: "AVG+", value: 130.34)
         PlusStatItem(title: "AVG+", value: 85)
     }
-    .preferredColorScheme(.dark)
 }

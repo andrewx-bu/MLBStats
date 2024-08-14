@@ -55,6 +55,7 @@ struct DetailPlayerView: View {
     }
     
     var body: some View {
+        // View Stuff
         ScrollView {
             ZStack(alignment: .topLeading) {
                 if let colors = teamColors[mapTeamIdToAbbreviation(fromId: player.currentTeam.id)] {
@@ -599,33 +600,74 @@ struct DetailPlayerView: View {
             .cornerRadius(8)
             Divider()
                 .foregroundStyle(Color(UIColor.systemGray6))
-                .frame(height: 3)
+                .frame(height: 5)
             HStack {
-                VStack (alignment: .leading) {
-                    Text("Player Bio")
-                        .font(.headline)
-                        .padding(.bottom, 5)
-                    Text("Player Height: \(player.height)")
-                        .font(.callout)
-                    Text("Player Weight: \(player.weight)")
-                        .font(.callout)
-                    Text("Born: \(player.birthDateFormatted ?? player.birthDate)")
-                        .font(.callout)
-                    if let birthCity = player.birthCity, let birthStateProvince = player.birthStateProvince {
-                        Text("Birth Place: \(birthCity), \(birthStateProvince)")
-                            .font(.callout)
-                    } else if let birthCity = player.birthCity {
-                        Text("Birth Place: \(birthCity), \(player.birthCountry)")
-                            .font(.callout)
-                    }
-                    Text("Primary Position: \(player.primaryPosition.name)")
-                        .font(.callout)
-                    Text("Bats: \(player.batSide.description)")
-                        .font(.callout)
-                    Text("Throws: \(player.pitchHand.description)")
-                        .font(.callout)
-                }
+                Text("Player Bio")
+                    .font(.headline)
                 Spacer()
+            }
+            .padding(.bottom, 5)
+            .padding(.horizontal, 10)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Height:")
+                        .font(.footnote)
+                    Spacer()
+                    Text("\(player.height)")
+                        .font(.footnote)
+                }
+                HStack {
+                    Text("Weight:")
+                        .font(.footnote)
+                    Spacer()
+                    Text("\(player.weight)")
+                        .font(.footnote)
+                }
+                HStack {
+                    Text("Born:")
+                        .font(.footnote)
+                    Spacer()
+                    Text("\(player.birthDateFormatted ?? player.birthDate)")
+                        .font(.footnote)
+                }
+                if let birthCity = player.birthCity, let birthStateProvince = player.birthStateProvince {
+                    HStack {
+                        Text("Birth Place:")
+                            .font(.footnote)
+                        Spacer()
+                        Text("\(birthCity), \(birthStateProvince)")
+                            .font(.footnote)
+                    }
+                } else if let birthCity = player.birthCity {
+                    HStack {
+                        Text("Birth Place:")
+                            .font(.footnote)
+                        Spacer()
+                        Text("\(birthCity), \(player.birthCountry)")
+                            .font(.footnote)
+                    }
+                }
+                HStack {
+                    Text("Primary Position:")
+                        .font(.footnote)
+                    Spacer()
+                    Text("\(player.primaryPosition.name)")
+                        .font(.footnote)
+                }
+                HStack {
+                    Text("Bats:")
+                        .font(.footnote)
+                    Spacer()
+                    Text("\(player.batSide.description)")
+                        .font(.footnote)
+                }
+                HStack {
+                    Text("Throws:")
+                        .font(.footnote)
+                    Spacer()
+                    Text("\(player.pitchHand.description)")
+                        .font(.footnote)
+                }
             }
             .padding(.horizontal, 10)
             .padding(.bottom, 15)
@@ -636,7 +678,6 @@ struct DetailPlayerView: View {
         .task {
             await loadPlayerImage()
         }
-        .preferredColorScheme(.dark)
     }
     
     private func loadPlayerImage() async {
