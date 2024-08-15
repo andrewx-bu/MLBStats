@@ -11,11 +11,13 @@ struct CalendarView: View {
     var body: some View {
         let maxHeight = calendarHeight - (calendarTitleViewHeight + weekLabelHeight + safeArea.top + topPadding + bottomPadding)
         ScrollView(.vertical) {
-            VStack(spacing: 0) {
+            VStack(spacing: 0) { 
                 CalView()
                 VStack(spacing: 15) {
-                    ForEach(1...15, id: \.self) { _ in
-                        GameCardView()
+                    ForEach(viewModel.schedule, id: \.date) { scheduleDate in
+                        ForEach(scheduleDate.games, id: \.gamePk) { game in
+                            GameCardView(game: game)
+                        }
                     }
                 }
                 .padding(15)
@@ -23,28 +25,83 @@ struct CalendarView: View {
         }
         .scrollIndicators(.hidden)
         .scrollTargetBehavior(CustomScrollBehavior(maxHeight: maxHeight))
+        .task {
+            await viewModel.loadGames()
+        }
     }
     
     // ScheduleView
-    @ViewBuilder func GameCardView() -> some View {
-        RoundedRectangle(cornerRadius: 15)
-            .fill(.indigo.gradient)
-            .frame(height: 70)
-            .overlay(alignment: .leading) {
-                HStack(spacing: 12) {
-                    Circle()
-                        .frame(width: 40, height: 40)
-                    
-                    VStack(alignment: .leading, spacing: 6) {
-                        RoundedRectangle(cornerRadius: 5)
-                            .frame(width: 100, height: 5)
-                        RoundedRectangle(cornerRadius: 5)
-                            .frame(width: 150, height: 5)
+    @ViewBuilder func GameCardView(game: ScheduleDate.Game) -> some View {
+        if let awayColors = teamColors[mapTeamIdToAbbreviation(fromId: game.teams.away.team.id)], let homeColors = teamColors[mapTeamIdToAbbreviation(fromId: game.teams.home.team.id)] {
+            ZStack {
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(
+                        LinearGradient(
+                        gradient: Gradient(colors: [awayColors.first!, homeColors.first!]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(height: 75)
+                    .overlay(alignment: .leading) {
+                        HStack(spacing: 12) {
+                            Circle()
+                                .frame(width: 40, height: 40)
+                                .foregroundStyle(awayColors[1].opacity(0.7))
+                                .overlay(
+                                    Image.teamLogoImage(for: game.teams.away.team.id)
+                                        .frame(width: 25, height: 25)
+                                )
+                                .offset(x: -5, y: -10)
+                            Spacer()
+                            Circle()
+                                .frame(width: 40, height: 40)
+                                .foregroundStyle(homeColors[1].opacity(0.7))
+                                .overlay(
+                                    Image.teamLogoImage(for: game.teams.home.team.id)
+                                        .frame(width: 25, height: 25)
+                                )
+                                .offset(x: 5, y: 10)
+                        }
+                        .foregroundStyle(.white.opacity(0.25))
+                        .padding(15)
                     }
+                
+                Path { path in
+                    path.move(to: CGPoint(x: 5, y: 70))
+                    path.addLine(to: CGPoint(x: 175, y: 40))
                 }
-                .foregroundStyle(.white.opacity(0.25))
-                .padding(15)
+                .stroke(style: StrokeStyle(lineWidth: 2))
+                .foregroundColor(.white.opacity(0.5))
+                Path { path in
+                    path.move(to: CGPoint(x: 189, y: 37))
+                    path.addLine(to: CGPoint(x: 360, y: 5))
+                }
+                .stroke(style: StrokeStyle(lineWidth: 2))
+                .foregroundColor(.white.opacity(0.5))
+                Text("@")
+                VStack {
+                    Text("\(mapTeamIdToAbbreviation(fromId: game.teams.away.team.id))")
+                        .font(.headline)
+                    Text("\(game.teams.away.leagueRecord.wins)-\(game.teams.away.leagueRecord.losses)")
+                        .font(.caption2)
+                }
+                .offset(x: -75, y: -10)
+                VStack {
+                    Text("\(mapTeamIdToAbbreviation(fromId: game.teams.home.team.id))")
+                        .font(.headline)
+                    Text("\(game.teams.home.leagueRecord.wins)-\(game.teams.home.leagueRecord.losses)")
+                        .font(.caption2)
+                }
+                .offset(x: 75, y: 10)
+                Text("\(game.teams.away.score ?? 0) - \(game.teams.home.score ?? 0)")
+                    .font(.headline)
+                    .offset(y: -25)
+                Text("\(game.status.detailedState)")
+                    .font(.caption)
+                    .offset(y: 25)
             }
+        }
     }
     
     // Calendar View
@@ -210,7 +267,7 @@ struct CalendarView: View {
     }
 }
 
-// Custom Scrolll Behavior
+// Custom Scroll Behavior
 struct CustomScrollBehavior: ScrollTargetBehavior {
     var maxHeight: CGFloat
     func updateTarget(_ target: inout ScrollTarget, context: TargetContext) {
@@ -225,5 +282,6 @@ struct CustomScrollBehavior: ScrollTargetBehavior {
         let safeArea = $0.safeAreaInsets
         CalendarView(safeArea: safeArea)
             .ignoresSafeArea(.container, edges: .top)
+            .preferredColorScheme(.dark)
     }
 }
