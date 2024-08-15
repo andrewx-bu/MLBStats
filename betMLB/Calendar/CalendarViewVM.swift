@@ -20,6 +20,7 @@ import Foundation
             }
         }
     }
+    var showOnlyActiveGames = false
     var schedule: [ScheduleDate] = []
     
     func loadGames() async {

@@ -31,8 +31,6 @@ struct DetailPlayerView: View {
     @State private var fAdvancedStatsExpanded: Bool = false
     @State private var cStatsExpanded: Bool = false
     
-    @State private var imageLoadingTask: Task<Void, Never>?
-    
     init(detailPlayer: Player) {
         player = detailPlayer
         switch detailPlayer.primaryPosition.abbreviation {
@@ -681,7 +679,6 @@ struct DetailPlayerView: View {
             await loadPlayerImage()
         }
         .onDisappear {
-            imageLoadingTask?.cancel()
             playerImage = nil
         }
         .preferredColorScheme(.dark)

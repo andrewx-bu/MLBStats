@@ -10,21 +10,36 @@ struct CalendarView: View {
     
     var body: some View {
         let maxHeight = calendarHeight - (calendarTitleViewHeight + weekLabelHeight + safeArea.top + topPadding + bottomPadding)
-        ScrollView(.vertical) {
-            VStack(spacing: 0) { 
-                CalView()
-                VStack(spacing: 15) {
-                    ForEach(viewModel.schedule, id: \.date) { scheduleDate in
-                        ForEach(scheduleDate.games, id: \.gamePk) { game in
-                            GameCardView(game: game)
+        NavigationStack {
+            ScrollView(.vertical) {
+                VStack(spacing: 0) {
+                    CalView()
+                    VStack(alignment: .leading) {
+                        ForEach(viewModel.schedule, id: \.date) { scheduleDate in
+                            HStack {
+                                Text("Found \(scheduleDate.totalGames) Games On: \(scheduleDate.date)")
+                                    .font(.caption)
+                                Spacer()
+                                Text("Active Only")
+                                    .font(.caption)
+                                Toggle("", isOn: $viewModel.showOnlyActiveGames)
+                                    .toggleStyle(CustomToggleStyle())
+                            }
+                            ForEach(scheduleDate.games.filter { !viewModel.showOnlyActiveGames || $0.status.detailedState == "In Progress" }, id: \.gamePk) { game in
+                                NavigationLink(destination: NavigationLazyView(DetailGameView(detailGame: game))) {
+                                    GameCardView(game: game)
+                                }
+                                .buttonStyle(.plain)
+                            }
                         }
                     }
+                    .padding(15)
                 }
-                .padding(15)
             }
+            .scrollIndicators(.hidden)
+            .scrollTargetBehavior(CustomScrollBehavior(maxHeight: maxHeight))
+            .padding(.top, -75)
         }
-        .scrollIndicators(.hidden)
-        .scrollTargetBehavior(CustomScrollBehavior(maxHeight: maxHeight))
         .task {
             await viewModel.loadGames()
         }
@@ -273,6 +288,21 @@ struct CustomScrollBehavior: ScrollTargetBehavior {
     func updateTarget(_ target: inout ScrollTarget, context: TargetContext) {
         if target.rect.minY < maxHeight {
             target.rect = .zero
+        }
+    }
+}
+
+// Custom Checkbox Toggle
+struct CustomToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            Image(systemName: configuration.isOn ? "checkmark.square" : "square")
+                .resizable()
+                .frame(width: 15, height: 15)
+                .onTapGesture {
+                    configuration.isOn.toggle()
+                }
+            configuration.label
         }
     }
 }
