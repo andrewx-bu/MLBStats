@@ -24,11 +24,6 @@ struct Player: Identifiable, Decodable {
     struct Team: Identifiable, Decodable {
         let id: Int                             // 113
         let link: String                        // /api/v1/teams/113
-        
-        init(id: Int, link: String) {
-            self.id = id
-            self.link = link
-        }
     }
     
     let primaryPosition: Position
@@ -36,23 +31,12 @@ struct Player: Identifiable, Decodable {
         let name: String                        // Pitcher
         let type: String                        // Pitcher
         let abbreviation: String                // P
-        
-        init(name: String, type: String, abbreviation: String) {
-            self.name = name
-            self.type = type
-            self.abbreviation = abbreviation
-        }
     }
     
     let batSide: BatSide
     struct BatSide: Decodable {
         let code: String                        // L
         let description: String                 // Left
-        
-        init(code: String, description: String) {
-            self.code = code
-            self.description = description
-        }
     }
     
     let pitchHand: PitchHand
@@ -121,55 +105,6 @@ struct Player: Identifiable, Decodable {
         self.pitchingStats = try container.decodeIfPresent(PitchingStats.self, forKey: .pitchingStats)
         self.fieldingStats = try container.decodeIfPresent(FieldingStats.self, forKey: .fieldingStats)
     }
-    init(
-        id: Int,
-        headshotId: Int? = nil,
-        fullName: String,
-        firstName: String,
-        lastName: String,
-        primaryNumber: String,
-        birthDate: String,
-        birthDateFormatted: String? = nil,
-        currentAge: Int,
-        birthCity: String? = nil,
-        birthStateProvince: String? = nil,
-        birthCountry: String,
-        height: String,
-        weight: Int,
-        currentTeam: Team,
-        primaryPosition: Position,
-        batSide: BatSide,
-        pitchHand: PitchHand,
-        boxscoreName: String,
-        initLastName: String,
-        hittingStats: HittingStats? = nil,
-        pitchingStats: PitchingStats? = nil,
-        fieldingStats: FieldingStats? = nil
-    ) {
-        self.id = id
-        self.headshotId = headshotId
-        self.fullName = fullName
-        self.firstName = firstName
-        self.lastName = lastName
-        self.primaryNumber = primaryNumber
-        self.birthDate = birthDate
-        self.birthDateFormatted = birthDateFormatted
-        self.currentAge = currentAge
-        self.birthCity = birthCity
-        self.birthStateProvince = birthStateProvince
-        self.birthCountry = birthCountry
-        self.height = height
-        self.weight = weight
-        self.currentTeam = currentTeam
-        self.primaryPosition = primaryPosition
-        self.batSide = batSide
-        self.pitchHand = pitchHand
-        self.boxscoreName = boxscoreName
-        self.initLastName = initLastName
-        self.hittingStats = hittingStats
-        self.pitchingStats = pitchingStats
-        self.fieldingStats = fieldingStats
-    }
 }
 
 struct PlayerResponse: Decodable {
@@ -195,4 +130,37 @@ struct PlayerInfo: Decodable {
             self.urlHeadshot = try container.decodeIfPresent(String.self, forKey: .urlHeadshot)
         }
     }
+}
+
+struct SimplePlayer: Decodable {
+    var headshotId: Int?
+    let person: Person
+    struct Person: Identifiable, Decodable {
+        let id: Int                 // 605113
+        let fullName: String        // Nick Ahmed
+        let link: String            // /api/v1/people/605113
+    }
+    
+    let jerseyNumber: String
+    
+    let position: Position
+    struct Position: Decodable {
+        let name: String            // "Shortstop"
+        let type: String            // "Infielder"
+        let abbreviation: String    // "SS"
+    }
+    
+    let Status: Status?
+    struct Status: Decodable {
+        let code: String            // "A"
+        let description: String     // "Active"
+    }
+    
+    var hittingStats: HittingStats?
+    var pitchingStats: PitchingStats?
+    var fieldingStats: FieldingStats?
+}
+
+struct SimplePlayerResponse: Decodable {
+    let roster: [SimplePlayer]
 }

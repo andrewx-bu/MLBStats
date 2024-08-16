@@ -15,6 +15,7 @@
 		496017E92C6C537E002C0D8A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017E82C6C537E002C0D8A /* Schedule.swift */; };
 		496017EF2C6C5F75002C0D8A /* CalendarViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017EE2C6C5F74002C0D8A /* CalendarViewVM.swift */; };
 		496017F12C6DB71C002C0D8A /* DetailGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017F02C6DB71C002C0D8A /* DetailGameView.swift */; };
+		496017F32C6ED2A9002C0D8A /* LiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496017F22C6ED2A9002C0D8A /* LiveData.swift */; };
 		496BCF4E2C639733003777F4 /* PlayerListViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */; };
 		496BCF512C639887003777F4 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 496BCF502C639887003777F4 /* SDWebImageSwiftUI */; };
 		496BCF542C6398DA003777F4 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 496BCF532C6398DA003777F4 /* SDWebImageSVGCoder */; };
@@ -49,6 +50,7 @@
 		496017E82C6C537E002C0D8A /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		496017EE2C6C5F74002C0D8A /* CalendarViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewVM.swift; sourceTree = "<group>"; };
 		496017F02C6DB71C002C0D8A /* DetailGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGameView.swift; sourceTree = "<group>"; };
+		496017F22C6ED2A9002C0D8A /* LiveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveData.swift; sourceTree = "<group>"; };
 		496BCF4D2C639733003777F4 /* PlayerListViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewVM.swift; sourceTree = "<group>"; };
 		496D83AC2C60C13A00712C52 /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
 		496D83AF2C61ABEC00712C52 /* HittingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HittingStats.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				49F3B9D12C5F2BB5004FAF69 /* Day.swift */,
 				496017E82C6C537E002C0D8A /* Schedule.swift */,
+				496017F22C6ED2A9002C0D8A /* LiveData.swift */,
 				496017EE2C6C5F74002C0D8A /* CalendarViewVM.swift */,
 				49F3B9CA2C5F1438004FAF69 /* CalendarView.swift */,
 				496017F02C6DB71C002C0D8A /* DetailGameView.swift */,
@@ -271,6 +274,7 @@
 				495121FC2C6AFD0E0064589A /* TeamSearchTab.swift in Sources */,
 				49F3B9CB2C5F1438004FAF69 /* CalendarView.swift in Sources */,
 				49F3B9D02C5F18A4004FAF69 /* Extensions.swift in Sources */,
+				496017F32C6ED2A9002C0D8A /* LiveData.swift in Sources */,
 				49FDEF1E2C63B75300D9D154 /* DetailPlayerView.swift in Sources */,
 				49F3B9C42C5F066D004FAF69 /* Tab.swift in Sources */,
 				496BCF4E2C639733003777F4 /* PlayerListViewVM.swift in Sources */,

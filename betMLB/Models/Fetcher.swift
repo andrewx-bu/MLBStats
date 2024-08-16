@@ -35,6 +35,35 @@ class Fetcher {
         return []
     }
     
+    // For Game Day, returns a team's players without extra information like age and birthdate
+    func fetchSimplePlayers(teamId: Int) async throws -> [SimplePlayer] {
+        let urlString = "https://statsapi.mlb.com/api/v1/teams/\(teamId)/roster?rosterType=fullSeason"
+        guard let url = URL(string: urlString) else {
+            print("fetchPlayers: Invalid URL string: \(urlString)")
+            throw URLError(.badURL)
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let response = try JSONDecoder().decode(SimplePlayerResponse.self, from: data)
+            return response.roster
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch {
+            print("fetchPlayers: \(error)")
+            throw error
+        }
+        return []
+    }
+    
     // Returns list of all teams
     func fetchTeams() async throws -> [Team] {
         let urlString = "https://statsapi.mlb.com/api/v1/teams?sportId=1"
@@ -135,6 +164,43 @@ class Fetcher {
         return []
     }
     
+    func fetchLineups(gamePk: Int) async throws -> LineupData? {
+        let urlString = "https://statsapi.mlb.com/api/v1.1/game/\(gamePk)/feed/live"
+        guard let url = URL(string: urlString) else {
+            print("fetchLineups: Invalid game data URL")
+            throw URLError(.badURL)
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let decoder = JSONDecoder()
+            let response = try decoder.decode(LiveDataResponse.self, from: data)
+            let lineupData = LineupData(
+                awayBatters: response.liveData.boxscore.teams.away.battingOrder,
+                awayStartingPitchers: response.liveData.boxscore.teams.away.pitchers,
+                awayBullpen: response.liveData.boxscore.teams.away.bullpen,
+                homeBatters: response.liveData.boxscore.teams.home.battingOrder,
+                homeStartingPitchers: response.liveData.boxscore.teams.home.pitchers,
+                homeBullpen: response.liveData.boxscore.teams.home.bullpen
+            )
+            return lineupData
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.valueNotFound(let value, let context) {
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch DecodingError.typeMismatch(let type, let context) {
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+        } catch {
+            print("fetchSchedule: \(error)")
+            throw error
+        }
+        return nil
+    }
+    
     enum StatType: String {
         case hitting = "bat"
         case pitching = "pit"
@@ -202,5 +268,5 @@ class Fetcher {
         return []
     }
     
-    // func fetchLeagueStats
+    // func fetchLeagueStats?
 }

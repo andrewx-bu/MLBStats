@@ -52,9 +52,9 @@ struct CalendarView: View {
                 RoundedRectangle(cornerRadius: 15)
                     .fill(
                         LinearGradient(
-                        gradient: Gradient(colors: [awayColors.first!, homeColors.first!]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
+                            gradient: Gradient(colors: [awayColors.first!, homeColors.first!]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
                         )
                     )
                     .frame(height: 75)
