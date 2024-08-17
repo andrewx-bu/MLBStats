@@ -20,63 +20,65 @@ struct DetailGameView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            ScrollView {
-                Text("Venue: \(game.venue.name)")
-                Text("Status: \(game.status.detailedState)")
-                Text("Game ID: \(game.gamePk)")
-                if let lineupData = self.lineupData {
-                    Text("Away Batters")
-                        .font(.title2)
-                    ForEach(lineupData.awayBatters, id: \.self) { batterID in
-                        if let batter = findPlayer(by: batterID) {
-                            Text("Name: \(batter.person.fullName)")
-                        } else {
-                            Text("Batter ID: \(batterID) (Not found)")
+            Text("Venue: \(game.venue.name)")
+            Text("Status: \(game.status.detailedState)")
+            Text("Game ID: \(game.gamePk)")
+        }
+        HStack {
+            if let lineupData = self.lineupData {
+                VStack {
+                    ScrollView {
+                        Text("Away Batters")
+                        ForEach(lineupData.awayBatters, id: \.self) { batterID in
+                            if let batter = findPlayer(by: batterID) {
+                                Text("\(batter.person.fullName)")
+                            } else {
+                                Text("Batter ID: \(batterID) (Not found)")
+                            }
+                        }
+                        
+                        Text("Away Starting Pitchers")
+                            .font(.headline)
+                        ForEach(lineupData.awayStartingPitchers, id: \.self) { pitcherID in
+                            if let pitcher = findPlayer(by: pitcherID) {
+                                Text("\(pitcher.person.fullName)")
+                            } else {
+                                Text("Pitcher ID: \(pitcherID) (Not found)")
+                            }
                         }
                     }
-                    
-                    Text("Away Starting Pitchers")
-                        .font(.headline)
-                    ForEach(lineupData.awayStartingPitchers, id: \.self) { pitcherID in
-                        if let pitcher = findPlayer(by: pitcherID) {
-                            Text("Name: \(pitcher.person.fullName)")
-                        } else {
-                            Text("Pitcher ID: \(pitcherID) (Not found)")
+                    .scrollIndicators(.hidden)
+                }
+                Divider()
+                    .frame(width: 4, height: .infinity)
+                    .foregroundStyle(.primary)
+                VStack {
+                    ScrollView {
+                        Text("Home Batters")
+                            .font(.headline)
+                        ForEach(lineupData.homeBatters, id: \.self) { batterID in
+                            if let batter = findPlayer(by: batterID) {
+                                Text("\(batter.person.fullName)")
+                            } else {
+                                Text("Batter ID: \(batterID) (Not found)")
+                            }
+                        }
+                        
+                        Text("Home Starting Pitchers")
+                            .font(.headline)
+                        ForEach(lineupData.homeStartingPitchers, id: \.self) { pitcherID in
+                            if let pitcher = findPlayer(by: pitcherID) {
+                                Text("\(pitcher.person.fullName)")
+                            } else {
+                                Text("Pitcher ID: \(pitcherID) (Not found)")
+                            }
                         }
                     }
-                    
-                    Text("Away Bullpen")
-                        .font(.headline)
-                    ForEach(lineupData.awayBullpen, id: \.self) { bullpenID in
-                        Text("Bullpen ID: \(bullpenID)")
-                    }
-                    
-                    Text("Home Batters")
-                        .font(.headline)
-                    ForEach(lineupData.homeBatters, id: \.self) { batterID in
-                        if let batter = findPlayer(by: batterID) {
-                            Text("Name: \(batter.person.fullName)")
-                        } else {
-                            Text("Batter ID: \(batterID) (Not found)")
-                        }
-                    }
-                    
-                    Text("Home Starting Pitchers")
-                        .font(.headline)
-                    ForEach(lineupData.homeStartingPitchers, id: \.self) { pitcherID in
-                        Text("Pitcher ID: \(pitcherID)")
-                    }
-                    
-                    Text("Home Bullpen")
-                        .font(.headline)
-                    ForEach(lineupData.homeBullpen, id: \.self) { bullpenID in
-                        Text("Bullpen ID: \(bullpenID)")
-                    }
+                    .scrollIndicators(.hidden)
                 }
             }
-            .scrollIndicators(.hidden)
         }
-        .frame(width: 300)
+        .frame(maxWidth: .infinity)
         .task {
             await loadData()
         }
