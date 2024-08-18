@@ -24,17 +24,22 @@ struct DetailGameView: View {
     }
     
     var body: some View {
-        VStack() {
-            Text("\(game.teams.away.team.name) @ \(game.teams.home.team.name)")
-            Text("Venue: \(game.venue.name)")
-            Text("Status: \(game.status.detailedState)")
-            Text("Game ID: \(game.gamePk)")
-            if let lineScore = self.lineScore {
-                if let balls = lineScore.balls {
-                    Text("\(balls)")
-                }
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
+                Text("\(game.teams.away.team.name) @ \(game.teams.home.team.name)")
+                Text("Venue: \(game.venue.name)")
+                Text("Status: \(game.status.detailedState)")
+                Text("Game ID: \(game.gamePk)")
             }
+            .padding(.leading, 20)
             HStack {
+                if let score = game.teams.away.score {
+                    Spacer()
+                    Text("\(score)")
+                        .font(.title)
+                        .fontWeight((game.teams.away.score ?? 0) > (game.teams.home.score ?? 0) ? .bold : .regular)
+                        .foregroundColor((game.teams.away.score ?? 0) < (game.teams.home.score ?? 0) ? .gray : .primary)
+                }
                 Spacer()
                 Image.teamLogoImage(for: game.teams.away.team.id)
                     .frame(width: 40, height: 40)
@@ -42,8 +47,10 @@ struct DetailGameView: View {
                     Text("\(mapTeamIdToAbbreviation(fromId: game.teams.away.team.id))")
                         .font(.callout)
                     Text("\(game.teams.away.leagueRecord.wins)-\(game.teams.away.leagueRecord.losses)")
+                        .font(.caption2)
                 }
-                .font(.caption2)
+                .fontWeight((game.teams.away.score ?? 0) > (game.teams.home.score ?? 0) ? .bold : .regular)
+                .foregroundColor((game.teams.away.score ?? 0) < (game.teams.home.score ?? 0) ? .gray : .primary)
                 Spacer()
                 Text("\(game.gameDate.formattedGameTime())")
                 Spacer()
@@ -51,11 +58,20 @@ struct DetailGameView: View {
                     Text("\(mapTeamIdToAbbreviation(fromId: game.teams.home.team.id))")
                         .font(.callout)
                     Text("\(game.teams.home.leagueRecord.wins)-\(game.teams.home.leagueRecord.losses)")
+                        .font(.caption2)
                 }
-                .font(.caption2)
+                .fontWeight((game.teams.away.score ?? 0) < (game.teams.home.score ?? 0) ? .bold : .regular)
+                .foregroundColor((game.teams.away.score ?? 0) > (game.teams.home.score ?? 0) ? .gray : .primary)
                 Image.teamLogoImage(for: game.teams.home.team.id)
                     .frame(width: 40, height: 40)
                 Spacer()
+                if let score = game.teams.home.score {
+                    Text("\(score)")
+                        .font(.title)
+                        .fontWeight((game.teams.away.score ?? 0) < (game.teams.home.score ?? 0) ? .bold : .regular)
+                        .foregroundColor((game.teams.away.score ?? 0) > (game.teams.home.score ?? 0) ? .gray : .primary)
+                    Spacer()
+                }
             }
             .padding(.vertical, 5)
             .background(
@@ -66,13 +82,12 @@ struct DetailGameView: View {
                 RoundedRectangle(cornerRadius: 15)
                     .stroke(Color.gray, lineWidth: 1)
             )
-            .padding(.horizontal)
         }
         .font(.footnote)
         HStack {
             if let lineupData = self.lineupData {
-                VStack {
-                    ScrollView {
+                ScrollView {
+                    VStack(alignment: .leading) {
                         Text("Away Pitchers")
                             .font(.headline)
                         ForEach(lineupData.awayStartingPitchers, id: \.self) { pitcherID in
@@ -82,6 +97,10 @@ struct DetailGameView: View {
                                 Text("Pitcher ID: \(pitcherID) (Not found)")
                             }
                         }
+                        
+                        Divider()
+                            .frame(width: 3)
+                            .background(.indigo)
                         
                         Text("Away Batters")
                             .font(.headline)
@@ -93,13 +112,14 @@ struct DetailGameView: View {
                             }
                         }
                     }
-                    .scrollIndicators(.hidden)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .scrollIndicators(.hidden)
                 Divider()
-                    .frame(width: 10)
-                    .foregroundStyle(.indigo)
-                VStack {
-                    ScrollView {
+                    .frame(width: 3)
+                    .background(.indigo)
+                ScrollView {
+                    VStack(alignment: .leading) {
                         Text("Home Pitchers")
                             .font(.headline)
                         ForEach(lineupData.homeStartingPitchers, id: \.self) { pitcherID in
@@ -109,6 +129,10 @@ struct DetailGameView: View {
                                 Text("Pitcher ID: \(pitcherID) (Not found)")
                             }
                         }
+                        
+                        Divider()
+                            .frame(width: 3)
+                            .background(.indigo)
                         
                         Text("Home Batters")
                             .font(.headline)
@@ -120,10 +144,13 @@ struct DetailGameView: View {
                             }
                         }
                     }
-                    .scrollIndicators(.hidden)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .scrollIndicators(.hidden)
+                
             }
         }
+        .padding(.horizontal, 10)
         .frame(maxWidth: .infinity)
         .task {
             await loadData()
