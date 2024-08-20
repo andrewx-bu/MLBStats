@@ -23,6 +23,11 @@ struct DetailGameView: View {
     @State private var teamHittingStatsDictionary: HittingStatsDictionary = [:]
     @State private var teamPitchingStatsDictionary: PitchingStatsDictionary = [:]
     @State private var teamFieldingStatsDictionary: FieldingStatsDictionary = [:]
+    let columns = [
+        GridItem(.flexible(minimum: 240)),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     init(detailGame: ScheduleDate.Game) {
         game = detailGame
@@ -811,14 +816,14 @@ struct DetailGameView: View {
                     Image.teamLogoImage(for: game.teams.home.team.id)
                         .frame(width: 20, height: 20)
                 }
+                .padding(.trailing, 25)
                 .frame(maxWidth: .infinity)
                 Divider()
                 if let awayTeam = findTeam(by: game.teams.away.team.id), let homeTeam = findTeam(by: game.teams.home.team.id) {
-                    if let awayHittingStats = awayTeam.hittingStats, let awayPitchingStats = awayTeam.pitchingStats, let awayFieldingStats = awayTeam.fieldingStats, let homeHittingStats = homeTeam.hittingStats, let homePitchingStats = homeTeam.pitchingStats, let homeFieldingStats = homeTeam.fieldingStats {
-                        VStack {
-                            HStack(spacing: 25) {
+                    if let awayHittingStats = awayTeam.hittingStats, let awayPitchingStats = awayTeam.pitchingStats, let homeHittingStats = homeTeam.hittingStats, let homePitchingStats = homeTeam.pitchingStats {
+                        LazyVGrid(columns: columns) {
+                            Group {
                                 Text("Batting Average")
-                                Spacer()
                                 let awayAVG = String(format: "%.3f", awayHittingStats.AVG)
                                     .split(separator: ".")
                                     .last ?? ""
@@ -827,28 +832,20 @@ struct DetailGameView: View {
                                     .last ?? ""
                                 Text(".\(awayAVG)")
                                 Text(".\(homeAVG)")
-                            }
-                            HStack(spacing: 25) {
+                                
                                 Text("Runs")
-                                Spacer()
-                                Text(".\(awayHittingStats.R)")
-                                Text(".\(homeHittingStats.R)")
-                            }
-                            HStack(spacing: 25) {
+                                Text("\(awayHittingStats.R)")
+                                Text("\(homeHittingStats.R)")
+                                
                                 Text("Hits")
-                                Spacer()
                                 Text("\(awayHittingStats.H)")
                                 Text("\(homeHittingStats.H)")
-                            }
-                            HStack(spacing: 25) {
+                                
                                 Text("Home Runs")
-                                Spacer()
                                 Text("\(awayHittingStats.HR)")
                                 Text("\(homeHittingStats.HR)")
-                            }
-                            HStack(spacing: 25) {
+                                
                                 Text("On Base Percentage")
-                                Spacer()
                                 let awayOBP = String(format: "%.3f", awayHittingStats.OBP)
                                     .split(separator: ".")
                                     .last ?? ""
@@ -857,9 +854,40 @@ struct DetailGameView: View {
                                     .last ?? ""
                                 Text(".\(awayOBP)")
                                 Text(".\(homeOBP)")
+                                
+                                Text("Slugging Percentage")
+                                Text(String(format: "%.3f", awayHittingStats.SLG))
+                                Text(String(format: "%.3f", homeHittingStats.SLG))
+                                
+                                Text("Earned Run AVG")
+                                Text(String(format: "%.2f", awayPitchingStats.ERA))
+                                Text(String(format: "%.2f", homePitchingStats.ERA))
+                                
+                                Text("Walks Plus Hits per IP")
+                                Text(String(format: "%.2f", awayPitchingStats.WHIP))
+                                Text(String(format: "%.2f", homePitchingStats.WHIP))
+                                
+                                Text("Walks")
+                                Text("\(awayPitchingStats.BB)")
+                                Text("\(homePitchingStats.BB)")
+                                
+                                Text("Strikeouts")
+                                Text("\(awayPitchingStats.strikes)")
+                                Text("\(homePitchingStats.strikes)")
+                                
+                                Text("Opponent Batting Average")
+                                let awayOppAVG = String(format: "%.3f", awayPitchingStats.AVG)
+                                    .split(separator: ".")
+                                    .last ?? ""
+                                let homeOppAVG = String(format: "%.3f", homePitchingStats.AVG)
+                                    .split(separator: ".")
+                                    .last ?? ""
+                                Text(".\(awayOppAVG)")
+                                Text(".\(homeOppAVG)")
                             }
+                            .font(.footnote)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .font(.footnote)
                     } else {
                         Text("Not Found")
                     }
