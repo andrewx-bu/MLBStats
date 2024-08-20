@@ -14,9 +14,6 @@ struct DetailGameView: View {
     @State private var hittingStatsDictionary: HittingStatsDictionary = [:]
     @State private var pitchingStatsDictionary: PitchingStatsDictionary = [:]
     @State private var fieldingStatsDictionary: FieldingStatsDictionary = [:]
-    @State private var inProgress = false
-    @State private var isFinished = false
-    @State private var scheduled = true
     @State private var playerImages: [Int: Image] = [:]
     @State private var morePitcherStatsExpanded = false
     @State var teams: [Team] = []
@@ -28,18 +25,35 @@ struct DetailGameView: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+    let lineScoreColumns = [
+        GridItem(.fixed(35)), // Empty cell or team name
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+        GridItem(.fixed(15)),
+    ]
+    @State private var awayRuns: Int = 0
+    @State private var awayHits: Int = 0
+    @State private var awayErrors: Int = 0
+    @State private var homeRuns: Int = 0
+    @State private var homeHits: Int = 0
+    @State private var homeErrors: Int = 0
     
     init(detailGame: ScheduleDate.Game) {
         game = detailGame
-        if game.status.detailedState == "In Progress" {
-            inProgress = true
-        } else if game.status.detailedState == "Final" {
-            isFinished = true
-        }
     }
     
     var body: some View {
         ScrollView {
+            // Summary Box
             VStack(alignment: .leading) {
                 if let awayColors = teamColors[mapTeamIdToAbbreviation(fromId: game.teams.away.team.id)], let homeColors = teamColors[mapTeamIdToAbbreviation(fromId: game.teams.home.team.id)] {
                     VStack(alignment: .leading) {
@@ -127,6 +141,78 @@ struct DetailGameView: View {
             }
             .font(.footnote)
             .padding(.horizontal, 10)
+            // Line Score
+            VStack(alignment: .leading) {
+                Text("Linescore")
+                    .font(.headline)
+                Divider()
+                    .frame(width: 175, height: 3)
+                    .background(.indigo)
+                ScrollView(.horizontal) {
+                    LazyVGrid(columns: lineScoreColumns) {
+                        Text("")
+                        ForEach(1...9, id: \.self) { inning in
+                            Text("\(inning)")
+                        }
+                        Text("R")
+                        Text("H")
+                        Text("E")
+                        
+                        Text(mapTeamIdToAbbreviation(fromId: game.teams.away.team.id))
+                        if let lineScore = self.lineScore {
+                            ForEach(lineScore.innings, id: \.num) { inning in
+                                if let runs = inning.away.runs {
+                                    Text("\(runs)")
+                                } else {
+                                    Circle()
+                                        .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
+                                        .frame(width: 7.5, height: 7.5)
+                                }
+                            }
+                        } else {
+                            ForEach(100...108, id: \.self) { _ in
+                                Circle()
+                                    .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
+                                    .frame(width: 7.5, height: 7.5)
+                            }
+                        }
+                        Text("\(awayRuns)")
+                        Text("\(awayHits)")
+                        Text("\(awayErrors)")
+                        
+                        Text(mapTeamIdToAbbreviation(fromId: game.teams.home.team.id))
+                        if let lineScore = self.lineScore {
+                            ForEach(lineScore.innings, id: \.num) { inning in
+                                if let runs = inning.home.runs {
+                                    Text("\(runs)")
+                                } else {
+                                    Circle()
+                                        .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
+                                        .frame(width: 7.5, height: 7.5)
+                                }
+                            }
+                        } else {
+                            ForEach(200...208, id: \.self) { _ in
+                                Circle()
+                                    .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
+                                    .frame(width: 7.5, height: 7.5)
+                            }
+                        }
+                        Text("\(homeRuns)")
+                        Text("\(homeHits)")
+                        Text("\(homeErrors)")
+                    }
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color(UIColor.systemGray6))
+            )
+            .padding(.horizontal, 10)
+            .frame(maxWidth: .infinity)
             // Probable Pitchers
             VStack(alignment: .leading) {
                 Text("Probable Pitchers")
@@ -238,6 +324,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text("\(pitchingStats.W)-\(pitchingStats.L)")
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -251,6 +339,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text("\(pitchingStats.W)-\(pitchingStats.L)")
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -265,6 +355,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text(String(format: "%.3f", pitchingStats.ERA))
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -278,6 +370,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text(String(format: "%.3f", pitchingStats.ERA))
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -292,6 +386,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text(String(format: "%.3f", pitchingStats.WHIP))
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -305,6 +401,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text(String(format: "%.3f", pitchingStats.WHIP))
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -319,6 +417,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text(String(format: "%.1f", pitchingStats.IP))
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -332,6 +432,8 @@ struct DetailGameView: View {
                            let pitcher = findPlayer(by: firstPitcherID) {
                             if let pitchingStats = pitcher.pitchingStats {
                                 Text(String(format: "%.1f", pitchingStats.IP))
+                            } else {
+                                Text("N/A")
                             }
                         } else {
                             Text("N/A")
@@ -348,6 +450,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.H)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -361,6 +465,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.H)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -374,6 +480,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.strikes)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -387,6 +495,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.strikes)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -400,6 +510,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.BB)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -413,6 +525,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.BB)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -426,6 +540,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.HR)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -439,6 +555,8 @@ struct DetailGameView: View {
                                    let pitcher = findPlayer(by: firstPitcherID) {
                                     if let pitchingStats = pitcher.pitchingStats {
                                         Text("\(pitchingStats.HR)")
+                                    } else {
+                                        Text("N/A")
                                     }
                                 } else {
                                     Text("N/A")
@@ -948,6 +1066,21 @@ struct DetailGameView: View {
             updatePlayersWithStats(hittingStatsDictionary: hittingStatsDictionary, pitchingStatsDictionary: pitchingStatsDictionary, fieldingStatsDictionary: fieldingStatsDictionary)
             
             updateTeamsWithStats(hittingStatsDictionary: teamHittingStatsDictionary, pitchingStatsDictionary: teamPitchingStatsDictionary, fieldingStatsDictionary: teamFieldingStatsDictionary)
+            
+            if let lineScore = self.lineScore {
+                for inning in lineScore.innings {
+                    if let runs = inning.away.runs {
+                        awayRuns += runs
+                    }
+                    awayHits += inning.away.hits
+                    awayErrors += inning.away.errors
+                    if let runs = inning.home.runs {
+                        homeRuns += runs
+                    }
+                    homeHits += inning.home.hits
+                    homeErrors += inning.home.errors
+                }
+            }
             
             await loadPlayerImages()
         } catch {
