@@ -117,6 +117,7 @@ struct DetailGameView: View {
         }
         .font(.footnote)
         .padding(.horizontal, 10)
+        // Probable Pitchers
         VStack(alignment: .leading) {
             Text("Probable Pitchers")
                 .font(.headline)
@@ -460,6 +461,7 @@ struct DetailGameView: View {
         )
         .padding(.horizontal, 10)
         .frame(maxWidth: .infinity)
+        // Batting Leaders
         VStack(alignment: .leading) {
             Text("Batting Leaders")
                 .font(.headline)
@@ -684,7 +686,115 @@ struct DetailGameView: View {
                 }
             }
             Divider()
+            HStack {
+                Spacer()
+                Text("Runs Batted In")
+                    .font(.footnote)
+                Spacer()
+            }
+            HStack {
+                if let lineupData = self.lineupData {
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        if let topAwayBatter = findTopHitter(by: .RBI, from: lineupData.awayBatters), let hittingStats = topAwayBatter.hittingStats {
+                            let decimalString = String(format: "%.3f", hittingStats.AVG)
+                                .split(separator: ".")
+                                .last ?? ""
+                            Text("\(topAwayBatter.person.fullName.abbreviatedName)")
+                                .font(.caption2)
+                            Text("\(hittingStats.RBI)")
+                                .fontWeight(.bold) +
+                            Text(" RBI") +
+                            Text(".\(decimalString)")
+                                .fontWeight(.bold) +
+                            Text(" AVG ") +
+                            Text("\(hittingStats.HR)")
+                                .fontWeight(.bold) +
+                            Text(" HR ")
+                        } else {
+                            Text("(Not Found)")
+                                .font(.caption)
+                            Text("N/A")
+                        }
+                    }
+                    .font(.system(size: 8))
+                    if let topAwayBatter = findTopHitter(by: .RBI, from: lineupData.awayBatters), let image = playerImages[topAwayBatter.person.id] {
+                        image
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.gray, lineWidth: 1.5)
+                            )
+                    } else {
+                        Circle()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.gray)
+                            .overlay(
+                                Text("?")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                            )
+                    }
+                    if let topHomeBatter = findTopHitter(by: .RBI, from: lineupData.homeBatters), let image = playerImages[topHomeBatter.person.id] {
+                        image
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.gray, lineWidth: 1.5)
+                            )
+                    } else {
+                        Circle()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.gray)
+                            .overlay(
+                                Text("?")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                            )
+                    }
+                    VStack(alignment: .leading) {
+                        if let topHomeBatter = findTopHitter(by: .RBI, from: lineupData.homeBatters), let hittingStats = topHomeBatter.hittingStats {
+                            let decimalString = String(format: "%.3f", hittingStats.AVG)
+                                .split(separator: ".")
+                                .last ?? ""
+                            Text("\(topHomeBatter.person.fullName.abbreviatedName)")
+                                .font(.caption2)
+                            Text("\(hittingStats.RBI)")
+                                .fontWeight(.bold) +
+                            Text(" RBI") +
+                            Text(".\(decimalString)")
+                                .fontWeight(.bold) +
+                            Text(" AVG ") +
+                            Text("\(hittingStats.HR)")
+                                .fontWeight(.bold) +
+                            Text(" HR ")
+                        } else {
+                            Text("(Not Found)")
+                                .font(.caption)
+                            Text("N/A")
+                        }
+                    }
+                    .font(.system(size: 9))
+                    Spacer()
+                }
+            }
+            Divider()
             Spacer()
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color(UIColor.systemGray6))
+        )
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 10)
+        // Team Stats
+        VStack(alignment: .leading) {
+            
         }
         .padding()
         .background(

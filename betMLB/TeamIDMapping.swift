@@ -76,10 +76,10 @@ let teamAbbreviationMapping: [Int: String] = [
 let teamColors: [String: [Color]] = [
     "ARI": [Color(hex: "#A71930"), Color(hex: "#E3D4AD")], // Arizona Diamondbacks
     "ATL": [Color(hex: "#CE1141"), Color(hex: "#13274F")], // Atlanta Braves
-    "BAL": [Color(hex: "#DF4601"), Color(hex: "#000000")], // Baltimore Orioles
+    "BAL": [Color(hex: "#DF4601"), Color(hex: "#232B2B")], // Baltimore Orioles
     "BOS": [Color(hex: "#BD3039"), Color(hex: "#0C2340")], // Boston Red Sox
     "CHC": [Color(hex: "#0E3386"), Color(hex: "#CC3433")], // Chicago Cubs
-    "CIN": [Color(hex: "#C6011F"), Color(hex: "#000000")], // Cincinnati Reds
+    "CIN": [Color(hex: "#C6011F"), Color(hex: "#232B2B")], // Cincinnati Reds
     "CLE": [Color(hex: "#00385D"), Color(hex: "#E50022")], // Cleveland Guardians
     "COL": [Color(hex: "#333366"), Color(hex: "#C4CED4")], // Colorado Rockies
     "CWS": [Color(hex: "#27251F"), Color(hex: "#C4CED4")], // Chicago White Sox
@@ -88,7 +88,7 @@ let teamColors: [String: [Color]] = [
     "KC": [Color(hex: "#004687"), Color(hex: "#BD9B60")], // Kansas City Royals
     "LAD": [Color(hex: "#005A9C"), Color(hex: "EF3E42")], // Los Angeles Dodgers
     "LAA": [Color(hex: "#003263"), Color(hex:"862633")], // Los Angeles Angels
-    "MIA": [Color(hex: "#00A3E0"), Color(hex: "#000000")], // Miami Marlins
+    "MIA": [Color(hex: "#00A3E0"), Color(hex: "#232B2B")], // Miami Marlins
     "MIL": [Color(hex: "#12284B"), Color(hex: "#FFC52F")], // Milwaukee Brewers
     "MIN": [Color(hex: "#002B5C"), Color(hex: "#D31145")], // Minnesota Twins
     "NYM": [Color(hex: "#002D72"), Color(hex: "#FF5910")], // New York Mets
