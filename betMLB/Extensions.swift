@@ -105,6 +105,16 @@ extension String {
         }
         return self
     }
+    
+    // Changes full name like Luis Castillo to L. Castillo
+    var abbreviatedName: String {
+        let components = self.split(separator: " ")
+        guard let firstName = components.first, let lastName = components.last else {
+            return self
+        }
+        let firstInitial = firstName.prefix(1)
+        return "\(firstInitial). \(lastName)"
+    }
 }
 
 extension Color {

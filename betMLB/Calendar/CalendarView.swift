@@ -109,12 +109,22 @@ struct CalendarView: View {
                         .font(.caption2)
                 }
                 .offset(x: 75, y: 10)
-                Text("\(game.teams.away.score ?? 0) - \(game.teams.home.score ?? 0)")
-                    .font(.headline)
-                    .offset(y: -25)
-                Text("\(game.status.detailedState)")
-                    .font(.caption)
-                    .offset(y: 25)
+                if game.status.detailedState == "Scheduled" {
+                    Text("\(game.gameDate.formattedGameTime())")
+                        .font(.caption)
+                        .offset(y: -25)
+                    Text("\(game.status.detailedState)")
+                        .font(.caption)
+                        .offset(y: 25)
+                } else {
+                    Text("\(game.teams.away.score ?? 0) - \(game.teams.home.score ?? 0)")
+                        .font(.headline)
+                        .offset(y: -25)
+                    Text("\(game.status.detailedState)")
+                        .font(.caption)
+                        .offset(y: 25)
+                }
+         
             }
         }
     }

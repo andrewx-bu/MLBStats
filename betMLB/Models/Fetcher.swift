@@ -128,6 +128,41 @@ class Fetcher {
         return nil
     }
     
+    // Headshot for simple player
+    func fetchPlayerImages(for player: SimplePlayer) async -> Image? {
+        guard let id = player.headshotId else {
+            print("fetchPlayerImage: Player has no headshot ID")
+            return nil
+        }
+        
+        let playerInfoString = "https://www.fangraphs.com/api/players/stats?playerid=\(id)&position="
+        guard let url = URL(string: playerInfoString) else {
+            print("fetchPlayerImage: Invalid URL string: \(playerInfoString)")
+            return nil
+        }
+        
+        do {
+            // Fetch player info to get headshot URL
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let headshotResponse = try JSONDecoder().decode(PlayerInfo.self, from: data)
+            
+            guard let png = headshotResponse.playerInfo.urlHeadshot, let headshotURL = URL(string: png) else {
+                print("fetchPlayerImage: Player has no headshot URL")
+                return nil
+            }
+            
+            // Fetch the headshot image
+            let (imageData, _) = try await URLSession.shared.data(from: headshotURL)
+            if let uiImage = UIImage(data: imageData) {
+                return Image(uiImage: uiImage)
+            }
+        } catch {
+            print("fetchPlayerImage: Error fetching player image for player \(player.person.id): \(error)")
+        }
+        
+        return nil
+    }
+    
     // Returns games for specified date
     func fetchSchedule(date: Date? = nil) async throws -> [ScheduleDate] {
         var urlString = "https://statsapi.mlb.com/api/v1/schedule?sportId=1"
