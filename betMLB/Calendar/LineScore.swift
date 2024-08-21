@@ -5,9 +5,9 @@
 import Foundation
 
 struct LineScore: Decodable {
-    let currentInning: Int?
-    let currentInningOrdinal: String?
-    let inningState: String?
+    let currentInning: Int?                 // 9
+    let currentInningOrdinal: String?       // 9th
+    let inningState: String?                // Bottom
     
     let innings: [Inning]
     struct Inning: Decodable {

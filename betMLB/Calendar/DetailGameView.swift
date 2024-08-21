@@ -20,6 +20,7 @@ struct DetailGameView: View {
     @State private var teamHittingStatsDictionary: HittingStatsDictionary = [:]
     @State private var teamPitchingStatsDictionary: PitchingStatsDictionary = [:]
     @State private var teamFieldingStatsDictionary: FieldingStatsDictionary = [:]
+    @State private var inningCount: Int = 9
     let columns = [
         GridItem(.flexible(minimum: 240)),
         GridItem(.flexible()),
@@ -27,18 +28,18 @@ struct DetailGameView: View {
     ]
     let lineScoreColumns = [
         GridItem(.fixed(35)), // Empty cell or team name
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
-        GridItem(.fixed(15)),
+        GridItem(.fixed(15)), // 1
+        GridItem(.fixed(15)), // 2
+        GridItem(.fixed(15)), // 3
+        GridItem(.fixed(15)), // 4
+        GridItem(.fixed(15)), // 5
+        GridItem(.fixed(15)), // 6
+        GridItem(.fixed(15)), // 7
+        GridItem(.fixed(15)), // 8
+        GridItem(.fixed(15)), // 9
+        GridItem(.fixed(15)), // R
+        GridItem(.fixed(15)), // H
+        GridItem(.fixed(15)), // E
     ]
     @State private var awayRuns: Int = 0
     @State private var awayHits: Int = 0
@@ -148,6 +149,10 @@ struct DetailGameView: View {
                 Divider()
                     .frame(width: 175, height: 3)
                     .background(.indigo)
+                if let lineScore = self.lineScore, let inningState = lineScore.inningState, let inningOrdinal = lineScore.currentInningOrdinal {
+                    Text("\(inningState) \(inningOrdinal)")
+                        .font(.footnote)
+                }
                 ScrollView(.horizontal) {
                     LazyVGrid(columns: lineScoreColumns) {
                         Text("")
@@ -1068,6 +1073,7 @@ struct DetailGameView: View {
             updateTeamsWithStats(hittingStatsDictionary: teamHittingStatsDictionary, pitchingStatsDictionary: teamPitchingStatsDictionary, fieldingStatsDictionary: teamFieldingStatsDictionary)
             
             if let lineScore = self.lineScore {
+                inningCount = lineScore.innings.count
                 for inning in lineScore.innings {
                     if let runs = inning.away.runs {
                         awayRuns += runs
