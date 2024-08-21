@@ -26,17 +26,8 @@ struct DetailGameView: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
-    let lineScoreColumns = [
+    @State private var lineScoreColumns = [
         GridItem(.fixed(35)), // Empty cell or team name
-        GridItem(.fixed(15)), // 1
-        GridItem(.fixed(15)), // 2
-        GridItem(.fixed(15)), // 3
-        GridItem(.fixed(15)), // 4
-        GridItem(.fixed(15)), // 5
-        GridItem(.fixed(15)), // 6
-        GridItem(.fixed(15)), // 7
-        GridItem(.fixed(15)), // 8
-        GridItem(.fixed(15)), // 9
         GridItem(.fixed(15)), // R
         GridItem(.fixed(15)), // H
         GridItem(.fixed(15)), // E
@@ -150,13 +141,20 @@ struct DetailGameView: View {
                     .frame(width: 175, height: 3)
                     .background(.indigo)
                 if let lineScore = self.lineScore, let inningState = lineScore.inningState, let inningOrdinal = lineScore.currentInningOrdinal {
-                    Text("\(inningState) \(inningOrdinal)")
-                        .font(.footnote)
+                    HStack {
+                        Text("\(inningState) \(inningOrdinal)")
+                            .font(.footnote)
+                        if game.status.detailedState == "In Progress" {
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: 7.5, height: 7.5)
+                        }
+                    }
                 }
                 ScrollView(.horizontal) {
                     LazyVGrid(columns: lineScoreColumns) {
                         Text("")
-                        ForEach(1...9, id: \.self) { inning in
+                        ForEach(1...inningCount, id: \.self) { inning in
                             Text("\(inning)")
                         }
                         Text("R")
@@ -175,7 +173,7 @@ struct DetailGameView: View {
                                 }
                             }
                         } else {
-                            ForEach(100...108, id: \.self) { _ in
+                            ForEach(100...inningCount + 100, id: \.self) { _ in
                                 Circle()
                                     .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
                                     .frame(width: 7.5, height: 7.5)
@@ -197,7 +195,7 @@ struct DetailGameView: View {
                                 }
                             }
                         } else {
-                            ForEach(200...208, id: \.self) { _ in
+                            ForEach(200...inningCount + 200, id: \.self) { _ in
                                 Circle()
                                     .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
                                     .frame(width: 7.5, height: 7.5)
@@ -1075,6 +1073,7 @@ struct DetailGameView: View {
             if let lineScore = self.lineScore {
                 inningCount = lineScore.innings.count
                 for inning in lineScore.innings {
+                    lineScoreColumns.append(GridItem(.fixed(15)))
                     if let runs = inning.away.runs {
                         awayRuns += runs
                     }
