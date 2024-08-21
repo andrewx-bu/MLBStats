@@ -32,6 +32,11 @@ struct DetailGameView: View {
         GridItem(.fixed(15)), // H
         GridItem(.fixed(15)), // E
     ]
+    let predictionColumns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
     @State private var awayRuns: Int = 0
     @State private var awayHits: Int = 0
     @State private var awayErrors: Int = 0
@@ -173,7 +178,7 @@ struct DetailGameView: View {
                                 }
                             }
                         } else {
-                            ForEach(100...inningCount + 100, id: \.self) { _ in
+                            ForEach(101...inningCount + 100, id: \.self) { _ in
                                 Circle()
                                     .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
                                     .frame(width: 7.5, height: 7.5)
@@ -195,7 +200,7 @@ struct DetailGameView: View {
                                 }
                             }
                         } else {
-                            ForEach(200...inningCount + 200, id: \.self) { _ in
+                            ForEach(201...inningCount + 200, id: \.self) { _ in
                                 Circle()
                                     .fill(game.status.detailedState == "In Progress" ? Color.red : Color.indigo)
                                     .frame(width: 7.5, height: 7.5)
@@ -1023,6 +1028,41 @@ struct DetailGameView: View {
             )
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 10)
+            VStack(alignment: .leading) {
+                Text("Prediction")
+                    .font(.headline)
+                Divider()
+                    .frame(width: 175, height: 3)
+                    .background(.indigo)
+                if let awayTeam = findTeam(by: game.teams.away.team.id), let homeTeam = findTeam(by: game.teams.home.team.id) {
+                    if let awayHittingStats = awayTeam.hittingStats, let awayPitchingStats = awayTeam.pitchingStats, let homeHittingStats = homeTeam.hittingStats, let homePitchingStats = homeTeam.pitchingStats {
+                        LazyVGrid(columns: predictionColumns) {
+                            Text("")
+                            Text("\(awayTeam.name)")
+                            Text("\(homeTeam.name)")
+                            
+                            Text("RS/G")
+                            if let ATG = awayHittingStats.TG, let HTG = homeHittingStats.TG {
+                                let awayRSG = awayHittingStats.R / ATG
+                                let homeRSG = homeHittingStats.R / HTG
+                                Text(String(format: "%.4f", awayRSG))
+                                Text(String(format: "%.4f", homeRSG))
+                            }
+                            
+                            Text("BB% Allowed")
+                            Text("")
+                            Text("")
+                        }
+                    }
+                }
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color(UIColor.systemGray6))
+            )
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 10)
         }
         .task {
             await loadData()
@@ -1072,6 +1112,11 @@ struct DetailGameView: View {
             
             if let lineScore = self.lineScore {
                 inningCount = lineScore.innings.count
+                if inningCount == 0 {
+                    for _ in 1...9 {
+                        lineScoreColumns.append(GridItem(.fixed(15)))
+                    }
+                }
                 for inning in lineScore.innings {
                     lineScoreColumns.append(GridItem(.fixed(15)))
                     if let runs = inning.away.runs {
@@ -1084,6 +1129,10 @@ struct DetailGameView: View {
                     }
                     homeHits += inning.home.hits
                     homeErrors += inning.home.errors
+                }
+            } else {
+                for _ in 1...9 {
+                    lineScoreColumns.append(GridItem(.fixed(15)))
                 }
             }
             

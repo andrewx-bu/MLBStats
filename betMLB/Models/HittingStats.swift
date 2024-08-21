@@ -80,6 +80,9 @@ struct HittingStats: IdentifiableStat, Decodable {
     let fbPCTplus: Double?      // Fly Ball PCT +
     let HRperFBpctPLUS: Double? // Home Runs/Fly Balls PCT +
     
+    let TG: Int?     // Team specific - Total Games
+    let TPA: Int?    // Team specific - Total Plate Appearances
+    
     enum CodingKeys: String, CodingKey {
         case id = "xMLBAMID"
         case playerid, teamid
@@ -117,6 +120,7 @@ struct HittingStats: IdentifiableStat, Decodable {
         case gbPCTplus = "GB%+"
         case fbPCTplus = "FB%+"
         case HRperFBpctPLUS = "HRFB%+"
+        case TG, TPA
     }
     
     init(from decoder: any Decoder) throws {
@@ -187,6 +191,8 @@ struct HittingStats: IdentifiableStat, Decodable {
         self.gbPCTplus = try container.decodeIfPresent(Double.self, forKey: .gbPCTplus)
         self.fbPCTplus = try container.decodeIfPresent(Double.self, forKey: .fbPCTplus)
         self.HRperFBpctPLUS = try container.decodeIfPresent(Double.self, forKey: .HRperFBpctPLUS)
+        self.TG = try container.decodeIfPresent(Int.self, forKey: .TG)
+        self.TPA = try container.decodeIfPresent(Int.self, forKey: .TPA)
     }
 }
 
