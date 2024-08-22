@@ -43,6 +43,8 @@ struct DetailGameView: View {
     @State private var homeRuns: Int = 0
     @State private var homeHits: Int = 0
     @State private var homeErrors: Int = 0
+    @State private var awayTeamWRC: Double = 0
+    @State private var homeTeamWRC: Double = 0
     
     init(detailGame: ScheduleDate.Game) {
         game = detailGame
@@ -1043,16 +1045,173 @@ struct DetailGameView: View {
                             
                             Text("RS/G")
                             if let ATG = awayHittingStats.TG, let HTG = homeHittingStats.TG {
-                                let awayRSG = awayHittingStats.R / ATG
-                                let homeRSG = homeHittingStats.R / HTG
+                                let awayRSG = Double(awayHittingStats.R) / Double(ATG)
+                                let homeRSG = Double(homeHittingStats.R) / Double(HTG)
                                 Text(String(format: "%.4f", awayRSG))
                                 Text(String(format: "%.4f", homeRSG))
                             }
                             
                             Text("BB% Allowed")
-                            Text("")
-                            Text("")
+                            Text(String(format: "%.4f", awayPitchingStats.bbPCT))
+                            Text(String(format: "%.4f", homePitchingStats.bbPCT))
+                            
+                            Text("SO% Allowed")
+                            Text(String(format: "%.4f", awayPitchingStats.kPCT))
+                            Text(String(format: "%.4f", homePitchingStats.kPCT))
+                            
+                            Text("HR% Allowed")
+                            let awayHR = Double(awayHittingStats.HR) / Double(awayHittingStats.PA)
+                            let homeHR = Double(homeHittingStats.HR) / Double(homeHittingStats.PA)
+                            Text(String(format: "%.4f", awayHR))
+                            Text(String(format: "%.4f", homeHR))
+                            
+                            Text("FIP")
+                            Text(String(format: "%.4f", awayPitchingStats.FIP))
+                            Text(String(format: "%.4f", homePitchingStats.FIP))
+                            
+                            Text("DEF")
+                            if let awayFieldingStats = awayTeam.fieldingStats, let homeFieldingStats = homeTeam.fieldingStats {
+                                if let awayDef = awayFieldingStats.DEF, let homeDef = homeFieldingStats.DEF {
+                                    Text(String(format: "%.4f", awayDef))
+                                    Text(String(format: "%.4f", homeDef))
+                                }
+                                Text("UZR")
+                                if let awayUZR = awayFieldingStats.UZR, let homeUZR = homeFieldingStats.UZR {
+                                    Text(String(format: "%.4f", awayUZR))
+                                    Text(String(format: "%.4f", homeUZR))
+                                }
+                            }
+                            
+                            Text("BABIP")
+                            Text(String(format: "%.4f", awayPitchingStats.BABIP))
+                            Text(String(format: "%.4f", homePitchingStats.BABIP))
+                            
+                            Text("BB% Factor")
+                            if let awayBB = awayHittingStats.bbPCTplus, let homeBB = homeHittingStats.bbPCTplus {
+                                let awayBBFactor = awayBB / 100
+                                let homeBBFactor = homeBB / 100
+                                Text(String(format: "%.4f", awayBBFactor))
+                                Text(String(format: "%.4f", homeBBFactor))
+                            }
+                            
+                            Text("SO% Factor")
+                            if let awayK = awayHittingStats.kPCTplus, let homeK = homeHittingStats.kPCTplus {
+                                let awayKFactor = awayK / 100
+                                let homeKFactor = homeK / 100
+                                Text(String(format: "%.4f", awayKFactor))
+                                Text(String(format: "%.4f", homeKFactor))
+                            }
+                            
+                            Text("wRC+")
+                            if let awaywRC = awayHittingStats.wRCplus, let homewRC = homeHittingStats.wRCplus {
+                                Text(String(format: "%.4f", awaywRC))
+                                Text(String(format: "%.4f", homewRC))
+                            }
+                            
                         }
+                        .font(.footnote)
+                        
+                        // Away Team
+                        Text("Away Team")
+                        HStack(spacing: 10) {
+                            if let lineupData = self.lineupData {
+                                VStack(alignment: .leading) {
+                                    ForEach(lineupData.awayBatters, id: \.self) { batterID in
+                                        if let batter = findPlayer(by: batterID) {
+                                            Text("\(batter.person.fullName)")
+                                        }
+                                    }
+                                }
+                                VStack(alignment: .leading) {
+                                    ForEach(lineupData.awayBatters, id: \.self) { batterID in
+                                        if let batter = findPlayer(by: batterID) {
+                                            if let wRCplus = batter.hittingStats?.wRCplus {
+                                                let wRC = (wRCplus / 100) - 1
+                                                Text(String(format: "%.4f", wRC))
+                                            } else if let awayTeam = findTeam(by: game.teams.away.team.id), let awayHittingStats = awayTeam.hittingStats {
+                                                if let awaywRC = awayHittingStats.wRCplus {
+                                                    let away = (awaywRC / 100) - 1
+                                                    Text(String(format: "%.4f", away) + "(Team Value)")
+                                                }
+                                            } else {
+                                                Text("N/A")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .font(.footnote)
+                        
+                        Text("Pitcher")
+                        HStack {
+                            if let lineupData = self.lineupData {
+                                if let firstPitcherID = lineupData.awayStartingPitchers.first, let pitcher = findPlayer(by: firstPitcherID) {
+                                    if let pitchingStats = pitcher.pitchingStats {
+                                        let battersFacedPer5Innings = (Double(pitchingStats.TBF) / pitchingStats.IP) * 5
+                                        Text("Total At Bats: " + String(format: "%.2f", battersFacedPer5Innings))
+                                    } else {
+                                        Text("Total At Bats: N/A")
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .font(.footnote)
+                        
+                        // Home Team
+                        Text("Home Team")
+                        HStack(spacing: 10) {
+                            if let lineupData = self.lineupData {
+                                VStack(alignment: .leading) {
+                                    ForEach(lineupData.homeBatters, id: \.self) { batterID in
+                                        if let batter = findPlayer(by: batterID) {
+                                            Text("\(batter.person.fullName)")
+                                        }
+                                    }
+                                }
+                                VStack(alignment: .leading) {
+                                    ForEach(lineupData.homeBatters, id: \.self) { batterID in
+                                        if let batter = findPlayer(by: batterID) {
+                                            if let wRCplus = batter.hittingStats?.wRCplus {
+                                                let wRC = (wRCplus / 100) - 1
+                                                Text(String(format: "%.4f", wRC))
+                                            } else if let homeTeam = findTeam(by: game.teams.home.team.id), let homeHittingStats = homeTeam.hittingStats {
+                                                if let homewRC = homeHittingStats.wRCplus {
+                                                    let home = (homewRC / 100) - 1
+                                                    Text(String(format: "%.4f", home) + "(Team Value)")
+                                                }
+                                            } else {
+                                                Text("N/A")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .font(.footnote)
+                        
+                        Text("Pitcher")
+                        HStack {
+                            if let lineupData = self.lineupData {
+                                if let firstPitcherID = lineupData.homeStartingPitchers.first, let pitcher = findPlayer(by: firstPitcherID) {
+                                    if let pitchingStats = pitcher.pitchingStats {
+                                        let battersFacedPer5Innings = (Double(pitchingStats.TBF) / pitchingStats.IP) * 5
+                                        Text("Total At Bats" + String(format: "%.2f", battersFacedPer5Innings))
+                                    } else {
+                                        Text("Total At Bats: N/A")
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .font(.footnote)
                     }
                 }
             }
@@ -1068,7 +1227,6 @@ struct DetailGameView: View {
             await loadData()
         }
     }
-    
     
     // Fetches both teams rosters and starting lineups
     private func loadData() async {
@@ -1273,5 +1431,8 @@ struct DetailGameView: View {
         }
     }
     
-    
+    func saveTeamStats(awayWRC: Double, homeWRC: Double) {
+        self.awayTeamWRC = awayWRC
+        self.homeTeamWRC = homeWRC
+    }
 }
