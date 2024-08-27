@@ -228,7 +228,6 @@ struct DetailGameView: View {
             )
             .padding(.horizontal, 10)
             .frame(maxWidth: .infinity)
-            /*
             // Probable Pitchers
             VStack(alignment: .leading) {
                 Text("Probable Pitchers")
@@ -1036,7 +1035,6 @@ struct DetailGameView: View {
             )
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 10)
-             */
             VStack(alignment: .leading) {
                 Text("Prediction")
                     .font(.headline)
