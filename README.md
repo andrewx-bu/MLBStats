@@ -9,10 +9,10 @@
 - [API and Dependencies](#api-and-dependencies)
 - [Issues and Unimplemented Stuff](#issues-and-unimplemented-stuff)
 # MLBStats
-A project that tracks baseball games over the MLB season. Key features include a calendar view with scheduled + active games, an in detail game view, player list, and player stats view.
+A project that tracks baseball games over the MLB season. Key features include a calendar view with scheduled + active games, an in detail game view, player list, and player stats view. Designed for iOS 17 on iPhone 15 Pro Max. UI elements may appear buggy for iOS 18 and up.
 ## Description and Usage
 Fun little side project for myself to follow the 2024 MLB season. </br>
-Thre are two main views, each with a subview:
+There are two main views, each with a subview:
 - CalendarView
     - DetailGameView
 - PlayerListView
@@ -21,53 +21,57 @@ Thre are two main views, each with a subview:
 <em>Stationary Calendar vs. Compressed Calendar</em> </br>
 <img src="Screenshots/1.1-Calendar.png" alt="Stationary Calendar View" width="250">
 <img src="Screenshots/1.2-CalendarCompressed.png" alt="Compressed Calendar View" width="250"> </br>
-Description </br>
+`CalendarView` shows all games scheduled on a specific date. </br>
 ______________________________
 <em>Calendar showing scheduled games vs. showing only active games</em> </br>
 <img src="Screenshots/1.3-CalendarScheduled.png" alt="Scheduled Games Calendar" width="250">
 <img src="Screenshots/1.4-CalendarInGame.png" alt="Active Games Only Calendar" width="250"> </br>
-Description
+Users can toggle to show only games in progress.
 
 ### Detail GameView
 <em>Active game being tracked with linescore</em> </br>
 <img src="Screenshots/2.0-DetailGameActive.png" alt="Active Detail Game View" width="250"> </br>
-Description </br>
+Active games update in real time, and can be identified with the red dot indicating the current inning state </br>
 ______________________________
 <em>Linescore + Probable Pitchers, Batting Leaders + Team Stats</em> </br>
 <img src="Screenshots/2.1-DetailGame.png" alt="Linescore + Probable Pitchers" width="250">
 <img src="Screenshots/2.2-DetailGame2.png" alt="Batting Leaders + Team Stats" width="250"> </br>
-Description </br>
+`DetailGameView` shows the score, probable pitchers, batting leaders, and team stats. </br>
 ______________________________
 <em>Predictions (RA/5)</em> </br>
 <img src="Screenshots/2.3-DetailPrediction.png" alt="Prediction (RA/5)" width="250">
 <img src="Screenshots/2.4-DetailPrediction2.png" alt="Prediction Pt. 2 (RA/5)" width="250"> </br>
-Description
+- This crude prediction system predicts the runs allowed for the first 5 innings using sabermetrics (wRC+, FIP-, etc.)
+- This system of prediction at its core is very basic and flawed, look at [Issues](#issues-and-unimplemented-stuff)
+    - Roughly 20% success rate from random sample of 45 games. 
+        - Success defined as +/- 1 run from actual first five inning outcome
+        - I have never seen a prediction over 4 runs. The vast majority (roughly 75%) of games are predicted to have <= 2 runs for the first five innings.
+    - Does not take into account park factor, handedness, weather, night/day, umpire factor, and much more I wanted to look into, but got lost
 
 ### PlayerListView
 <em>Player List</em> </br>
 <img src="Screenshots/3.1-PlayerList.png" alt="Player List" width="250"> </br>
-Description </br>
 ______________________________
 <em>Player Search + Position Tab Bar</em> </br>
 <img src="Screenshots/3.2-PlayerSearch.png" alt="Player Search" width="250">
 <img src="Screenshots/3.3-PlayerTabBar.png" alt="Position Tab Bar" width="250"> </br>
-Description
-
+Allows users to search by name and narrow down by position </br>
+______________________________
 ### DetailPlayerView
 <em>Detail Player + Detail Player Stats</em> </br>
 <img src="Screenshots/4.1-DetailPlayer.png" alt="Detail Player" width="250">
 <img src="Screenshots/4.2-DetailPlayerStats.png" alt="Detail Player Stats" width="250"> </br>
-Description </br>
+Utilizes plus stats to easily gauge player's performance compared to league-average </br>
 ______________________________
 <em>Detail Pitcher + Catcher</em> </br>
 <img src="Screenshots/4.3-DetailPitcher.png" alt="Detail Pitcher" width="250">
 <img src="Screenshots/4.4-DetailCatcher.png" alt="Detail Catcher" width="250"> </br>
-Description
+An enormous variety of advanced stats provided thanks to Fangraphs
 
 ## API and Dependencies
-- All statistics and heashot images are scraped from FanGraphs MLB leaderboards (https://www.fangraphs.com/leaders/major-league).
+- All statistics and headshot images are scraped from FanGraphs MLB leaderboards (https://www.fangraphs.com/leaders/major-league).
 - Schedule, Lineups, and Player Bios are pulled from MLB-StatsAPI (https://github.com/toddrob99/MLB-StatsAPI).
-- Uses `SDSDWebImageSVGCoder` to render team logo SVG images (https://github.com/SDWebImage/SDWebImageSVGCoder)
+- Uses `SDWebImage` and `SDWebImageSVGCoder` to render team logo SVG images (https://github.com/SDWebImage/SDWebImageSVGCoder)
 ## Architecture and Structure
 - MLBStats is implemented *mostly* using the **MVVM** architecture pattern
     - Subviews (inside Navigation Links) lack any architecture, and they are extremely unorganized
@@ -103,7 +107,7 @@ Description
                 return nil
             }
             ```
-- All views utilize Swift's new concurrency features (`async`, `await`, `.task`) to effeciently load data
+- All views utilize Swift's new concurrency features (`async`, `await`, `.task`) to efficiently load data
     - Example:
         - Upon loading the `CalendarView` view, a task is created calling the view model's asynchronous `loadGames()` function:
             ```swift
@@ -111,7 +115,7 @@ Description
                 await viewModel.loadGames() 
             }
             ```
-        - The viemodel `CalendarViewVM` creates an instance of `Fetcher` and calls `fetchSchedule(selectedDate)` to populate the `schedule` variable:
+        - The viewmodel `CalendarViewVM` creates an instance of `Fetcher` and calls `fetchSchedule(selectedDate)` to populate the `schedule` variable:
             ```swift
             func loadGames() async {
                 do {
@@ -187,7 +191,7 @@ Description
                 var fieldingStats: FieldingStats?
             }
             ```
-- Matching `Player` to their `IdentifiableStat` objectsin the `PlayerViewVM` view model </br>
+- Matching `Player` to their `IdentifiableStat` objects in the `PlayerViewVM` view model </br>
     1. Player data and stats are fetched asynchronously:
         ```swift
         async let fetchedPlayers = fetcher.fetchPlayers()
@@ -244,15 +248,20 @@ Description
         }
         ```
 ## Issues and Unimplemented Stuff
-<em>Memory Issue</em> </br>
-<img src="Screenshots/9-MemoryIssue.png" alt="Detail Catcher" width="250"> </br>
-Description </br>
-______________________________
-<em>Black Bar</em> </br>
-<img src="Screenshots/4.2-DetailPlayerStats.png" alt="Detail Player Stats" width="250"> </br>
-Description </br>
-______________________________
 <em>Unknown Pitcher, Unknown Stats</em> </br>
 <img src="Screenshots/2.0-DetailGameActive.png" alt="Active Detail Game View" width="250">
 <img src="Screenshots/2.3-DetailPrediction.png" alt="Prediction (RA/5)" width="250"> </br>
-Description </br>
+- Because predicting baseball requires a large sample size over a period of time, even notable pitchers like Jack Flaherty and Yu Darvish will not meet qualifications (something like x inning pitched over the last 3 years), resulting in the "unknown pitcher." Pitchers recovering from injury will also likely be omitted.
+    - For reference, Fangraphs only deems 30 or so pitchers as "qualified" during the 2024 season. These are the most consistent, high volume pitchers that Fangraphs deems reliable for predictions.
+- The same is true for batters. On the Phillies, batters like Trea Turner and Bryce Harper get far more plate appearances compared to Brandon Marsh and Kody Clemens. Those who do not meet the plate appearance minimum will use their team's average value for predictions.
+    - Sometimes this results in the entire team using team values, such as the White Sox, because they receive substantially less plate appearances (because they suck). </br>
+______________________________
+<em>Memory Issue</em> </br>
+<img src="Screenshots/9-MemoryIssue.png" alt="Detail Catcher" width="250"> </br>
+- The app will hit upwards of 325 MB usage in XCode, especially when scrolling fast up and down the `ScrollView()`
+    - Maybe it's an XCode problem, but it likely can be fixed with more efficient concurrency methods such as `withTaskGroup()`, but I can't figure out how without making drastic changes, and previous fix attempts have only made memory usage worse
+    - Player headshots are memory intensive, but should not be the primary problem, as they are only loaded into `DetailPlayerView`, and deinitialized when the view disappears </br>
+______________________________
+<em>Black Bar</em> </br>
+<img src="Screenshots/4.2-DetailPlayerStats.png" alt="Detail Player Stats" width="250"> </br>
+- Black bar below "BABIP+" and above the tab bar is always solid black. Most likely an iOS bug. Found a stackoverflow post with the same unresolved issue but lost the link.
