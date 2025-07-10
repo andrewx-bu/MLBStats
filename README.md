@@ -9,7 +9,7 @@
 - [API and Dependencies](#api-and-dependencies)
 - [Issues and Unimplemented Stuff](#issues-and-unimplemented-stuff)
 # MLBStats
-A project that tracks baseball games over the MLB season. Key features include a calendar view with scheduled + active games, an in detail game view, player list, and player stats view. Designed for iOS 17 on iPhone 15 Pro Max. UI elements may appear buggy for iOS 18 and up.
+A project that tracks baseball games over the MLB season. Key features include a calendar view with scheduled + active games, an in detail game view, player list, and player stats view. Designed for iOS 17 on iPhone 15 Pro Max.
 ## Description and Usage
 Fun little side project for myself to follow the 2024 MLB season. </br>
 There are two main views, each with a subview:
