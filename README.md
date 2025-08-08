@@ -1,5 +1,6 @@
 # Table of Contents
 - [MLBStats](#mlbstats)
+- [Key Features](#key-features)
 - [Description and Usage](#description-and-usage)
   - [CalendarView](#calendarview)
   - [Detail GameView](#detail-gameview)
@@ -9,7 +10,12 @@
 - [API and Dependencies](#api-and-dependencies)
 - [Issues and Unimplemented Stuff](#issues-and-unimplemented-stuff)
 # MLBStats
-A project that tracks baseball games over the MLB season. Key features include a calendar view with scheduled + active games, an in detail game view, player list, and player stats view. Designed for iOS 17 on iPhone 15 Pro Max.
+An iOS application that provides comprehensive MLB season tracking with real-time game data and advanced player statistics. Features include a dynamic calendar displaying scheduled and live games, detailed game views with live scoring, searchable player list with advanced stats, and team information. Built with SwiftUI for iOS 17.
+## Key Features
+- Real-time game scores and schedule tracking
+- Comprehensive player stats with advanced sabermetrics
+- Multi-API data integration (FanGraphs + MLB StatsAPI)
+- Custom search and filtering system
 ## Description and Usage
 Fun little side project for myself to follow the 2024 MLB season. </br>
 There are two main views, each with a subview:
